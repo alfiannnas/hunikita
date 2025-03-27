@@ -14,6 +14,7 @@ import Detailkontrakan from "./pages/Detailkontrakan";
 import Detailartikel from "./pages/Detailartikel";
 import Formtambah from "./pages/Formtambah";
 import Formedit from "./pages/Formedit";
+import AdminHome from "./pages/admin/Home";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
 
       {/* Admin */}
       <Route path="/admin-login" element={<AdminLogin />}></Route>
+      <Route path="/admin-home" element={<AdminHome />}></Route>
+
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
