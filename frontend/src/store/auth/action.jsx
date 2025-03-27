@@ -1,11 +1,12 @@
 import {LOGIN, LOGOUT} from './type'
 export function doLogin(payload){
-  console.log(payload)
+  // console.log(payload)
   const body = {
     id: payload.id,
     name: payload.username,
     email: payload.email,
     token: payload.token,
+    role: payload.role
   }
 
   return {

@@ -12,6 +12,7 @@ export class Controller {
         
         this.register = this.register.bind(this);
         this.login = this.login.bind(this);
+        this.adminLogin = this.adminLogin.bind(this);
     }
 
     async register(req: Request, res: Response){
@@ -74,9 +75,58 @@ export class Controller {
             res.status(status.INTERNAL_SERVER_ERROR).
                 send({message: "Internal Server Error"})
         })
-
-
     }
+
+    async adminLogin(req: Request, res: Response) {
+        const loginReq = plainToInstance(LoginRequest, req.body);
+    
+        let err: string | undefined;
+        await validate(loginReq, { stopAtFirstError: true }).then(errors => {
+            if (errors.length > 0) {
+                err = errors.toString();
+            }
+        });
+    
+        if (err) {
+            res.status(status.BAD_REQUEST).send({ 
+                detail: err.toString(),
+                alert: { type: 'error', message: err.toString() } 
+            });
+            return;
+        }
+    
+        try {
+            const resp = await this.svc.login(loginReq);
+    
+            if (resp.role !== 'Admin') {
+                res.status(status.FORBIDDEN).send({
+                    message: "Akses ditolak: Hanya admin yang diizinkan",
+                    alert: { type: 'error', message: "Akses ditolak: Hanya admin yang diizinkan" }
+                });
+                return;
+            }
+    
+            res.status(status.OK).send({ 
+                data: resp,
+                alert: { type: 'success', message: "Login berhasil sebagai Admin" } 
+            });
+        } catch (err: any) {
+            if (err == error.USER_NOT_FOUND || err == error.WRONG_PASSWORD) {
+                res.status(status.BAD_REQUEST).send({ 
+                    detail: err.message,
+                    alert: { type: 'error', message: err.message } 
+                });
+                return;
+            }
+    
+            console.error(err);
+            res.status(status.INTERNAL_SERVER_ERROR).send({ 
+                message: "Internal Server Error",
+                alert: { type: 'error', message: "Terjadi kesalahan pada server" } 
+            });
+        }
+    }
+    
 
     async logout(res:Response) {
         res.clearCookie("jwtToken")

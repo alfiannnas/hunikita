@@ -77,7 +77,7 @@ export class Service implements IService{
                 throw ERROR.WRONG_PASSWORD
             }
 
-            token = jwt.sign({id: user.id, name: user.name, email: user.email}, "jwt-secret-key", {
+            token = jwt.sign({id: user.id, name: user.name, email: user.email, role:user.role}, "jwt-secret-key", {
                 expiresIn: "1d",
             });
 
@@ -85,6 +85,7 @@ export class Service implements IService{
                 id: user.id, 
                 name: user.name, 
                 email: user.email, 
+                role: user.role,
                 token
             }
         } catch(error) {
