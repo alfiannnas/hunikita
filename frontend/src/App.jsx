@@ -1,6 +1,7 @@
 import { Navigate, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import AdminLogin from "./pages/admin/AdminLogin";
 import Beranda from "./pages/Beranda";
 import Tentangkami from "./pages/Tentangkami";
 import Pusatbantuan from "./pages/Pusatbantuan";
@@ -31,6 +32,9 @@ function App() {
       <Route path="/detail-artikel" element={<Detailartikel />}></Route>
       <Route path="/form-tambah" element={<Formtambah />}></Route>
       <Route path="/form-edit" element={<Formedit />}></Route>
+
+      {/* Admin */}
+      <Route path="/admin-login" element={<AdminLogin />}></Route>
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
