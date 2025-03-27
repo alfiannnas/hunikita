@@ -19,7 +19,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     if (auth) {
-      navigate("/");
+      navigate("/admin-home");
     }
   }, [auth, navigate]);
 
@@ -33,7 +33,7 @@ const AdminLogin = () => {
         if (res.status === 200) {
           dispatch(doLogin(res.data.data));
           setAlertMessage({ type: "success", message: res.data.alert?.message || "Login berhasil!" });
-          setTimeout(() => navigate("/"), 1500);
+          setTimeout(() => navigate("/admin-home"), 1500);
         }
       })
       .catch((err) => {

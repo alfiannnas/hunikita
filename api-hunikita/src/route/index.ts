@@ -2,14 +2,18 @@ import {Router} from "express"
 import { Connection } from "mysql2/promise"
 import {oauth} from "./oauth"
 import { property } from "./property"
+import { getUser } from "./get-user"
 import {Repository as PropertyTypeRepo} from "@repository/propertytype"
 import {Repository as PropertyRepo} from "@repository/property"
 import {Repository} from "@repository/oauth"
 import {Service as PropertyTypeSvc} from "@service/propertytype"
 import {Service as PropertySvc} from "@service/property"
-import {Service} from "@service/oauth"
+import {Repository as GetUserRepo} from "@repository/user"
+import { Service as GetUserService } from "@service/user";
+import {Service as OauthService} from "@service/oauth"
 import {Controller} from "@controller/oauth"
 import {Controller as PropertyController} from "@controller/property"
+import {Controller as GetUserController} from "@controller/get-user"
 import { connect } from "@database"
 
 export const Route = {
@@ -26,16 +30,20 @@ export const Route = {
         const propertyTypeRepo = new PropertyTypeRepo(con)
         const propertyRepo = new PropertyRepo(con)
         const oauthRepo = new Repository(con)
+        const getUserRepo = new GetUserRepo(con)
 
         const propertyTypeSvc = new PropertyTypeSvc(propertyTypeRepo)
-        const oauthSvc = new Service(oauthRepo)
+        const oauthSvc = new OauthService(oauthRepo)
         const propertySvc = new PropertySvc(oauthSvc, propertyTypeSvc, propertyRepo)
+        const getUserSvc = new GetUserService(getUserRepo)
 
 
         const oauthCtrl = new Controller(oauthSvc)
         const propertyCtrl = new PropertyController(propertySvc)
+        const getUserCtrl = new GetUserController(getUserSvc)
 
         oauth(router, oauthCtrl)
         property(router, propertyCtrl)
+        getUser(router, getUserCtrl)
     }
 }

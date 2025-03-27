@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   LayoutGrid,
   Home,
@@ -11,8 +12,54 @@ import {
   Search,
   Plus
 } from 'lucide-react';
+import axios from 'axios';
+import { API } from '../../constant';
+import { useSelector } from 'react-redux';
 
 function AdminHome() {
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
+  const [userData, setUserData] = useState({
+    name: '',
+    role: ''
+  });
+
+  const getCurrentUser = async () => {
+    try {
+      if (!auth || !auth.token) {
+        console.error('No token found');
+        navigate('/admin/login');
+        return;
+      }
+
+      const response = await axios.get(API.GET_USER_DATA, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      
+      if (response.data && response.data.data) {
+        setUserData({
+          name: response.data.data.name,
+          role: response.data.data.role || 'Admin'
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      if (error.response?.status === 401) {
+        navigate('/admin/login');
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!auth) {
+      navigate('/admin/login');
+      return;
+    }
+    getCurrentUser();
+  }, [auth, navigate]);
+
   const properties = [
     {
       id: 1,
@@ -137,8 +184,8 @@ function AdminHome() {
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <p className="text-white font-medium">Putri Amanda</p>
-                <p className="text-white text-sm">Admin</p>
+                <p className="text-white font-medium">{userData.name || 'Loading...'}</p>
+                <p className="text-white text-sm">{userData.role || 'Loading...'}</p>
               </div>
               <img
                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=50"
