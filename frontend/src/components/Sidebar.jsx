@@ -1,78 +1,42 @@
-import {
-  LayoutGrid,
-  Home,
-  Users,
-  UserCircle,
-  FileText,
-  HelpCircle,
-  UserCog,
-  LogOut,
-  Search,
-  Plus
-} from 'lucide-react';
-
+import { Link, useLocation } from "react-router-dom";
+import { LayoutGrid, Home, Users, UserCircle, FileText, HelpCircle, UserCog, LogOut } from "lucide-react";
 
 const Sidebar = () => {
+    const location = useLocation();
+
+    const menuItems = [
+        { path: "/admin-home", label: "Dashboard", icon: LayoutGrid },
+        { path: "/admin-properti", label: "Properti", icon: Home },
+        { path: "/pemilik-properti", label: "Pemilik Properti", icon: Users },
+        { path: "/penyewa", label: "Penyewa", icon: UserCircle },
+        { path: "/artikel", label: "Artikel", icon: FileText },
+        { path: "/pusat-bantuan", label: "Pusat Bantuan", icon: HelpCircle },
+        { path: "/profil-admin", label: "Profil Admin", icon: UserCog },
+        { path: "/logout", label: "Logout", icon: LogOut },
+    ];
+
     return (
         <div className="w-64 bg-white shadow-lg">
-        <div className="p-4 border-b">
-          <img src="/hunikita-logo-3.png" className="h-14 w-auto"/>
+            <div className="p-4 border-b">
+                <img src="/hunikita-logo-3.png" className="h-14 w-auto" alt="Logo" />
+            </div>
+            <nav className="p-4">
+                <ul className="space-y-2">
+                    {menuItems.map(({ path, label, icon: Icon }) => (
+                        <li key={path}>
+                            <Link
+                                to={path}
+                                className={`flex items-center p-2 rounded-lg transition ${location.pathname === path ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}`}
+                            >
+                                <Icon className="w-5 h-5 mr-3" />
+                                <span>{label}</span>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </div>
-        
-        <nav className="p-4">
-          <ul className="space-y-2">
-            <li>
-              <a href="#" className="flex items-center p-2 text-blue-600 bg-blue-50 rounded-lg">
-                <LayoutGrid className="w-5 h-5 mr-3" />
-                <span>Dashboard</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <Home className="w-5 h-5 mr-3" />
-                <span>Properti</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <Users className="w-5 h-5 mr-3" />
-                <span>Pemilik Properti</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <UserCircle className="w-5 h-5 mr-3" />
-                <span>Penyewa</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <FileText className="w-5 h-5 mr-3" />
-                <span>Artikel</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <HelpCircle className="w-5 h-5 mr-3" />
-                <span>Pusat Bantuan</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <UserCog className="w-5 h-5 mr-3" />
-                <span>Profil Admin</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <LogOut className="w-5 h-5 mr-3" />
-                <span>Logout</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
     );
-  };
-  
-  export default Sidebar;
+};
+
+export default Sidebar;
