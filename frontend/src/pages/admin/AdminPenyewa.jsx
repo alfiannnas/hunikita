@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Edit, Trash2 } from "lucide-react";
 import { Alert } from "../../components/Alert";
+import { SuccessMessage } from "../../components/SuccessMessage";
 
 const AdminPenyewa = () => {
     const [penyewa, setPenyewa] = useState([]);
@@ -17,6 +18,8 @@ const AdminPenyewa = () => {
     const navigate = useNavigate();
 
     const [idPenyewa, setIdPenyewa] = useState(null); // State untuk menyimpan ID penyewa yang akan dihapus
+    const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [isSuccessOpen, setIsSuccessOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
 
     useEffect(() => {
         if (!auth || !auth.token) {
@@ -60,8 +63,6 @@ const AdminPenyewa = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
 
-    const [isAlertOpen, setIsAlertOpen] = useState(false);
-
     const handleDelete = async () => {
         if (idPenyewa === null) return; // Pastikan ID tidak null
 
@@ -79,6 +80,7 @@ const AdminPenyewa = () => {
             }
 
             setIsAlertOpen(false);
+            setIsSuccessOpen(true); // Tampilkan SuccessMessage
             fetchPenyewa(); // Panggil fungsi untuk mengambil data terbaru
         } catch (error) {
             console.error('Error:', error);
@@ -165,6 +167,12 @@ const AdminPenyewa = () => {
                         message="Apakah anda yakin ingin menghapus data ini?"
                         onCancel={() => setIsAlertOpen(false)}
                         onConfirm={handleDelete}
+                    />
+
+                    <SuccessMessage
+                        isOpen={isSuccessOpen}
+                        title="Data berhasil dihapus!" // Judul untuk SuccessMessage
+                        onClose={() => setIsSuccessOpen(false)} // Menutup SuccessMessage
                     />
                 </main>
             </div>
