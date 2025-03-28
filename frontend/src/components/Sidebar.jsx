@@ -7,7 +7,7 @@ const Sidebar = () => {
     const menuItems = [
         { path: "/admin-home", label: "Dashboard", icon: LayoutGrid },
         { path: "/admin-properti", label: "Properti", icon: Home },
-        { path: "/pemilik-properti", label: "Pemilik Properti", icon: Users },
+        { path: "/admin-pemilik-properti", label: "Pemilik Properti", icon: Users },
         { path: "/penyewa", label: "Penyewa", icon: UserCircle },
         { path: "/artikel", label: "Artikel", icon: FileText },
         { path: "/pusat-bantuan", label: "Pusat Bantuan", icon: HelpCircle },

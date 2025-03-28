@@ -21,6 +21,13 @@ const Header = () => {
         return;
       }
 
+      // Cek apakah data pengguna sudah ada di localStorage
+      const storedUserData = localStorage.getItem('userData');
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData));
+        return; // Tidak perlu memanggil API jika data sudah ada
+      }
+
       const response = await axios.get(API.GET_USER_DATA, {
         headers: {
           Authorization: `Bearer ${auth.token}`
@@ -28,10 +35,14 @@ const Header = () => {
       });
       
       if (response.data && response.data.data) {
-        setUserData({
+        const user = {
           name: response.data.data.name,
           role: response.data.data.role || 'Admin'
-        });
+        };
+        setUserData(user);
+        
+        // Simpan data pengguna ke localStorage
+        localStorage.setItem('userData', JSON.stringify(user));
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -64,8 +75,8 @@ const Header = () => {
         </div>
         <div className="flex items-center space-x-4">
           <div className="text-right">
-            <p className="text-white font-medium">{userData.name || 'Loading...'}</p>
-            <p className="text-white text-sm">{userData.role || 'Loading...'}</p>
+            <p className="text-white font-medium">{userData.name }</p>
+            <p className="text-white text-sm">{userData.role }</p>
           </div>
           <img
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=50"
