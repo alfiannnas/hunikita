@@ -84,3 +84,26 @@ VALUES
 (3, 1, 'Michael Brown', 'michael.brown@example.com', 'Cozy Cottage', '789 Maple Street, Denver, CO', 2, '/images/cottage1.jpg', 'Ditolak'),
 (4, 2, 'Alice Johnson', 'alice.johnson@example.com', 'Beach House', '101 Palm Tree Ave, Honolulu, HI', 4, '/images/beachhouse.jpg', 'Diproses'),
 (5, 1, 'Robert Williams', 'robert.williams@example.com', 'Mountain Cabin', '555 Rocky Road, Aspen, CO', 3, '/images/cabin2.jpg', 'Disetujui');
+
+
+--
+-- Table structure for table `penyewa`
+--
+CREATE TABLE penyewa ( 
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    property_id INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+--
+-- Dumping data for table `penyewa`
+--
+INSERT INTO penyewa (user_id, property_id) VALUES
+(1, 2),
+(2, 3),
+(3, 1),
+(4, 5),
+(5, 4);
+

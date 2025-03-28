@@ -14,5 +14,11 @@ export const API = {
     GET_ADMIN_PROPERTY_BY_ID: BASE_URL + "/admin-properties",
     POST_ADMIN_PROPERTY: BASE_URL + "/admin-properties",
     UPDATE_ADMIN_PROPERTY: BASE_URL + "/admin-properties",
-    DELETE_ADMIN_PROPERTY: BASE_URL + "/admin-properties"
+    DELETE_ADMIN_PROPERTY: BASE_URL + "/admin-properties",
+
+    GET_PENYEWA: BASE_URL + "/admin-penyewa",
+    GET_PENYEWA_BY_ID: BASE_URL + "/admin-penyewa",
+    POST_PENYEWA: BASE_URL + "/admin-penyewa",
+    UPDATE_PENYEWA: BASE_URL + "/admin-penyewa",
+    DELETE_PENYEWA: BASE_URL + "/admin-penyewa"
 }

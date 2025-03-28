@@ -117,7 +117,6 @@ export class Repository implements IRepository {
 
     async list(): Promise<RowDataPacket> {
         try {
-            console.log("Executing query...");
             const [result] = await this.master.execute(
                 `SELECT p.id, p.user_id, p.property_type_id, pt.name AS property_type_name, 
                         p.owner_name, p.owner_email, p.name, p.address, 

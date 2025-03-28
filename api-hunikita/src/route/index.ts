@@ -4,6 +4,7 @@ import {oauth} from "./oauth"
 import { property } from "./property"
 import { getUser } from "./get-user"
 import { adminProperties } from "./admin-properties"
+import { adminPenyewa } from "./admin-penyewa"
 import {Repository as PropertyTypeRepo} from "@repository/propertytype"
 import {Repository as PropertyRepo} from "@repository/property"
 import {Repository} from "@repository/oauth"
@@ -21,6 +22,10 @@ import {Service as AdminPropertiesSvc} from "@service/admin-properties"
 import {Repository as AdminPropertiesRepo} from "@repository/admin-properties"
 import {Controller as AdminPropertiesController} from "@controller/admin-properties"
 
+import {Service as AdminPenyewaSvc} from "@service/admin-penyewa"
+import {Repository as AdminPenyewaRepo} from "@repository/admin-penyewa"
+import {Controller as AdminPenyewaController} from "@controller/admin-penyewa"
+
 export const Route = {
     register: async (router: Router)=> {
         let con!:Connection
@@ -37,21 +42,25 @@ export const Route = {
         const oauthRepo = new Repository(con)
         const getUserRepo = new GetUserRepo(con)
         const adminPropertiesRepo = new AdminPropertiesRepo(con)
+        const adminPenyewaRepo = new AdminPenyewaRepo(con)
 
         const propertyTypeSvc = new PropertyTypeSvc(propertyTypeRepo)
         const oauthSvc = new OauthService(oauthRepo)
         const propertySvc = new PropertySvc(oauthSvc, propertyTypeSvc, propertyRepo)
         const getUserSvc = new GetUserService(getUserRepo)
         const adminPropertiesSvc = new AdminPropertiesSvc(adminPropertiesRepo)
+        const penyewaSvc = new AdminPenyewaSvc(adminPenyewaRepo)
 
         const oauthCtrl = new Controller(oauthSvc)
         const propertyCtrl = new PropertyController(propertySvc)
         const getUserCtrl = new GetUserController(getUserSvc)
         const adminPropertiesCtrl = new AdminPropertiesController(adminPropertiesSvc)
+        const adminPenyewaCtrl = new AdminPenyewaController(penyewaSvc)
 
         oauth(router, oauthCtrl)
         property(router, propertyCtrl)
         getUser(router, getUserCtrl)
         adminProperties(router, adminPropertiesCtrl)
+        adminPenyewa(router, adminPenyewaCtrl)
     }
 }
