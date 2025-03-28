@@ -16,6 +16,8 @@ const AdminPenyewa = () => {
     const auth = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
+    const [idPenyewa, setIdPenyewa] = useState(null); // State untuk menyimpan ID penyewa yang akan dihapus
+
     useEffect(() => {
         if (!auth || !auth.token) {
             navigate('/admin/login');
@@ -60,10 +62,27 @@ const AdminPenyewa = () => {
 
     const [isAlertOpen, setIsAlertOpen] = useState(false);
 
-    const handleDelete = () => {
-        // Implementasi penghapusan
-        console.log("Item dihapus");
-        setIsAlertOpen(false);
+    const handleDelete = async () => {
+        if (idPenyewa === null) return; // Pastikan ID tidak null
+
+        try {
+            const response = await fetch(`${API.DELETE_PENYEWA}/${idPenyewa}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${auth.token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Gagal menghapus data');
+            }
+
+            setIsAlertOpen(false);
+            fetchPenyewa(); // Panggil fungsi untuk mengambil data terbaru
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -105,7 +124,10 @@ const AdminPenyewa = () => {
                                                     <Edit className="w-5 h-5" />
                                                 </button>
                                                 <button
-                                                    onClick={() => setIsAlertOpen(true)}
+                                                    onClick={() => {
+                                                        setIdPenyewa(penyewa.id); // Set ID penyewa yang akan dihapus
+                                                        setIsAlertOpen(true);
+                                                    }}
                                                     className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
                                                 >
                                                     <Trash2 className="w-5 h-5" />
