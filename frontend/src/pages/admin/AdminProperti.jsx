@@ -86,7 +86,7 @@ const AdminProperti = () => {
                                     {displayedProperties.map((property) => (
                                         <tr key={property.id} className="border-b">
                                             <td className="py-3">{property.name}</td>
-                                            <td className="py-3">{property.type}</td>
+                                            <td className="py-3">{property.property_type_name}</td>
                                             <td className="py-3">{property.owner_name}</td>
                                             <td className="py-3">
                                                 <span className={`px-2 py-1 rounded-full text-sm ${

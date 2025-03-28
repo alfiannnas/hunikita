@@ -53,40 +53,34 @@ CREATE TABLE `property_types` (
 );
 
 INSERT INTO `property_types` (`name`) VALUES
-('kos'),
-('kontrakan');
+('Kost'),
+('Kontrakan');
 
-
-CREATE TABLE `properties` (
-  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT NOT NULL,
-  `property_type_id` INT NOT NULL,
-  `owner_name` varchar(100) NOT NULL,
-  `owner_email` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `room_count` INT NOT NULL, 
-  `img_path` VARCHAR(250) NOT NULL,
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (`property_type_id`) REFERENCES `property_types`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
+--
+-- Table structure for table `properties`
+--
 CREATE TABLE properties (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    property_type_id INT NOT NULL,
-    owner_name VARCHAR(255) NOT NULL,
-    owner_email VARCHAR(255) NOT NULL,
+    user_id INT NULL,
+    property_type_id INT NULL,
+    owner_name VARCHAR(255) NULL,
+    owner_email VARCHAR(255) NULL,
+    status VARCHAR(255) NULL,
     name VARCHAR(255) NOT NULL,
-    address TEXT NOT NULL,
-    room_count INT NOT NULL,
-    img_path VARCHAR(500),
+    address TEXT NULL,
+    room_count INT NULL,
+    img_path VARCHAR(500) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO properties (user_id, property_type_id, owner_name, owner_email, name, address, room_count, img_path)
+--
+-- Dumping data for table `properties`
+--
+INSERT INTO properties (user_id, property_type_id, owner_name, owner_email, name, address, room_count, img_path, status)
 VALUES
-(1, 2, 'John Doe', 'john.doe@example.com', 'Luxury Villa', '123 Sunset Blvd, Los Angeles, CA', 5, '/images/villa1.jpg'),
-(2, 3, 'Jane Smith', 'jane.smith@example.com', 'Modern Apartment', '456 Ocean Drive, Miami, FL', 3, '/images/apartment1.jpg'),
-(3, 1, 'Michael Brown', 'michael.brown@example.com', 'Cozy Cottage', '789 Maple Street, Denver, CO', 2, '/images/cottage1.jpg');
+(1, 2, 'John Doe', 'john.doe@example.com', 'Luxury Villa', '123 Sunset Blvd, Los Angeles, CA', 5, '/images/villa1.jpg', 'Disetujui'),
+(2, 3, 'Jane Smith', 'jane.smith@example.com', 'Modern Apartment', '456 Ocean Drive, Miami, FL', 3, '/images/apartment1.jpg', 'Diproses'),
+(3, 1, 'Michael Brown', 'michael.brown@example.com', 'Cozy Cottage', '789 Maple Street, Denver, CO', 2, '/images/cottage1.jpg', 'Ditolak'),
+(4, 2, 'Alice Johnson', 'alice.johnson@example.com', 'Beach House', '101 Palm Tree Ave, Honolulu, HI', 4, '/images/beachhouse.jpg', 'Diproses'),
+(5, 1, 'Robert Williams', 'robert.williams@example.com', 'Mountain Cabin', '555 Rocky Road, Aspen, CO', 3, '/images/cabin2.jpg', 'Disetujui');
