@@ -9,6 +9,9 @@ import { Edit, Trash2 } from "lucide-react";
 
 const AdminProperti = () => {
     const [properties, setProperties] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8; // Tampilkan 5 properti per halaman
+
     const auth = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
@@ -34,6 +37,24 @@ const AdminProperti = () => {
                 navigate('/admin/login');
             }
         }
+    };
+
+    // Hitung total halaman
+    const totalPages = Math.ceil(properties.length / itemsPerPage);
+
+    // Data yang ditampilkan berdasarkan halaman
+    const displayedProperties = properties.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    // Fungsi untuk navigasi halaman
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
 
     return (
@@ -62,7 +83,7 @@ const AdminProperti = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {properties?.map((property) => (
+                                    {displayedProperties.map((property) => (
                                         <tr key={property.id} className="border-b">
                                             <td className="py-3">{property.name}</td>
                                             <td className="py-3">{property.type}</td>
@@ -78,19 +99,36 @@ const AdminProperti = () => {
                                                 </span>
                                             </td>
                                             <td className="py-3 flex space-x-2">
-                                                <td className="py-3 flex space-x-2">
-                                                    <button className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">
-                                                        <Edit className="w-5 h-5" />
-                                                    </button>
-                                                    <button className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">
-                                                        <Trash2 className="w-5 h-5" />
-                                                    </button>
-                                                </td>
+                                                <button className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">
+                                                    <Edit className="w-5 h-5" />
+                                                </button>
+                                                <button className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">
+                                                    <Trash2 className="w-5 h-5" />
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+
+                        {/* Pagination Controls */}
+                        <div className="flex justify-between items-center mt-4">
+                            <button
+                                onClick={prevPage}
+                                disabled={currentPage === 1}
+                                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+                            >
+                                Prev
+                            </button>
+                            <span>Page {currentPage} of {totalPages}</span>
+                            <button
+                                onClick={nextPage}
+                                disabled={currentPage === totalPages}
+                                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+                            >
+                                Next
+                            </button>
                         </div>
                     </div>
                 </main>
