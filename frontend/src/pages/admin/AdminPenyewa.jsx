@@ -6,6 +6,7 @@ import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Edit, Trash2 } from "lucide-react";
+import { Alert } from "../../components/Alert";
 
 const AdminPenyewa = () => {
     const [penyewa, setPenyewa] = useState([]);
@@ -57,6 +58,14 @@ const AdminPenyewa = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
 
+    const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+    const handleDelete = () => {
+        // Implementasi penghapusan
+        console.log("Item dihapus");
+        setIsAlertOpen(false);
+    };
+
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar />
@@ -95,7 +104,10 @@ const AdminPenyewa = () => {
                                                 <button className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">
                                                     <Edit className="w-5 h-5" />
                                                 </button>
-                                                <button className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">
+                                                <button
+                                                    onClick={() => setIsAlertOpen(true)}
+                                                    className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
+                                                >
                                                     <Trash2 className="w-5 h-5" />
                                                 </button>
                                             </td>
@@ -124,6 +136,14 @@ const AdminPenyewa = () => {
                             </button>
                         </div>
                     </div>
+
+                    <Alert
+                        isOpen={isAlertOpen}
+                        title="Hapus"
+                        message="Apakah anda yakin ingin menghapus data ini?"
+                        onCancel={() => setIsAlertOpen(false)}
+                        onConfirm={handleDelete}
+                    />
                 </main>
             </div>
         </div>
