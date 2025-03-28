@@ -122,7 +122,7 @@ export class Controller {
             console.error(err);
             res.status(status.INTERNAL_SERVER_ERROR).send({ 
                 message: "Internal Server Error",
-                alert: { type: 'error', message: "Terjadi kesalahan pada server" } 
+                alert: { type: 'error', message: "Terjadixxx kesalahan pada server" } 
             });
         }
     }

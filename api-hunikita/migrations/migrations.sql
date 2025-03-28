@@ -70,3 +70,23 @@ CREATE TABLE `properties` (
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`property_type_id`) REFERENCES `property_types`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE properties (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    property_type_id INT NOT NULL,
+    owner_name VARCHAR(255) NOT NULL,
+    owner_email VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    address TEXT NOT NULL,
+    room_count INT NOT NULL,
+    img_path VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO properties (user_id, property_type_id, owner_name, owner_email, name, address, room_count, img_path)
+VALUES
+(1, 2, 'John Doe', 'john.doe@example.com', 'Luxury Villa', '123 Sunset Blvd, Los Angeles, CA', 5, '/images/villa1.jpg'),
+(2, 3, 'Jane Smith', 'jane.smith@example.com', 'Modern Apartment', '456 Ocean Drive, Miami, FL', 3, '/images/apartment1.jpg'),
+(3, 1, 'Michael Brown', 'michael.brown@example.com', 'Cozy Cottage', '789 Maple Street, Denver, CO', 2, '/images/cottage1.jpg');
