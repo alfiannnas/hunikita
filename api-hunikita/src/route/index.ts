@@ -5,6 +5,7 @@ import { property } from "./property"
 import { getUser } from "./get-user"
 import { adminProperties } from "./admin-properties"
 import { adminPenyewa } from "./admin-penyewa"
+import { adminArtikel } from "./admin-artikel"
 import {Repository as PropertyTypeRepo} from "@repository/propertytype"
 import {Repository as PropertyRepo} from "@repository/property"
 import {Repository} from "@repository/oauth"
@@ -26,6 +27,10 @@ import {Service as AdminPenyewaSvc} from "@service/admin-penyewa"
 import {Repository as AdminPenyewaRepo} from "@repository/admin-penyewa"
 import {Controller as AdminPenyewaController} from "@controller/admin-penyewa"
 
+import { Service as AdminArtikelSvc } from "@service/admin-artikel"
+import {Repository as AdminArtikelRepo} from "@repository/admin-artikel"
+import {Controller as AdminArtikelController} from "@controller/admin-artikel"
+
 export const Route = {
     register: async (router: Router)=> {
         let con!:Connection
@@ -43,6 +48,7 @@ export const Route = {
         const getUserRepo = new GetUserRepo(con)
         const adminPropertiesRepo = new AdminPropertiesRepo(con)
         const adminPenyewaRepo = new AdminPenyewaRepo(con)
+        const adminArtikelRepo = new AdminArtikelRepo(con)
 
         const propertyTypeSvc = new PropertyTypeSvc(propertyTypeRepo)
         const oauthSvc = new OauthService(oauthRepo)
@@ -50,17 +56,20 @@ export const Route = {
         const getUserSvc = new GetUserService(getUserRepo)
         const adminPropertiesSvc = new AdminPropertiesSvc(adminPropertiesRepo)
         const penyewaSvc = new AdminPenyewaSvc(adminPenyewaRepo)
+        const artikelSvc = new AdminArtikelSvc(adminArtikelRepo)
 
         const oauthCtrl = new Controller(oauthSvc)
         const propertyCtrl = new PropertyController(propertySvc)
         const getUserCtrl = new GetUserController(getUserSvc)
         const adminPropertiesCtrl = new AdminPropertiesController(adminPropertiesSvc)
         const adminPenyewaCtrl = new AdminPenyewaController(penyewaSvc)
+        const adminArtikelCtrl = new AdminArtikelController(artikelSvc)
 
         oauth(router, oauthCtrl)
         property(router, propertyCtrl)
         getUser(router, getUserCtrl)
         adminProperties(router, adminPropertiesCtrl)
         adminPenyewa(router, adminPenyewaCtrl)
+        adminArtikel(router, adminArtikelCtrl)
     }
 }

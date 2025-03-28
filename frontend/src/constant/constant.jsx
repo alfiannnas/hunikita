@@ -20,5 +20,12 @@ export const API = {
     GET_PENYEWA_BY_ID: BASE_URL + "/admin-penyewa",
     POST_PENYEWA: BASE_URL + "/admin-penyewa",
     UPDATE_PENYEWA: BASE_URL + "/admin-penyewa",
-    DELETE_PENYEWA: BASE_URL + "/admin-penyewa"
+    DELETE_PENYEWA: BASE_URL + "/admin-penyewa",
+
+    // Admin Artikel
+    GET_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
+    GET_ADMIN_ARTIKEL_BY_ID: BASE_URL + "/admin-artikel",
+    POST_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
+    UPDATE_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
+    DELETE_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel"
 }

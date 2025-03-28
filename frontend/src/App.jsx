@@ -18,6 +18,7 @@ import AdminHome from "./pages/admin/Home";
 import AdminProperti from "./pages/admin/AdminProperti";
 import AdminPemilikProperti from "./pages/admin/AdminPemilikProperti";
 import AdminPenyewa from "./pages/admin/AdminPenyewa";
+import AdminArtikel from "./pages/admin/AdminArtikel";
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
       <Route path="/admin-properti" element={<AdminProperti />}></Route>
       <Route path="/admin-pemilik-properti" element={<AdminPemilikProperti />}></Route>
       <Route path="/admin-penyewa" element={<AdminPenyewa />}></Route>
+      <Route path="/admin-artikel" element={<AdminArtikel />}></Route>
+
 
 
 
