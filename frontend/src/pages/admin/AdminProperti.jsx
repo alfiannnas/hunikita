@@ -63,7 +63,7 @@ const AdminProperti = () => {
             <div className="flex-1 overflow-auto">
                 <Header />
                 <main className="p-6">
-                    <h2 className="text-2xl font-semibold mb-6">Dashboard</h2>
+                    <h2 className="text-2xl font-semibold mb-6">Properti</h2>
 
                     {/* Properties Section */}
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
