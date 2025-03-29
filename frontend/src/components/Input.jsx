@@ -9,6 +9,7 @@ export function Input({
   error,
   required = false,
   className = "",
+  name,
 }) {
   return (
     <div className="w-full">
@@ -20,7 +21,8 @@ export function Input({
       )}
       <input
         type={type}
-        value={value}
+        name={name}
+        value={value || ""}
         onChange={onChange}
         placeholder={placeholder}
         required={required}

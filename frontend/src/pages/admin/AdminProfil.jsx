@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Edit, Trash2 } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
@@ -66,42 +66,45 @@ const AdminProfil = () => {
                                 disabled 
                                 />
                             </div>
-                        <div>
-                            <label className="block font-medium text-gray-700">Kontak</label>
-                            <input 
-                            type="text" 
-                            className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed" 
-                            placeholder="Masukkan nomor kontak Anda!" 
-                            value={userData.no_kontak} 
-                            disabled 
-                            />
+                            <div>
+                                <label className="block font-medium text-gray-700">Kontak</label>
+                                <input 
+                                type="text" 
+                                className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed" 
+                                placeholder="Masukkan nomor kontak Anda!" 
+                                value={userData.no_kontak} 
+                                disabled 
+                                />
+                            </div>
+                            <div>
+                                <label className="block font-medium text-gray-700">Email</label>
+                                <input 
+                                type="email" 
+                                className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed" 
+                                placeholder="Masukkan email Anda!" 
+                                value={userData.email} 
+                                disabled 
+                                />
+                            </div>
+                            <div>
+                                <label className="block font-medium text-gray-700">Password</label>
+                                <input 
+                                type="password" 
+                                className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed" 
+                                placeholder="Masukkan password Anda!" 
+                                value="••••••••••••••"
+                                disabled 
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label className="block font-medium text-gray-700">Email</label>
-                            <input 
-                            type="email" 
-                            className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed" 
-                            placeholder="Masukkan email Anda!" 
-                            value={userData.email} 
-                            disabled 
-                            />
-                        </div>
-                        <div>
-                            <label className="block font-medium text-gray-700">Password</label>
-                            <input 
-                            type="password" 
-                            className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed" 
-                            placeholder="Masukkan password Anda!" 
-                            value={userData.password} 
-                            disabled 
-                            />
-                        </div>
-</div>
 
                         <div className="flex justify-end mt-4">
-                            <button className="p-1 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 hover:text-white transition">
+                            <Link 
+                                to={`/admin-profil/edit/${userData.id}`} 
+                                className="p-1 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 hover:text-white transition"
+                            >
                                 Edit
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </main>

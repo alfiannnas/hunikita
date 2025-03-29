@@ -1,8 +1,21 @@
 import React from "react";
 import { Check, X } from "lucide-react";
 
-export function SuccessMessage({ isOpen, onClose }) {
+export function SuccessMessage({ isOpen, onClose, title = "Berhasil!", message = "Aksi telah berhasil dilakukan.", type = "success" }) {
   if (!isOpen) return null;
+
+  const messageStyles = {
+    success: {
+      iconColor: "bg-green-600",
+      text: "text-green-600",
+    },
+    delete: {
+      iconColor: "bg-red-600",
+      text: "text-red-600",
+    }
+  };
+
+  const { iconColor, text } = messageStyles[type];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -15,10 +28,11 @@ export function SuccessMessage({ isOpen, onClose }) {
         </button>
         
         <div className="flex flex-col items-center">
-          <div className="bg-red-600 rounded-full p-3 mb-4">
+          <div className={`${iconColor} rounded-full p-3 mb-4`}>
             <Check className="w-6 h-6 text-white" />
           </div>
-          <h3 className="text-xl font-medium text-gray-900">Hapus Sukses</h3>
+          <h3 className={`text-xl font-medium ${text}`}>{title}</h3>
+          <p className="text-gray-600 mt-2">{message}</p>
         </div>
       </div>
     </div>

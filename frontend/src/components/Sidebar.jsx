@@ -26,7 +26,12 @@ const Sidebar = () => {
                         <li key={path}>
                             <Link
                                 to={path}
-                                className={`flex items-center p-2 rounded-lg transition ${location.pathname === path ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}`}
+                                className={`flex items-center p-2 rounded-lg transition ${
+                                    (location.pathname === path || 
+                                     (path === '/admin-profil' && location.pathname.startsWith('/admin-profil/')))
+                                    ? 'text-blue-600 bg-blue-50' 
+                                    : 'text-gray-600 hover:bg-gray-50'
+                                }`}
                             >
                                 <Icon className="w-5 h-5 mr-3" />
                                 <span>{label}</span>

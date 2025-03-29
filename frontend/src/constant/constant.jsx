@@ -7,7 +7,9 @@ export const API = {
     GET_PROPERTIES_BY_USER: BASE_URL + "/properties/users",
     INSERT_PROPERTIES_IMAGE: BASE_URL + "/properties/images",
     INSERT_PROPERTIES: BASE_URL + "/properties",
+
     GET_USER_DATA: BASE_URL + "/get-user",
+    UPDATE_USER_DATA: BASE_URL + "/admin-profil/:id",
 
     // Admin
     GET_ADMIN_PROPERTIES: BASE_URL + "/admin-properties",

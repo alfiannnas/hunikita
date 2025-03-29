@@ -1,7 +1,9 @@
 import { Connection, RowDataPacket } from "mysql2/promise"
+import bcrypt from 'bcrypt'
 
 export interface IRepository {
     take(id: number): Promise<RowDataPacket>
+    update(id: number, data: { [key: string]: any }): Promise<void>
 }
 
 export class Repository implements IRepository {
@@ -18,6 +20,28 @@ export class Repository implements IRepository {
             )
             console.log(result);
             return result as RowDataPacket
+        } catch(error) {
+            throw error
+        }
+    }
+
+    async update(id: number, data: { [key: string]: any }): Promise<void> {
+        try {
+            if (data.password) {
+                const salt = await bcrypt.genSalt(10);
+                data.password = await bcrypt.hash(data.password, salt);
+            }
+            
+            const fields = Object.keys(data)
+            const values = Object.values(data)
+            
+            const setClause = fields.map(field => `${field} = ?`).join(', ')
+            const query = `UPDATE users SET ${setClause} WHERE id = ?`
+            
+            await this.master.execute(
+                query,
+                [...values, id]
+            )
         } catch(error) {
             throw error
         }

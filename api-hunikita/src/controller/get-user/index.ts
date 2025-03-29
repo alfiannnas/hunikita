@@ -10,6 +10,7 @@ export class Controller {
     constructor(svc: UserService) {
         this.svc = svc;
         this.getCurrentUser = this.getCurrentUser.bind(this);
+        this.editUser = this.editUser.bind(this);
     }
 
     async getCurrentUser(req: Request, res: Response) {
@@ -34,6 +35,36 @@ export class Controller {
             }
 
             console.error('Error getting user:', err);
+            res.status(status.INTERNAL_SERVER_ERROR)
+                .send({
+                    status: false,
+                    message: "Terjadi kesalahan server"
+                });
+        });
+    }
+
+    async editUser(req: Request, res: Response) {
+        const userId = extractId(req.headers.authorization!);
+        const updateData = req.body;
+
+        await this.svc.updateUser(userId, updateData).then((resp: GetUserResponse) => {
+            res.status(status.OK)
+                .send({
+                    status: true,
+                    message: "Data user berhasil diperbarui",
+                    data: resp
+                });
+        }).catch((err: Error) => {
+            if (err === ERROR.USER_NOT_FOUND) {
+                res.status(status.NOT_FOUND)
+                    .send({
+                        status: false,
+                        message: "User tidak ditemukan"
+                    });
+                return;
+            }
+
+            console.error('Error mengupdate user:', err);
             res.status(status.INTERNAL_SERVER_ERROR)
                 .send({
                     status: false,

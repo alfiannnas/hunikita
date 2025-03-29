@@ -19,7 +19,7 @@ const AdminPenyewa = () => {
 
     const [idPenyewa, setIdPenyewa] = useState(null); // State untuk menyimpan ID penyewa yang akan dihapus
     const [isAlertOpen, setIsAlertOpen] = useState(false);
-    const [isSuccessOpen, setIsSuccessOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
+    const [isOpen, setIsOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
 
     useEffect(() => {
         if (!auth || !auth.token) {
@@ -80,7 +80,7 @@ const AdminPenyewa = () => {
             }
 
             setIsAlertOpen(false);
-            setIsSuccessOpen(true); // Tampilkan SuccessMessage
+            setIsOpen(true); // Gunakan setIsOpen yang sudah diperbaiki
             fetchPenyewa(); // Panggil fungsi untuk mengambil data terbaru
         } catch (error) {
             console.error('Error:', error);
@@ -168,11 +168,12 @@ const AdminPenyewa = () => {
                         onCancel={() => setIsAlertOpen(false)}
                         onConfirm={handleDelete}
                     />
-
-                    <SuccessMessage
-                        isOpen={isSuccessOpen}
-                        title="Data berhasil dihapus!" // Judul untuk SuccessMessage
-                        onClose={() => setIsSuccessOpen(false)} // Menutup SuccessMessage
+                           <SuccessMessage 
+                    isOpen={isOpen} 
+                    onClose={() => setIsOpen(false)}
+                    title="Hapus Sukses"
+                    message="Data telah berhasil dihapus!"
+                    type="delete"
                     />
                 </main>
             </div>
