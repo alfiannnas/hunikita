@@ -19,6 +19,8 @@ import AdminProperti from "./pages/admin/AdminProperti";
 import AdminPemilikProperti from "./pages/admin/AdminPemilikProperti";
 import AdminPenyewa from "./pages/admin/AdminPenyewa";
 import AdminArtikel from "./pages/admin/AdminArtikel";
+import AdminProfil from "./pages/admin/AdminProfil";
+import AdminProfilEdit from "./pages/admin/AdminProfilEdit";
 
 function App() {
   return (
@@ -45,6 +47,9 @@ function App() {
       <Route path="/admin-pemilik-properti" element={<AdminPemilikProperti />}></Route>
       <Route path="/admin-penyewa" element={<AdminPenyewa />}></Route>
       <Route path="/admin-artikel" element={<AdminArtikel />}></Route>
+      <Route path="/admin-profil" element={<AdminProfil />}></Route>
+      <Route path="/admin-profil/edit/:id" element={<AdminProfilEdit />}></Route>
+
 
 
 

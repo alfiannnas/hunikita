@@ -30,7 +30,9 @@ export class Service implements IService {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                no_kontak: user.no_kontak,
+                password: user.password
             }
         } catch (error) {
             throw error

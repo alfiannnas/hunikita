@@ -7,4 +7,6 @@ export interface GetUserResponse {
     name: string
     email: string
     role: string
+    no_kontak: string
+    password: string
 } 

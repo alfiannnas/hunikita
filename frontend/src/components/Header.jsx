@@ -10,7 +10,10 @@ const Header = () => {
   const auth = useSelector((state) => state.auth);
   const [userData, setUserData] = useState({
     name: '',
-    role: ''
+    role: '',
+    no_kontak: '',
+    email: '',
+    password: ''
   });
 
   const getCurrentUser = async () => {
@@ -37,7 +40,10 @@ const Header = () => {
       if (response.data && response.data.data) {
         const user = {
           name: response.data.data.name,
-          role: response.data.data.role || 'Admin'
+          role: response.data.data.role || 'Admin',
+          no_kontak: response.data.data.no_kontak,
+          email: response.data.data.email,
+          password: response.data.data.password
         };
         setUserData(user);
         

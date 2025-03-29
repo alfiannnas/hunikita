@@ -13,9 +13,10 @@ export class Repository implements IRepository {
     async take(id: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                "SELECT id, name, email, role FROM users WHERE id = ? LIMIT 1", 
+                "SELECT id, name, email, password, role, no_kontak FROM users WHERE id = ? LIMIT 1", 
                 [id]
             )
+            console.log(result);
             return result as RowDataPacket
         } catch(error) {
             throw error
