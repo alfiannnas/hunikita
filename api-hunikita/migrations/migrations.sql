@@ -117,58 +117,36 @@ CREATE TABLE artikel (
     slug VARCHAR(255) UNIQUE NOT NULL,
     isi TEXT NOT NULL,
     kategori_id INT NULL,
-    status ENUM('Draft', 'Published', 'Rejected') DEFAULT 'draft',
+    status ENUM('Draft', 'Published', 'Rejected') DEFAULT 'Draft',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    is_posting TINYINT(1) NOT NULL DEFAULT 0,
+    gambar VARCHAR(255) NOT NULL
 );
 
 --
 -- Dumping data for table `artikel`
 --
-INSERT INTO artikel (judul, slug, isi, kategori_id, status) VALUES 
-('Tips Hemat untuk Anak Kos', 'tips-hemat-anak-kos', 
-'Menjadi anak kos berarti harus pintar mengatur keuangan agar cukup untuk kebutuhan sehari-hari. Beberapa tips yang bisa dilakukan antara lain: 
-1. Buat anggaran bulanan dan catat semua pengeluaran. 
-2. Masak sendiri daripada sering membeli makanan di luar. 
-3. Gunakan transportasi umum atau sepeda untuk menghemat biaya transportasi. 
-4. Manfaatkan promo dan diskon saat belanja kebutuhan sehari-hari. 
-5. Kurangi kebiasaan nongkrong di kafe dan coba alternatif yang lebih murah seperti taman atau perpustakaan.', 
-NULL, 'Published'),
+INSERT INTO artikel (judul, slug, isi, kategori_id, status, created_at, updated_at, is_posting, gambar) VALUES
+('Tips Menghemat Uang untuk Anak Kos', 'tips-hemat-anak-kos', 
+ 'Mengatur keuangan saat menjadi anak kos memang tidak mudah. Berikut adalah beberapa tips yang bisa membantu Anda mengelola uang dengan lebih bijak...', 
+ 1, 'Published', NOW(), NOW(), 1, 'images/tips-hemat.jpg'),
 
-('Resep Masakan Simpel untuk Anak Kos', 'resep-masakan-simpel-anak-kos', 
-'Banyak anak kos yang malas atau tidak punya waktu untuk memasak, padahal memasak sendiri bisa lebih hemat dan sehat. Berikut beberapa resep mudah dan murah yang bisa dicoba:
-1. **Nasi Goreng Sederhana**: Tumis bawang putih dan bawang merah, tambahkan nasi, kecap, dan telur.
-2. **Indomie Tek-tek**: Masak mi instan seperti biasa, lalu tumis dengan telur dan sayuran.
-3. **Telur Dadar Sayur**: Campurkan telur dengan sedikit tepung, irisan wortel, dan daun bawang, lalu goreng hingga matang.
-4. **Oatmeal Pisang**: Campurkan oatmeal dengan susu dan pisang untuk sarapan sehat dan mengenyangkan.
-5. **Tumis Tahu dan Tempe**: Tumis tahu dan tempe dengan bawang putih, kecap, dan sedikit cabai untuk makanan bergizi.', 
-NULL, 'Published'),
+('Resep Masakan Sederhana untuk Anak Kos', 'resep-masakan-anak-kos', 
+ 'Makanan enak tidak harus mahal. Berikut beberapa resep sederhana yang bisa dimasak dengan bahan murah...', 
+ 2, 'Published', NOW(), NOW(), 1, 'images/resep-murah.jpg'),
 
-('Cara Mengatur Waktu antara Kuliah dan Kerja Part-time', 'atur-waktu-kuliah-part-time', 
-'Banyak anak kos yang harus bekerja sambil kuliah untuk mencukupi kebutuhan finansial. Namun, mengatur waktu dengan baik sangat penting agar kuliah tidak terganggu. Berikut beberapa tips:
-1. Buat jadwal harian yang jelas dan patuhi dengan disiplin.
-2. Prioritaskan tugas kuliah dan jangan menunda pekerjaan rumah.
-3. Pilih pekerjaan part-time yang memiliki jam fleksibel atau sesuai dengan jadwal kuliah.
-4. Manfaatkan waktu luang di antara kelas untuk mengerjakan tugas.
-5. Jangan lupa untuk menjaga kesehatan dengan tidur yang cukup dan makan makanan bergizi.', 
-NULL, 'Draft'),
+('Cara Menata Kamar Kos agar Nyaman', 'menata-kamar-kos', 
+ 'Kamar kos yang rapi dan nyaman bisa meningkatkan produktivitas dan kenyamanan Anda selama tinggal di perantauan...', 
+ 3, 'Draft', NOW(), NOW(), 0, 'images/kamar-kos.jpg'),
 
-('Trik Membersihkan Kamar Kos dengan Cepat', 'trik-bersihkan-kamar-kos', 
-'Kamar kos yang bersih dan rapi akan membuatmu lebih nyaman dan produktif. Berikut beberapa trik membersihkan kamar kos dengan cepat:
-1. Rapikan tempat tidur setiap pagi agar kamar langsung terlihat lebih rapi.
-2. Gunakan kotak atau wadah penyimpanan untuk menghindari barang berserakan.
-3. Bersihkan meja belajar dan lantai setidaknya seminggu sekali.
-4. Gunakan penyegar ruangan agar kamar tetap harum dan segar.
-5. Buang sampah setiap hari agar tidak menumpuk dan menimbulkan bau.', 
-NULL, 'Rejected'),
+('Pekerjaan Sampingan yang Cocok untuk Anak Kos', 'pekerjaan-sampingan-anak-kos', 
+ 'Banyak anak kos mencari pekerjaan sampingan untuk menambah penghasilan. Berikut beberapa pekerjaan yang bisa Anda coba...', 
+ 4, 'Published', NOW(), NOW(), 1, 'images/pekerjaan-sampingan.jpg'),
 
-('Ide Dekorasi Murah untuk Kamar Kos', 'ide-dekorasi-murah-kamar-kos', 
-'Ingin kamar kos terlihat lebih menarik tanpa mengeluarkan banyak uang? Berikut beberapa ide dekorasi yang murah dan mudah:
-1. **Gunakan Lampu LED**: Lampu hias LED bisa membuat suasana kamar lebih nyaman dan aesthetic.
-2. **Manfaatkan Kertas Dinding atau Wallpaper**: Pilih wallpaper dengan motif yang kamu suka untuk memberikan tampilan baru pada dinding kamar.
-3. **Tambahkan Tanaman Kecil**: Tanaman hias seperti kaktus atau sukulen bisa mempercantik kamar dan memberikan kesan segar.
-4. **Gunakan Rak Dinding**: Rak dinding minimalis bisa digunakan untuk menyimpan buku atau barang kecil agar kamar tetap rapi.
-5. **Cetak Foto atau Poster Inspiratif**: Hiasi dinding dengan foto kenangan atau poster motivasi agar suasana kamar lebih personal.', 
-NULL, 'Published');
+('Cara Mengatasi Kebosanan di Kosan', 'mengatasi-bosan-di-kosan', 
+ 'Sering merasa bosan saat sendirian di kos? Berikut beberapa aktivitas yang bisa dilakukan untuk menghilangkan kebosanan...', 
+ 5, 'Rejected', NOW(), NOW(), 0, 'images/mengatasi-bosan.jpg');
+
 
 
