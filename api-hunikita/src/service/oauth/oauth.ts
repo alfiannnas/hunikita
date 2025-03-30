@@ -51,7 +51,20 @@ export class Service implements IService{
                 req.password = value
             }).catch((err:Error)=> {throw err})
 
-            const res = await this.repo.create(req.name, req.email, req.password)
+            const res = await this.repo.create(
+                req.name, 
+                req.email, 
+                req.password, 
+                req.role, 
+                req.jenis_kelamin, 
+                req.kota_asal, 
+                req.pekerjaan, 
+                req.nama_kampus, 
+                req.status, 
+                req.pendidikan_terakhir, 
+                req.no_kontak_darurat,
+                req.no_kontak
+            )
             insertedId = res.insertId
         } catch(error) {
             throw error as Error

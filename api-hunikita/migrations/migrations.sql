@@ -32,7 +32,14 @@ CREATE TABLE `users` (
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `role` ENUM('Admin', 'Pemilik', 'Penyewa') NOT NULL DEFAULT 'Penyewa'
+  `role` ENUM('Admin', 'Pemilik', 'Penyewa') NOT NULL DEFAULT 'Penyewa',
+  `jenis_kelamin` ENUM('Laki-laki', 'Perempuan') NULL,
+  `kota_asal` varchar(100) NULL,
+  `pekerjaan` varchar(100) NULL,
+  `nama_kampus` varchar(150) NULL,
+  `status` ENUM('Belum Kawin', 'Sudah Kawin') DEFAULT 'Belum Kawin',
+  `pendidikan_terakhir` ENUM('SD', 'SMP', 'SMA/SMK', 'D3', 'S1', 'S2', 'S3') NULL,
+  `no_kontak_darurat` varchar(20) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

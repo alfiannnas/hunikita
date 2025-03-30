@@ -3,7 +3,20 @@ import { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 export interface IRepository {
     take(id:number):Promise<RowDataPacket>
     existByEmail(email:string):Promise<RowDataPacket>
-    create(name:string, email:string, password:string):Promise<ResultSetHeader>
+    create(
+        name:string, 
+        email:string, 
+        password:string, 
+        role?:string, 
+        jenis_kelamin?:string, 
+        kota_asal?:string, 
+        pekerjaan?:string, 
+        nama_kampus?:string, 
+        status?:string, 
+        pendidikan_terakhir?:string, 
+        no_kontak_darurat?:string,
+        no_kontak?: string,
+    ):Promise<ResultSetHeader>
     takeByEmail(email:string):Promise<RowDataPacket>
 }
 
@@ -31,11 +44,27 @@ export class Repository implements IRepository {
         }
     }
 
-    async create(name:string, email:string, password:string): Promise<ResultSetHeader> {
+    async create(
+        name:string, 
+        email:string, 
+        password:string, 
+        role:string = 'Penyewa', 
+        jenis_kelamin:string = '', 
+        kota_asal:string = '', 
+        pekerjaan:string = '', 
+        nama_kampus:string = '', 
+        status:string = '', 
+        pendidikan_terakhir:string = '', 
+        no_kontak_darurat:string = '',
+        no_kontak: string = '',
+    ): Promise<ResultSetHeader> {
         try {
             await this.master.beginTransaction();
 
-            const [results] = await this.master.execute("INSERT INTO users(name,email,password) VALUES(?,?,?)", [name, email, password]);
+            const [results] = await this.master.execute(
+                "INSERT INTO users(name, email, password, role, jenis_kelamin, kota_asal, pekerjaan, nama_kampus, status, pendidikan_terakhir, no_kontak_darurat, no_kontak) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
+                [name, email, password, role, jenis_kelamin, kota_asal, pekerjaan, nama_kampus, status, pendidikan_terakhir, no_kontak_darurat, no_kontak]
+            );
 
             await this.master.commit();
             
