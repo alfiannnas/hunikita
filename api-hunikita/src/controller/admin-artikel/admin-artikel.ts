@@ -29,9 +29,40 @@ export class Controller implements IController {
     }
 
     async create(req: Request, res: Response): Promise<void> {
-        const data = req.body as CreateAdminArtikelRequest
-        const result = await this.service.create(data)
-        res.json(result)
+        try {
+            console.log('Request body:', req.body);
+            
+            // Validasi data yang diperlukan
+            if (!req.body.judul || !req.body.slug || !req.body.isi) {
+                res.status(400).json({
+                    status: 'error',
+                    message: 'Judul, slug, dan isi artikel wajib diisi',
+                    data: null
+                });
+                return;
+            }
+            
+            // Siapkan data untuk dikirim ke service
+            const data: CreateAdminArtikelRequest = {
+                judul: req.body.judul,
+                slug: req.body.slug,
+                isi: req.body.isi,
+                gambar: null, // Set gambar ke null dulu
+                status: req.body.status || 'Draft'
+            };
+            
+            console.log('Data yang akan dikirim ke service:', data);
+            
+            const result = await this.service.create(data);
+            res.json(result);
+        } catch (error: any) {
+            console.error('Error di controller:', error);
+            res.status(500).json({
+                status: 'error',
+                message: error.message || 'Terjadi kesalahan saat membuat artikel',
+                data: null
+            });
+        }
     }
 
     async update(req: Request, res: Response): Promise<void> {

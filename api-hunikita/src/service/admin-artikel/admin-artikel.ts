@@ -80,6 +80,7 @@ export class Service implements IService {
                 } as AdminArtikel
             }
         } catch (error) {
+            console.error('Error creating article:', error);
             return {
                 status: "error",
                 message: "Terjadi kesalahan pada server",
@@ -152,7 +153,7 @@ export class Service implements IService {
                 data: existingArtikel[0] as AdminArtikel
             }
         } catch (error) {
-            console.log(error)
+            console.error('Error deleting article:', error);
             return {
                 status: "error",
                 message: "Terjadi kesaasdasdlahan pada server",

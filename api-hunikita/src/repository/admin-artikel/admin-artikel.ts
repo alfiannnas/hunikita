@@ -30,22 +30,36 @@ export class Repository implements IRepository {
 
     async create(data: CreateAdminArtikelRequest): Promise<RowDataPacket> {
         try {
-            const [result] = await this.master.execute(
-                `INSERT INTO artikel (
-                    user_id, judul, slug, isi, kategori_id, status
-                ) VALUES (?, ?, ?, ?, ?, ?)`,
-                [
-                    data.user_id,
-                    data.judul,
-                    data.slug,
-                    data.isi,
-                    data.kategori_id,
-                    data.status
-                ]
-            )
-            return result as RowDataPacket
+            // Validasi data yang diperlukan
+            if (!data.judul || !data.slug || !data.isi) {
+                throw new Error('Judul, slug, dan isi artikel wajib diisi');
+            }
+
+            const query = `
+                INSERT INTO artikel (
+                    judul, 
+                    slug, 
+                    isi, 
+                    gambar,
+                    status, 
+                    kategori_id
+                ) VALUES (?, ?, ?, ?, ?, ?)
+            `;
+
+            const bindParams = [
+                data.judul,
+                data.slug,
+                data.isi,
+                data.gambar || null,
+                data.status || 'Draft',
+                data.kategori_id || null
+            ];
+
+            const [result] = await this.master.execute(query, bindParams);
+            return result as RowDataPacket;
         } catch(error) {
-            throw error
+            console.error('Error creating artikel:', error);
+            throw error;
         }
     }
 
@@ -54,10 +68,6 @@ export class Repository implements IRepository {
             const updateFields: string[] = []
             const values: any[] = []
 
-            if (data.user_id !== undefined) {
-                updateFields.push('user_id = ?')
-                values.push(data.user_id)
-            }
             if (data.judul !== undefined) {
                 updateFields.push('judul = ?')
                 values.push(data.judul)

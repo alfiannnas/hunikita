@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Edit, Trash2 } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
@@ -19,7 +19,7 @@ const AdminArtikel = () => {
 
     const [idArtikel, setIdArtikel] = useState(null); // State untuk menyimpan ID artikel yang akan dihapus
     const [isAlertOpen, setIsAlertOpen] = useState(false);
-    const [isSuccessOpen, setIsSuccessOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
+    const [isOpen, setIsOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
 
     useEffect(() => {
         if (!auth || !auth.token) {
@@ -80,7 +80,7 @@ const AdminArtikel = () => {
             }
 
             setIsAlertOpen(false);
-            setIsSuccessOpen(true);
+            setIsOpen(true);
             fetchArtikel(); // Refresh data setelah menghapus
         } catch (error) {
             console.error('Error:', error);
@@ -99,6 +99,14 @@ const AdminArtikel = () => {
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold">Daftar Artikel</h3>
+                        </div>
+                        <div className="flex justify-end">
+                            <Link 
+                                to={`/admin-artikel/create`} 
+                                className="p-1 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 hover:text-white transition"
+                            >
+                                Create
+                            </Link>
                         </div>
 
                         <div className="overflow-x-auto">
@@ -160,11 +168,12 @@ const AdminArtikel = () => {
                         onCancel={() => setIsAlertOpen(false)}
                         onConfirm={handleDelete}
                     />
-
-                    <SuccessMessage
-                        isOpen={isSuccessOpen}
-                        title="Artikel berhasil dihapus!"
-                        onClose={() => setIsSuccessOpen(false)}
+                           <SuccessMessage 
+                    isOpen={isOpen} 
+                    onClose={() => setIsOpen(false)}
+                    title="Hapus Sukses"
+                    message="Data telah berhasil dihapus!"
+                    type="delete"
                     />
                 </main>
             </div>

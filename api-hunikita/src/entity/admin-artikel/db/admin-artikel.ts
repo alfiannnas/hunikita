@@ -1,6 +1,5 @@
 export interface AdminArtikel { 
     id: number;
-    user_id: number;
     judul: string;
     slug: string;
     isi: string;
@@ -17,10 +16,10 @@ export interface AdminArtikelResponse {
 }
 
 export interface CreateAdminArtikelRequest {
-    user_id: number;
     judul: string;
     slug: string;
     isi: string;
+    gambar?: string | null;
     kategori_id?: number;
-    status: 'Draft' | 'Published' | 'Rejected';
+    status?: 'Draft' | 'Published' | 'Rejected';
 } 
