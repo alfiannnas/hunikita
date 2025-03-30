@@ -152,6 +152,7 @@ export class Service implements IService {
                 data: existingProperty[0] as AdminProperties
             }
         } catch (error) {
+            console.error("Error:", error);
             return {
                 status: "error",
                 message: "Terjadi kesalahan pada server",

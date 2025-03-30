@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Edit, Trash2 } from "lucide-react";
+import { Alert } from "../../components/Alert";
+import { SuccessMessage } from "../../components/SuccessMessage";
 
 const AdminProperti = () => {
     const [properties, setProperties] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8; // Tampilkan 5 properti per halaman
+    
+    const [idProperty, setIdProperty] = useState(null); // State untuk menyimpan ID properti yang akan dihapus
+    const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
 
     const auth = useSelector((state) => state.auth);
     const navigate = useNavigate();
@@ -57,6 +63,30 @@ const AdminProperti = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
 
+    const handleDelete = async () => {
+        if (idProperty === null) return;
+
+        try {
+            const response = await fetch(`${API.DELETE_ADMIN_PROPERTY}/${idProperty}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${auth.token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Gagal menghapus properti');
+            }
+
+            setIsAlertOpen(false);
+            setIsOpen(true);
+            fetchProperties(); // Refresh data setelah menghapus
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar />
@@ -69,6 +99,15 @@ const AdminProperti = () => {
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold">Properti</h3>
+                        </div>
+                        
+                        <div className="flex justify-end mb-4">
+                            <Link 
+                                to={`/admin-properti/create`} 
+                                className="p-1 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 hover:text-white transition"
+                            >
+                                Create
+                            </Link>
                         </div>
 
                         <div className="overflow-x-auto">
@@ -102,7 +141,13 @@ const AdminProperti = () => {
                                                 <button className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">
                                                     <Edit className="w-5 h-5" />
                                                 </button>
-                                                <button className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">
+                                                <button
+                                                    onClick={() => {
+                                                        setIdProperty(property.id);
+                                                        setIsAlertOpen(true);
+                                                    }}
+                                                    className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
+                                                >
                                                     <Trash2 className="w-5 h-5" />
                                                 </button>
                                             </td>
@@ -131,6 +176,22 @@ const AdminProperti = () => {
                             </button>
                         </div>
                     </div>
+                    
+                    <Alert
+                        isOpen={isAlertOpen}
+                        title="Hapus"
+                        message="Apakah anda yakin ingin menghapus properti ini?"
+                        onCancel={() => setIsAlertOpen(false)}
+                        onConfirm={handleDelete}
+                    />
+                    
+                    <SuccessMessage 
+                        isOpen={isOpen} 
+                        onClose={() => setIsOpen(false)}
+                        title="Hapus Sukses"
+                        message="Data properti telah berhasil dihapus!"
+                        type="delete"
+                    />
                 </main>
             </div>
         </div>

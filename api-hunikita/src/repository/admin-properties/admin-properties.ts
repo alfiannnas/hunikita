@@ -20,7 +20,7 @@ export class Repository implements IRepository {
             const [result] = await this.master.execute(
                 `SELECT id, user_id, property_type_id, owner_name, owner_email, 
                 name, address, room_count, img_path, created_at, updated_at 
-                FROM admin_properties WHERE id = ? LIMIT 1`,
+                FROM properties WHERE id = ? LIMIT 1`,
                 [id]
             )
             return result as RowDataPacket
@@ -32,7 +32,7 @@ export class Repository implements IRepository {
     async create(data: CreateAdminPropertiesRequest): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `INSERT INTO admin_properties (
+                `INSERT INTO properties (
                     user_id, property_type_id, owner_name, owner_email,
                     name, address, room_count, img_path
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -94,7 +94,7 @@ export class Repository implements IRepository {
             values.push(id)
 
             const [result] = await this.master.execute(
-                `UPDATE admin_properties SET ${updateFields.join(', ')} WHERE id = ?`,
+                `UPDATE properties SET ${updateFields.join(', ')} WHERE id = ?`,
                 values
             )
             return result as RowDataPacket
@@ -106,11 +106,13 @@ export class Repository implements IRepository {
     async delete(id: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                "DELETE FROM admin_properties WHERE id = ?",
+                "DELETE FROM properties WHERE id = ?",
                 [id]
             )
+            console.log(result);
             return result as RowDataPacket
         } catch(error) {
+            console.error("Database Query Error:", error);
             throw error
         }
     }
@@ -125,7 +127,6 @@ export class Repository implements IRepository {
                  FROM properties p
                  LEFT JOIN property_types pt ON p.property_type_id = pt.id`
             );
-            console.log("Query Result:", result);
             return result as RowDataPacket;
         } catch (error) {
             console.error("Database Query Error:", error);
