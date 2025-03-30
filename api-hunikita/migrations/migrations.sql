@@ -39,6 +39,7 @@ CREATE TABLE `users` (
   `nama_kampus` varchar(150) NULL,
   `status` ENUM('Belum Kawin', 'Sudah Kawin') DEFAULT 'Belum Kawin',
   `pendidikan_terakhir` ENUM('SD', 'SMP', 'SMA/SMK', 'D3', 'S1', 'S2', 'S3') NULL,
+  `no_kontak` varchar(20) NULL,
   `no_kontak_darurat` varchar(20) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -46,13 +47,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`name`, `email`, `password`, `role`) VALUES
-('merah', 'merah@gmail.com', '$2b$10$5gIha3X8KbD8ghfsEsivVuwEvoonIrgbW5tfgFAySIQxt0e6PESju', 'Penyewa'),
-('bjir', 'bjir@gmail.com', '$2b$10$t4NJO6wUDq6V.T3zvW721OCaonMfiao2cSWz5m7C8H0B27mQCleM2', 'Pemilik'),
-('wadu', 'wadu@gmail.com', '$2b$10$oM61Ou0PEw7xIQi0fCmTJuH6lOGMANK3oEU8cyc0oPA4..gx9QN66', 'Penyewa'),
-('kecoa', 'kecoa@gmail.com', '$2b$10$eo6Ipbkx4IUoKCZ7KMuFN.hWnXUkYW3MGkaczJKD8.yc7n4Pa58Dm', 'Pemilik'),
-('udin', 'udin@gmail.com', '$2b$10$Um6FyzfCbOqES5tkFF8hB.eWvZZDIsqQXki3mvz5a2Rakth.aQ66W', 'Penyewa'),
-('kuning', 'kuning@gmail.com', '$2b$10$wBNXSJDDQJ7GfwjCu6KaEOGnXIYrC9SZDXCc1axBPX.ucs2bmUEzi', 'Admin');
+INSERT INTO users (name, email, password, role, jenis_kelamin, kota_asal, pekerjaan, nama_kampus, status, pendidikan_terakhir, no_kontak, no_kontak_darurat) VALUES
+('Admin Kos', 'admin@kos.com', '$2b$12$hVTKKEeC1H7nLm4jPd02m.xx1zbYZT3qGbXpI60utlNJG44IDv7oy', 'Admin', 'Laki-laki', 'Jakarta', 'Pengelola Kos', NULL, 'Belum Kawin', 'S1', '081234567890', 021777484),
+('Budi Pemilik', 'budi@pemilik.com', '$2b$12$H/LAKHFY8B3uy2vkaL3uce.nVdvoazeg85TPKYZgwPcL7n09oaJwy', 'Pemilik', 'Laki-laki', 'Bandung', 'Wiraswasta', NULL, 'Sudah Kawin', 'S2', '081298765432', 021777484),
+('Siti Penyewa', 'siti@penyewa.com', '$2b$12$TFgq.k.RtOLpHhhqkfs.MuZiuts5EZwhoL2RXah.3cjUOn4I/B4ju', 'Penyewa', 'Perempuan', 'Surabaya', 'Mahasiswa', 'Universitas Airlangga', 'Belum Kawin', 'S1', '081245678912', 021777484),
+('Rudi Mahasiswa', 'rudi@student.com', '$2b$12$spS7WJ5MCvsGGRyD6CtuyeUlPGtx10jTQ8KSfTozpj7sSZ1ogtq.q', 'Penyewa', 'Laki-laki', 'Yogyakarta', 'Mahasiswa', 'Universitas Gadjah Mada', 'Belum Kawin', 'S1', '081356789123', 021777484),
+('Dewi Freelancer', 'dewi@freelance.com', '$2b$12$OlQ/hyzNuII3it8DQdtmXOA8PGc2sg0n9l9jvcQ9bjqpNM8L0bch2', 'Penyewa', 'Perempuan', 'Medan', 'Freelancer', NULL, 'Sudah Kawin', 'SMA/SMK', '081367890234', 021777484);
+
 
 CREATE TABLE `property_types` (
   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
