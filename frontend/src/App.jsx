@@ -22,6 +22,7 @@ import AdminArtikel from "./pages/admin/AdminArtikel";
 import AdminProfil from "./pages/admin/AdminProfil";
 import AdminProfilEdit from "./pages/admin/AdminProfilEdit";
 import AdminArtikelCreate from "./pages/admin/AdminArtikelCreate";
+import AdminLogout from "./pages/AdminLogout";
 
 function App() {
   return (
@@ -52,11 +53,7 @@ function App() {
       <Route path="/admin-profil/edit/:id" element={<AdminProfilEdit />}></Route>
 
       <Route path="/admin-artikel/create" element={<AdminArtikelCreate />}></Route>
-
-
-
-
-
+      <Route path="/admin-logout" element={<AdminLogout />} />
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

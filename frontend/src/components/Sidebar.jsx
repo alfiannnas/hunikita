@@ -12,7 +12,7 @@ const Sidebar = () => {
         { path: "/admin-artikel", label: "Artikel", icon: FileText },
         { path: "/pusat-bantuan", label: "Pusat Bantuan", icon: HelpCircle },
         { path: "/admin-profil", label: "Profil Admin", icon: UserCog },
-        { path: "/logout", label: "Logout", icon: LogOut },
+        { path: "/admin-logout", label: "Logout", icon: LogOut },
     ];
 
     return (
