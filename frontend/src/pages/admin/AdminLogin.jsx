@@ -18,7 +18,7 @@ const AdminLogin = () => {
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (auth) {
+    if (auth && auth.role === 'Admin') {
       navigate("/admin-home");
     }
   }, [auth, navigate]);

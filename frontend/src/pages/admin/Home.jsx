@@ -25,7 +25,7 @@ function AdminHome() {
 
   useEffect(() => {
     if (!auth) {
-      navigate('/admin/login');
+      navigate('/admin-login');
       return;
     }
   }, [auth, navigate]);

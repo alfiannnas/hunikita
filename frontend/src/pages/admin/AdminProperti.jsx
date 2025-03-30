@@ -39,8 +39,9 @@ const AdminProperti = () => {
             setProperties(response.data.data);
         } catch (error) {
             console.error("Error fetching properties:", error);
-            if (error.response?.status === 401) {
-                navigate('/admin/login');
+            // Cek apakah response mengindikasikan redirect
+            if (error.response?.data?.isRedirect) {
+                navigate('/admin-login');
             }
         }
     };

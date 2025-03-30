@@ -1,4 +1,6 @@
-import { Navigate, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import UserProtectedRoute from "./components/UserProtectedRoute";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -26,37 +28,74 @@ import AdminLogout from "./pages/AdminLogout";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Beranda />}></Route>
-      <Route path="/register" element={<Register />}></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/tentang-kami" element={<Tentangkami />}></Route>
-      <Route path="/pusat-bantuan" element={<Pusatbantuan />}></Route>
-      <Route path="/list-kosan" element={<Listkosan />}></Route>
-      <Route path="/list-kontrakan" element={<Listkontrakan />}></Route>
-      <Route path="/list-iklan" element={<Listiklan />}></Route>
-      <Route path="/list-artikel" element={<Listartikel />}></Route>
-      <Route path="/detail-kosan" element={<Detailkosan />}></Route>
-      <Route path="/detail-kontrakan" element={<Detailkontrakan />}></Route>
-      <Route path="/detail-artikel" element={<Detailartikel />}></Route>
-      <Route path="/form-tambah" element={<Formtambah />}></Route>
-      <Route path="/form-edit" element={<Formedit />}></Route>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Beranda />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/tentang-kami" element={<Tentangkami />} />
+        <Route path="/pusat-bantuan" element={<Pusatbantuan />} />
+        <Route path="/list-kosan" element={<Listkosan />} />
+        <Route path="/list-kontrakan" element={<Listkontrakan />} />
+        <Route path="/list-iklan" element={<Listiklan />} />
+        <Route path="/list-artikel" element={<Listartikel />} />
+        <Route path="/detail-kosan" element={<Detailkosan />} />
+        <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
+        <Route path="/detail-artikel" element={<Detailartikel />} />
+        <Route path="/form-tambah" element={<Formtambah />} />
+        <Route path="/form-edit" element={<Formedit />} />
 
-      {/* Admin */}
-      <Route path="/admin-login" element={<AdminLogin />}></Route>
-      <Route path="/admin-home" element={<AdminHome />}></Route>
-      <Route path="/admin-properti" element={<AdminProperti />}></Route>
-      <Route path="/admin-pemilik-properti" element={<AdminPemilikProperti />}></Route>
-      <Route path="/admin-penyewa" element={<AdminPenyewa />}></Route>
-      <Route path="/admin-artikel" element={<AdminArtikel />}></Route>
-      <Route path="/admin-profil" element={<AdminProfil />}></Route>
-      <Route path="/admin-profil/edit/:id" element={<AdminProfilEdit />}></Route>
+        {/* Protected Admin Routes */}
+        <Route path="/admin-home" element={
+          <AdminProtectedRoute>
+            <AdminHome />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-properti" element={
+          <AdminProtectedRoute>
+            <AdminProperti />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-pemilik-properti" element={
+          <AdminProtectedRoute>
+            <AdminPemilikProperti />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-penyewa" element={
+          <AdminProtectedRoute>
+            <AdminPenyewa />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-artikel" element={
+          <AdminProtectedRoute>
+            <AdminArtikel />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-profil" element={
+          <AdminProtectedRoute>
+            <AdminProfil />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-profil/edit/:id" element={
+          <AdminProtectedRoute>
+            <AdminProfilEdit />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-artikel/create" element={
+          <AdminProtectedRoute>
+            <AdminArtikelCreate />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-logout" element={
+          <AdminProtectedRoute>
+            <AdminLogout />
+          </AdminProtectedRoute>
+        } />
 
-      <Route path="/admin-artikel/create" element={<AdminArtikelCreate />}></Route>
-      <Route path="/admin-logout" element={<AdminLogout />} />
-
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        {/* Catch all route */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
   );
 }
 
