@@ -71,6 +71,10 @@ const AdminProfilEdit = () => {
                 }
             );
 
+            // Hapus localStorage lama dan perbarui dengan data baru
+            localStorage.removeItem('userData');
+            localStorage.setItem('userData', JSON.stringify(response.data.data));
+
             setMessage("Data berhasil diperbarui");
             setError("");
             setIsOpen(true);
