@@ -67,7 +67,7 @@ const AdminPusatBantuan = () => {
         if (idPusatBantuan === null) return; // Pastikan ID tidak null
 
         try {
-            const response = await fetch(`${API.DELETE_PUSAT_BANTUAN}/${idPusatBantuan}`, {
+            const response = await fetch(`${API.DELETE_ADMIN_PUSAT_BANTUAN}/${idPusatBantuan}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
