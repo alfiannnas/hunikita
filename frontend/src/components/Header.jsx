@@ -47,7 +47,7 @@ const Header = () => {
           no_kontak: response.data.data.no_kontak,
           email: response.data.data.email,
           password: response.data.data.password,
-          profil_image: response.data.data.profile_image
+          profile_image: response.data.data.profile_image
         };
         setUserData(user);
         
@@ -89,7 +89,7 @@ const Header = () => {
             <p className="text-white text-sm">{userData.role }</p>
           </div>
           <img
-            src={userData.profil_image}
+            src={userData.profile_image || DEFAULT_PROFILE_IMAGE}
             alt="Profile"
             className="w-10 h-10 rounded-full"
           />

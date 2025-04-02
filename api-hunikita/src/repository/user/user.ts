@@ -27,8 +27,15 @@ export class Repository implements IRepository {
 
     async update(id: number, data: { [key: string]: any }): Promise<void> {
         try {
-            console.log('Data yang diterima untuk update:', data);
-            console.log('ID user yang diupdate:', id);
+            
+            // Validasi ukuran file profile_image jika ada
+            if (data.profile_image && typeof data.profile_image === 'object') {
+                // Asumsikan data.profile_image memiliki properti size dalam bytes
+                const fileSizeInKB = data.profile_image.size / 1024;
+                if (fileSizeInKB > 150) {
+                    throw new Error('Ukuran file terlalu besar. Maksimal 150 KB.');
+                }
+            }
             
             if (data.password) {
                 const salt = await bcrypt.genSalt(10);
@@ -42,8 +49,6 @@ export class Repository implements IRepository {
                 )
             );
             
-            console.log('Data setelah difilter:', filteredData);
-            
             const fields = Object.keys(filteredData);
             const values = Object.values(filteredData);
             
@@ -56,8 +61,6 @@ export class Repository implements IRepository {
             const setClause = fields.map(field => `${field} = ?`).join(', ');
             const query = `UPDATE users SET ${setClause} WHERE id = ?`;
             
-            console.log('Query update:', query);
-            console.log('Values untuk query:', [...values, id]);
             
             await this.master.execute(
                 query,

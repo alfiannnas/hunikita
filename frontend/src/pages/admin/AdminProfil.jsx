@@ -21,7 +21,7 @@ const AdminProfil = () => {
         no_kontak: '',
         email: '',
         password: '',
-        profile_image: ''
+        profil_image: ''
     });
     
     useEffect(() => {
@@ -51,7 +51,7 @@ const AdminProfil = () => {
 
                         <div className="flex justify-center items-center overflow-x-auto">
                             <img
-                                src={userData.profile_image ? userData.profile_image : DEFAULT_PROFILE_IMAGE}
+                                src={userData.profile_image || DEFAULT_PROFILE_IMAGE}
                                 alt="Profile"
                                 className="w-72 h-72 rounded-full object-cover"
                             />
