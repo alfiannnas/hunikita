@@ -28,7 +28,8 @@ const Sidebar = () => {
                                 to={path}
                                 className={`flex items-center p-2 rounded-lg transition ${
                                     (location.pathname === path || 
-                                     (path === '/admin-profil' && location.pathname.startsWith('/admin-profil/')))
+                                     (path === '/admin-profil' && location.pathname.startsWith('/admin-profil/')) ||
+                                     (path === '/admin-pusat-bantuan' && location.pathname.startsWith('/admin-pusat-bantuan')))
                                     ? 'text-blue-600 bg-blue-50' 
                                     : 'text-gray-600 hover:bg-gray-50'
                                 }`}

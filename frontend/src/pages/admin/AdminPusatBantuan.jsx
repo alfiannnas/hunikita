@@ -124,7 +124,7 @@ const AdminPusatBantuan = () => {
 
                                             <td className="py-3 flex space-x-2">
                                                 <button 
-                                                    onClick={() => navigate(`/admin/pusat-bantuan/edit/${item.id}`)}
+                                                    onClick={() => navigate(`/admin-pusat-bantuan/edit/${item.id}`)}
                                                     className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
                                                 >
                                                     <Edit className="w-5 h-5" />

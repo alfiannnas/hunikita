@@ -26,6 +26,7 @@ import AdminProfilEdit from "./pages/admin/AdminProfilEdit";
 import AdminArtikelCreate from "./pages/admin/AdminArtikelCreate";
 import AdminLogout from "./pages/AdminLogout";
 import AdminPusatBantuan from './pages/admin/AdminPusatBantuan';
+import AdminPusatBantuanEdit from './pages/admin/AdminPusatBantuanEdit';
 
 function App() {
   return (
@@ -81,6 +82,11 @@ function App() {
         <Route path="/admin-pusat-bantuan" element={
           <AdminProtectedRoute>
             <AdminPusatBantuan />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-pusat-bantuan/edit/:id" element={
+          <AdminProtectedRoute>
+            <AdminPusatBantuanEdit />
           </AdminProtectedRoute>
         } />
         <Route path="/admin-profil/edit/:id" element={
