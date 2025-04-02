@@ -8,6 +8,7 @@ export interface UpdateUserRequest {
     role?: string
     no_kontak?: string
     password?: string
+    profile_image: string
 }
 
 export interface GetUserResponse {
@@ -17,4 +18,5 @@ export interface GetUserResponse {
     role: string
     no_kontak: string
     password: string
+    profile_image: string
 } 

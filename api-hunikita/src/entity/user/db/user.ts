@@ -5,4 +5,5 @@ export interface User {
     password: string
     role: string
     no_kontak: string
+    profile_image: string
 }

@@ -10,6 +10,7 @@ import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
+import { DEFAULT_PROFILE_IMAGE } from "../../components/DefaultImage";
 
 const AdminProfilEdit = () => {
     const { id } = useParams();
@@ -19,8 +20,10 @@ const AdminProfilEdit = () => {
         name: "",
         email: "",
         no_kontak: "",
-        password: ""
+        password: "",
+        profile_image: null
     });
+    const [previewImage, setPreviewImage] = useState(null);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -37,8 +40,14 @@ const AdminProfilEdit = () => {
                 name: user.name ?? "",
                 email: user.email ?? "",
                 no_kontak: user.no_kontak ?? "",
-                password: ""
+                password: "",
+                profile_image: null
             });
+            
+            // Jika user memiliki foto profil, tampilkan
+            if (user.profile_image) {
+                setPreviewImage(user.profile_image);
+            }
         } catch (error) {
             console.error("Error fetching user data:", error);
             setError("Gagal mengambil data user");
@@ -53,20 +62,69 @@ const AdminProfilEdit = () => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setUserData(prev => ({
+                ...prev,
+                profile_image: file
+            }));
+            
+            // Membuat preview gambar
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const dataToUpdate = { ...userData };
-            if (!dataToUpdate.password) {
-                delete dataToUpdate.password;
+            // Gunakan FormData untuk mengirim file
+            const formData = new FormData();
+            
+            // Tambahkan console log untuk debugging
+            console.log('Data yang akan dikirim:', userData);
+            
+            // Pastikan data tidak kosong sebelum append ke FormData
+            if (userData.name) formData.append('name', userData.name);
+            if (userData.email) formData.append('email', userData.email);
+            if (userData.no_kontak) formData.append('no_kontak', userData.no_kontak);
+            
+            if (userData.password && userData.password.trim() !== '') {
+                formData.append('password', userData.password);
             }
             
+            // Buat objek data untuk dikirim sebagai JSON
+            const jsonData = {
+                name: userData.name,
+                email: userData.email,
+                no_kontak: userData.no_kontak
+            };
+            
+            if (userData.password && userData.password.trim() !== '') {
+                jsonData.password = userData.password;
+            }
+            
+            // Jika ada file gambar, konversi ke base64 dan tambahkan ke jsonData
+            if (userData.profile_image) {
+                const base64Image = await convertToBase64(userData.profile_image);
+                jsonData.profile_image = base64Image;
+                console.log('Gambar telah dikonversi ke base64');
+            }
+            
+            console.log('Mengirim data sebagai JSON:', jsonData);
+            
+            // Kirim data sebagai JSON
             const response = await axios.put(
                 API.UPDATE_USER_DATA.replace(':id', id),
-                dataToUpdate,
+                jsonData,
                 {
                     headers: {
-                        Authorization: `Bearer ${auth.token}`
+                        Authorization: `Bearer ${auth.token}`,
+                        'Content-Type': 'application/json'
                     }
                 }
             );
@@ -90,6 +148,16 @@ const AdminProfilEdit = () => {
         }
     };
 
+    // Fungsi untuk mengkonversi file ke base64
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+
     useEffect(() => {
         if (!auth || !auth.token) {
             navigate('/admin/login');
@@ -110,14 +178,27 @@ const AdminProfilEdit = () => {
                     {error && <Alert message={error} />}
 
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                        <p className="text-sm">Foto Profil</p>
+                        <p className="text-sm mb-2">Foto Profil</p>
 
-                        <div className="flex justify-center items-center overflow-x-auto">
+                        <div className="flex flex-col items-center mb-4">
                             <img
-                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=50"
+                                src={previewImage || DEFAULT_PROFILE_IMAGE}
                                 alt="Profile"
-                                className="w-72 h-72 rounded-full"
+                                className="w-72 h-72 rounded-full object-cover mb-3"
                             />
+                            <div className="mt-2">
+                                <label htmlFor="profile_image" className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-md transition">
+                                    Pilih Foto
+                                </label>
+                                <input 
+                                    type="file" 
+                                    id="profile_image" 
+                                    name="profile_image"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="hidden"
+                                />
+                            </div>
                         </div>
 
                         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 mt-4">

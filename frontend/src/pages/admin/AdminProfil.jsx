@@ -10,6 +10,7 @@ import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
+import { DEFAULT_PROFILE_IMAGE } from "../../components/DefaultImage";
 
 const AdminProfil = () => {
 
@@ -19,9 +20,10 @@ const AdminProfil = () => {
         name: '',
         no_kontak: '',
         email: '',
-        password: ''
+        password: '',
+        profile_image: ''
     });
-
+    
     useEffect(() => {
         if (!auth || !auth.token) {
             navigate('/admin/login');
@@ -49,9 +51,9 @@ const AdminProfil = () => {
 
                         <div className="flex justify-center items-center overflow-x-auto">
                             <img
-                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=50"
+                                src={userData.profile_image ? userData.profile_image : DEFAULT_PROFILE_IMAGE}
                                 alt="Profile"
-                                className="w-72 h-72 rounded-full"
+                                className="w-72 h-72 rounded-full object-cover"
                             />
                         </div>
 

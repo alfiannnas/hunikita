@@ -33,7 +33,8 @@ export class Service implements IService {
                 email: user.email,
                 role: user.role,
                 no_kontak: user.no_kontak,
-                password: user.password
+                password: user.password,
+                profile_image: user.profile_image,
             }
         } catch (error) {
             throw error
@@ -61,7 +62,8 @@ export class Service implements IService {
                 email: user.email,
                 role: user.role,
                 no_kontak: user.no_kontak,
-                password: user.password
+                password: user.password,
+                profile_image: user.profile_image,
             }
         } catch (error) {
             throw error

@@ -4,6 +4,7 @@ import { Search } from 'lucide-react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { API } from '../constant';
+import { DEFAULT_PROFILE_IMAGE } from './DefaultImage';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,7 +14,8 @@ const Header = () => {
     role: '',
     no_kontak: '',
     email: '',
-    password: ''
+    password: '',
+    profil_image: '',
   });
 
   const getCurrentUser = async () => {
@@ -39,11 +41,13 @@ const Header = () => {
       
       if (response.data && response.data.data) {
         const user = {
+          id: response.data.data.id,
           name: response.data.data.name,
           role: response.data.data.role || 'Admin',
           no_kontak: response.data.data.no_kontak,
           email: response.data.data.email,
-          password: response.data.data.password
+          password: response.data.data.password,
+          profil_image: response.data.data.profile_image
         };
         setUserData(user);
         
@@ -85,7 +89,7 @@ const Header = () => {
             <p className="text-white text-sm">{userData.role }</p>
           </div>
           <img
-            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=50"
+            src={userData.profil_image}
             alt="Profile"
             className="w-10 h-10 rounded-full"
           />
