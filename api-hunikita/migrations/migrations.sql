@@ -156,5 +156,32 @@ INSERT INTO artikel (judul, slug, isi, kategori_id, status, created_at, updated_
  'Sering merasa bosan saat sendirian di kos? Berikut beberapa aktivitas yang bisa dilakukan untuk menghilangkan kebosanan...', 
  5, 'Rejected', NOW(), NOW(), 0, 'images/mengatasi-bosan.jpg');
 
+--
+-- Table structure for table `pusat_bantuan`
+--
+CREATE TABLE pusat_bantuan ( 
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama_lengkap VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    tentang VARCHAR(200) NOT NULL,
+    pesan TEXT NOT NULL,
+    jawaban TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
+--
+-- Dumping data for table `pusat_bantuan`
+--
+INSERT INTO pusat_bantuan (nama_lengkap, email, tentang, pesan, jawaban) VALUES
+('Budi Santoso', 'budi@gmail.com', 'Masalah Pembayaran', 'Bagaimana cara melakukan pembayaran sewa properti?', 'Anda dapat melakukan pembayaran melalui transfer bank atau e-wallet yang tersedia di aplikasi.'),
+('Siti Rahayu', 'siti@yahoo.com', 'Kendala Aplikasi', 'Aplikasi tidak bisa dibuka di browser Safari', 'Mohon pastikan menggunakan browser versi terbaru. Kami merekomendasikan menggunakan Chrome atau Firefox.'),
+('Ahmad Hidayat', 'ahmad@outlook.com', 'Informasi Properti', 'Apakah bisa melihat properti secara langsung?', 'Ya, Anda bisa membuat janji temu dengan pemilik properti melalui fitur chat di aplikasi.'),
+('Dewi Kusuma', 'dewi@gmail.com', 'Masalah Login', 'Lupa password akun', 'Silakan gunakan fitur "Lupa Password" di halaman login untuk mereset password Anda.'),
+('Rudi Hartono', 'rudi@gmail.com', 'Pembatalan Sewa', 'Bagaimana prosedur pembatalan sewa?', NULL),
+('Nina Wijaya', 'nina@yahoo.com', 'Verifikasi Akun', 'Akun belum terverifikasi setelah 2 hari', NULL),
+('Eko Prasetyo', 'eko@gmail.com', 'Masalah Teknis', 'Tidak bisa upload foto properti', NULL),
+('Maya Putri', 'maya@outlook.com', 'Kontrak Sewa', 'Apakah kontrak sewa bisa diperpanjang otomatis?', NULL),
+('Doni Kusuma', 'doni@gmail.com', 'Komplain Properti', 'AC di kamar tidak berfungsi', NULL),
+('Lisa Permata', 'lisa@yahoo.com', 'Informasi Pembayaran', 'Apakah ada biaya tambahan selain sewa?', NULL);
 

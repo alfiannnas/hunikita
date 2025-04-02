@@ -1,0 +1,24 @@
+export interface AdminPusatBantuan { 
+    id: number;
+    nama_lengkap: string;
+    email: string;
+    tentang: string;
+    pesan: string;
+    jawaban: string | null;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface AdminPusatBantuanResponse {
+    status: string;
+    message: string;
+    data: AdminPusatBantuan | AdminPusatBantuan[] | null; 
+}
+
+export interface CreateAdminPusatBantuanRequest {
+    nama_lengkap: string;
+    email: string;
+    tentang: string;
+    pesan: string;
+    jawaban?: string;
+} 

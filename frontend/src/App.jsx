@@ -25,6 +25,7 @@ import AdminProfil from "./pages/admin/AdminProfil";
 import AdminProfilEdit from "./pages/admin/AdminProfilEdit";
 import AdminArtikelCreate from "./pages/admin/AdminArtikelCreate";
 import AdminLogout from "./pages/AdminLogout";
+import AdminPusatBantuan from './pages/admin/AdminPusatBantuan';
 
 function App() {
   return (
@@ -75,6 +76,11 @@ function App() {
         <Route path="/admin-profil" element={
           <AdminProtectedRoute>
             <AdminProfil />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-pusat-bantuan" element={
+          <AdminProtectedRoute>
+            <AdminPusatBantuan />
           </AdminProtectedRoute>
         } />
         <Route path="/admin-profil/edit/:id" element={

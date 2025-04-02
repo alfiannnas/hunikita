@@ -31,6 +31,11 @@ import { Service as AdminArtikelSvc } from "@service/admin-artikel"
 import {Repository as AdminArtikelRepo} from "@repository/admin-artikel"
 import {Controller as AdminArtikelController} from "@controller/admin-artikel"
 
+import { adminPusatBantuan } from "./admin-pusat-bantuan"
+import { Service as AdminPusatBantuanSvc } from "@service/admin-pusat-bantuan"
+import { Repository as AdminPusatBantuanRepo } from "@repository/admin-pusat-bantuan"
+import { Controller as AdminPusatBantuanController } from "@controller/admin-pusat-bantuan"
+
 export const Route = {
     register: async (router: Router)=> {
         let con!:Connection
@@ -49,6 +54,7 @@ export const Route = {
         const adminPropertiesRepo = new AdminPropertiesRepo(con)
         const adminPenyewaRepo = new AdminPenyewaRepo(con)
         const adminArtikelRepo = new AdminArtikelRepo(con)
+        const adminPusatBantuanRepo = new AdminPusatBantuanRepo(con)
 
         const propertyTypeSvc = new PropertyTypeSvc(propertyTypeRepo)
         const oauthSvc = new OauthService(oauthRepo)
@@ -57,6 +63,7 @@ export const Route = {
         const adminPropertiesSvc = new AdminPropertiesSvc(adminPropertiesRepo)
         const penyewaSvc = new AdminPenyewaSvc(adminPenyewaRepo)
         const artikelSvc = new AdminArtikelSvc(adminArtikelRepo)
+        const adminPusatBantuanSvc = new AdminPusatBantuanSvc(adminPusatBantuanRepo)
 
         const oauthCtrl = new Controller(oauthSvc)
         const propertyCtrl = new PropertyController(propertySvc)
@@ -64,6 +71,7 @@ export const Route = {
         const adminPropertiesCtrl = new AdminPropertiesController(adminPropertiesSvc)
         const adminPenyewaCtrl = new AdminPenyewaController(penyewaSvc)
         const adminArtikelCtrl = new AdminArtikelController(artikelSvc)
+        const adminPusatBantuanCtrl = new AdminPusatBantuanController(adminPusatBantuanSvc)
 
         oauth(router, oauthCtrl)
         property(router, propertyCtrl)
@@ -71,5 +79,6 @@ export const Route = {
         adminProperties(router, adminPropertiesCtrl)
         adminPenyewa(router, adminPenyewaCtrl)
         adminArtikel(router, adminArtikelCtrl)
+        adminPusatBantuan(router, adminPusatBantuanCtrl)
     }
 }

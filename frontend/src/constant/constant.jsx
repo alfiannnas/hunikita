@@ -29,5 +29,12 @@ export const API = {
     GET_ADMIN_ARTIKEL_BY_ID: BASE_URL + "/admin-artikel",
     POST_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
     UPDATE_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
-    DELETE_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel"
+    DELETE_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
+
+    // Admin Pusat Bantuan
+    GET_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
+    GET_ADMIN_PUSAT_BANTUAN_BY_ID: BASE_URL + "/admin-pusat-bantuan",
+    POST_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
+    UPDATE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
+    DELETE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan"
 }

@@ -10,7 +10,7 @@ const Sidebar = () => {
         { path: "/admin-pemilik-properti", label: "Pemilik Properti", icon: Users },
         { path: "/admin-penyewa", label: "Penyewa", icon: UserCircle },
         { path: "/admin-artikel", label: "Artikel", icon: FileText },
-        { path: "/pusat-bantuan", label: "Pusat Bantuan", icon: HelpCircle },
+        { path: "/admin-pusat-bantuan", label: "Pusat Bantuan", icon: HelpCircle },
         { path: "/admin-profil", label: "Profil Admin", icon: UserCog },
         { path: "/admin-logout", label: "Logout", icon: LogOut },
     ];
