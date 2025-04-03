@@ -83,6 +83,28 @@ const AdminPusatBantuanEdit = () => {
         }
     };
 
+    const handleUpdatePosting = async () => {
+        try {
+            const response = await axios.put(`${API.UPDATE_ADMIN_PUSAT_BANTUAN_POSTING}/${id}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${auth.token}`
+                }
+            });
+            console.log(response);
+            
+            if (response.status === 200) {
+                setPusatBantuanData({
+                    ...pusatBantuanData,
+                    is_posting: 1
+                });
+                setIsSuccess(true);
+            }
+        } catch (error) {
+            console.error("Error updating posting status:", error);
+            setError("Gagal mengupdate status posting");
+        }
+    };
+
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar />
@@ -95,6 +117,24 @@ const AdminPusatBantuanEdit = () => {
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold">Detail Pusat Bantuan</h3>
+                            <div className="flex gap-2">
+                                {pusatBantuanData.is_posting === 1 ? (
+                                    <span className="text-white bg-green-500 p-2 rounded-md">Status: Posted</span>
+                                ) : (
+                                    <button 
+                                        onClick={() => {
+                                            if (!pusatBantuanData.jawaban || pusatBantuanData.jawaban.trim() === '') {
+                                                alert("Silakan isi jawaban terlebih dahulu sebelum posting");
+                                                return;
+                                            }
+                                            handleUpdatePosting();
+                                        }}
+                                        className="text-white bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition"
+                                    >
+                                        Posting
+                                    </button>
+                                )}
+                            </div>
                         </div>
 
                         {loading ? (
@@ -172,19 +212,31 @@ const AdminPusatBantuanEdit = () => {
                                     />
                                 </div>
                                 <div className="flex justify-end mt-4">
-                                    <button 
-                                        type="button"
-                                        onClick={() => navigate('/admin-pusat-bantuan')}
-                                        className="p-2 px-5 mr-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button 
-                                        type="submit"
-                                        className="p-2 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition"
-                                    >
-                                        Simpan
-                                    </button>
+                                    {pusatBantuanData.is_posting === 1 ? (
+                                        <button 
+                                            type="button"
+                                            onClick={() => navigate('/admin-pusat-bantuan')}
+                                            className="p-2 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition"
+                                        >
+                                            Kembali
+                                        </button>
+                                    ) : (
+                                        <>
+                                            <button 
+                                                type="button"
+                                                onClick={() => navigate('/admin-pusat-bantuan')}
+                                                className="p-2 px-5 mr-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button 
+                                                type="submit"
+                                                className="p-2 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition"
+                                            >
+                                                Simpan
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </form>
                         )}

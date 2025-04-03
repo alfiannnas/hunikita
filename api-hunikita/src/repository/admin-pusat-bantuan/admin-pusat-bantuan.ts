@@ -7,6 +7,7 @@ export interface IRepository {
     update(id: number, data: Partial<CreateAdminPusatBantuanRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
     list(): Promise<RowDataPacket>
+    updateIsPosting(id: number): Promise<RowDataPacket>
 }
 
 export class Repository implements IRepository {
@@ -18,7 +19,7 @@ export class Repository implements IRepository {
     async take(id: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, nama_lengkap, email, tentang, pesan, jawaban, created_at, updated_at 
+                `SELECT id, nama_lengkap, email, tentang, pesan, jawaban, is_posting, created_at, updated_at 
                 FROM pusat_bantuan WHERE id = ? LIMIT 1`,
                 [id]
             )
@@ -101,11 +102,23 @@ export class Repository implements IRepository {
     async list(): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, nama_lengkap, email, tentang, pesan, jawaban, created_at, updated_at 
+                `SELECT id, nama_lengkap, email, tentang, pesan, jawaban, is_posting, created_at, updated_at 
                  FROM pusat_bantuan`
             )
             return result as RowDataPacket
         } catch (error) {
+            throw error
+        }
+    }
+
+    async updateIsPosting(id: number): Promise<RowDataPacket> {
+        try {
+            const [result] = await this.master.execute(
+                `UPDATE pusat_bantuan SET is_posting = 1 WHERE id = ?`,
+                [id]
+            )
+            return result as RowDataPacket
+        } catch(error) {
             throw error
         }
     }

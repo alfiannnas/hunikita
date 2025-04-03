@@ -8,6 +8,7 @@ export interface IController {
     create(req: Request, res: Response): Promise<void>
     update(req: Request, res: Response): Promise<void>
     delete(req: Request, res: Response): Promise<void>
+    updatePosting(req: Request, res: Response): Promise<void>
 }
 
 export class Controller implements IController {
@@ -45,5 +46,15 @@ export class Controller implements IController {
         const id = parseInt(req.params.id)
         const result = await this.service.delete(id)
         res.json(result)
+    }
+
+    async updatePosting(req: Request, res: Response): Promise<void> {
+        try {
+            const id = parseInt(req.params.id)
+            const result = await this.service.updatePosting(id)
+            res.json(result)
+        } catch (error) {
+            res.status(500).json({ error: "Gagal mengupdate status posting" })
+        }
     }
 }

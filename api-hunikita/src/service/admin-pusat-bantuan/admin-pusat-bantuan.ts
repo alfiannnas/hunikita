@@ -8,6 +8,7 @@ export interface IService {
     create(data: CreateAdminPusatBantuanRequest): Promise<AdminPusatBantuanResponse>
     update(id: number, data: Partial<CreateAdminPusatBantuanRequest>): Promise<AdminPusatBantuanResponse>
     delete(id: number): Promise<AdminPusatBantuanResponse>
+    updatePosting(id: number): Promise<any>
 }
 
 export class Service implements IService {
@@ -158,6 +159,15 @@ export class Service implements IService {
                 message: "Terjadi kesalahan pada server",
                 data: null
             }
+        }
+    }
+
+    async updatePosting(id: number): Promise<any> {
+        const result = await this.repo.updateIsPosting(id)
+        return {
+            success: true,
+            message: "Status posting berhasil diupdate",
+            data: result
         }
     }
 }

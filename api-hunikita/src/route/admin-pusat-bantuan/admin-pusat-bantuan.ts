@@ -31,6 +31,13 @@ export function adminPusatBantuan(router: Router, handler: Controller) {
         handler.update.bind(handler)
     );
 
+    // Update status posting (path yang benar-benar berbeda)
+    router.put('/post-bantuan/:id', 
+        Middleware.Auth, 
+        Middleware.AdminOnly,
+        handler.updatePosting.bind(handler)
+    );
+
     // Hapus pesan bantuan
     router.delete('/admin-pusat-bantuan/:id', 
         Middleware.Auth, 

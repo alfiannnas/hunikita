@@ -36,5 +36,6 @@ export const API = {
     GET_ADMIN_PUSAT_BANTUAN_BY_ID: BASE_URL + "/admin-pusat-bantuan",
     POST_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
     UPDATE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
-    DELETE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan"
+    DELETE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
+    UPDATE_ADMIN_PUSAT_BANTUAN_POSTING: BASE_URL + "/post-bantuan"
 }

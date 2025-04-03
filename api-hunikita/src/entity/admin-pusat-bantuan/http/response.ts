@@ -4,6 +4,7 @@ export interface AdminPusatBantuanRequest {
     tentang: string;
     pesan: string;
     jawaban?: string;
+    is_posting?: number;
 }
 
 export interface AdminPusatBantuanResponse {
@@ -13,6 +14,7 @@ export interface AdminPusatBantuanResponse {
     tentang: string;
     pesan: string;
     jawaban: string | null;
+    is_posting: number | null;
     created_at: Date;
     updated_at: Date;
 }
