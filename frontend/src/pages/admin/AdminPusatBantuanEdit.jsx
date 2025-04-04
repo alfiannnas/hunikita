@@ -85,14 +85,28 @@ const AdminPusatBantuanEdit = () => {
 
     const handleUpdatePosting = async () => {
         try {
-            const response = await axios.put(`${API.UPDATE_ADMIN_PUSAT_BANTUAN_POSTING}/${id}`, {}, {
+            // Periksa apakah ada perubahan yang belum disimpan
+            const response = await axios.get(`${API.GET_ADMIN_PUSAT_BANTUAN_BY_ID}/${id}`, {
                 headers: {
                     Authorization: `Bearer ${auth.token}`
                 }
             });
-            console.log(response);
             
-            if (response.status === 200) {
+            const serverData = response.data.data;
+            
+            // Bandingkan data server dengan data form
+            if (serverData.jawaban !== pusatBantuanData.jawaban) {
+                alert("Harap simpan perubahan terlebih dahulu sebelum posting!");
+                return;
+            }
+
+            const postingResponse = await axios.put(`${API.UPDATE_ADMIN_PUSAT_BANTUAN_POSTING}/${id}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${auth.token}`
+                }
+            });
+            
+            if (postingResponse.status === 200) {
                 setPusatBantuanData({
                     ...pusatBantuanData,
                     is_posting: 1
