@@ -12,6 +12,8 @@ export interface AdminProperties {
     harga: number;
     created_at: Date;
     updated_at: Date;
+    owner_phone: string;
+    foto_properti: string;
 }
 
 export interface AdminPropertiesResponse {
@@ -31,4 +33,6 @@ export interface CreateAdminPropertiesRequest {
     harga: number;
     room_count: number;
     img_path?: string;
+    owner_phone: string;
+    foto_properti: string;
 } 

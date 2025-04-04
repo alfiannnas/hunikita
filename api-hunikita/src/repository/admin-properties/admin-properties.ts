@@ -18,9 +18,12 @@ export class Repository implements IRepository {
     async take(id: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, user_id, property_type_id, owner_name, owner_email, 
-                name, address, room_count, img_path, created_at, updated_at 
-                FROM properties WHERE id = ? LIMIT 1`,
+                `SELECT p.id, p.user_id, p.property_type_id, p.owner_name, p.owner_email, 
+                p.name, p.harga, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, p.owner_phone, pt.name AS property_type_name, p.foto_properti
+                FROM properties p
+                LEFT JOIN property_types pt ON p.property_type_id = pt.id
+                WHERE p.id = ? 
+                LIMIT 1`,
                 [id]
             )
             return result as RowDataPacket
