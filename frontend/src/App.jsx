@@ -29,6 +29,7 @@ import AdminPusatBantuan from './pages/admin/AdminPusatBantuan';
 import AdminPusatBantuanEdit from './pages/admin/AdminPusatBantuanEdit';
 import AdminPenyewaEdit from './pages/admin/AdminPenyewaEdit';
 import AdminPemilikPropertiEdit from './pages/admin/AdminPemilikPropertiEdit';
+import AdminPropertiEdit from './pages/admin/AdminPropertiEdit';
 
 function App() {
   return (
@@ -59,6 +60,11 @@ function App() {
         <Route path="/admin-properti" element={
           <AdminProtectedRoute>
             <AdminProperti />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-properti/edit/:id" element={
+          <AdminProtectedRoute>
+            <AdminPropertiEdit />
           </AdminProtectedRoute>
         } />
         <Route path="/admin-pemilik-properti" element={

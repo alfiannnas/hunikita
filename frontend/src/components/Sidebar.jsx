@@ -31,7 +31,9 @@ const Sidebar = () => {
                                      (path === '/admin-profil' && location.pathname.startsWith('/admin-profil/')) ||
                                      (path === '/admin-pusat-bantuan' && location.pathname.startsWith('/admin-pusat-bantuan'))||
                                      (path === '/admin-penyewa' && location.pathname.startsWith('/admin-penyewa')) ||
-                                     (path === '/admin-pemilik-properti' && location.pathname.startsWith('/admin-pemilik-properti')) 
+                                     (path === '/admin-pemilik-properti' && location.pathname.startsWith('/admin-pemilik-properti')) ||
+                                     (path === '/admin-properti' && location.pathname.startsWith('/admin-properti')) 
+
                                     )
                                     ? 'text-blue-600 bg-blue-50' 
                                     : 'text-gray-600 hover:bg-gray-50'

@@ -11,4 +11,5 @@ export interface AdminResponse {
     imgPath?: string;
     createdAt: Date;
     updatedAt: Date;
+    komentar: string;
 }

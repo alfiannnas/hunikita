@@ -14,6 +14,7 @@ export interface AdminProperties {
     updated_at: Date;
     owner_phone: string;
     foto_properti: string;
+    komentar: string;
 }
 
 export interface AdminPropertiesResponse {
@@ -35,4 +36,5 @@ export interface CreateAdminPropertiesRequest {
     img_path?: string;
     owner_phone: string;
     foto_properti: string;
+    komentar: string;
 } 

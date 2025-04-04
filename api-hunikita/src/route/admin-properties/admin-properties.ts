@@ -31,6 +31,12 @@ export function adminProperties(router: Router, handler: Controller) {
         handler.update.bind(handler)
     );
 
+    router.put('/update-status/:id', 
+        Middleware.Auth, 
+        Middleware.AdminOnly,
+        handler.updateStatus.bind(handler)
+    );
+
     // Hapus property
     router.delete('/admin-properties/:id', 
         Middleware.Auth, 

@@ -8,4 +8,5 @@ export interface AdminRequest {
     status: string;
     roomCount: number;
     imgPath?: string;
+    komentar: string;
 }

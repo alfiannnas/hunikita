@@ -8,6 +8,7 @@ export interface IService {
     create(data: CreateAdminPropertiesRequest): Promise<AdminPropertiesResponse>
     update(id: number, data: Partial<CreateAdminPropertiesRequest>): Promise<AdminPropertiesResponse>
     delete(id: number): Promise<AdminPropertiesResponse>
+    updateStatus(id: number, status: string): Promise<AdminPropertiesResponse>
 }
 
 export class Service implements IService {
@@ -153,6 +154,43 @@ export class Service implements IService {
             }
         } catch (error) {
             console.error("Error:", error);
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            }
+        }
+    }
+
+    async updateStatus(id: number, status: string): Promise<AdminPropertiesResponse> {
+        try {
+            const existingProperty = await this.repo.take(id)
+            if (!existingProperty || Array.isArray(existingProperty) && existingProperty.length === 0) {
+                return {
+                    status: "error",
+                    message: "Property tidak ditemukan",
+                    data: null
+                }
+            }
+
+            const result = await this.repo.updateStatus(id, status)
+            if (!result) {
+                return {
+                    status: "error",
+                    message: "Gagal mengupdate status property",
+                    data: null
+                }
+            }
+
+            const updatedProperty = await this.repo.take(id)
+
+            return {
+                status: "success",
+                message: "Status property berhasil diupdate",
+                data: updatedProperty[0] as AdminProperties
+            }
+        } catch (error) {
+            console.error("Error updating status:", error);
             return {
                 status: "error",
                 message: "Terjadi kesalahan pada server",

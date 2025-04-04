@@ -7,6 +7,7 @@ export interface IRepository {
     update(id: number, data: Partial<CreateAdminPropertiesRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
     list(): Promise<RowDataPacket>
+    updateStatus(id: number, status: string): Promise<RowDataPacket>
 }
 
 export class Repository implements IRepository {
@@ -19,7 +20,7 @@ export class Repository implements IRepository {
         try {
             const [result] = await this.master.execute(
                 `SELECT p.id, p.user_id, p.property_type_id, p.owner_name, p.owner_email, 
-                p.name, p.harga, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, p.owner_phone, pt.name AS property_type_name, p.foto_properti
+                p.name, p.harga, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, p.owner_phone, pt.name AS property_type_name, p.foto_properti, p.status
                 FROM properties p
                 LEFT JOIN property_types pt ON p.property_type_id = pt.id
                 WHERE p.id = ? 
@@ -133,6 +134,19 @@ export class Repository implements IRepository {
         } catch (error) {
             console.error("Database Query Error:", error);
             throw error;
+        }
+    }
+
+    async updateStatus(id: number, status: string): Promise<RowDataPacket> {
+        try {
+            const [result] = await this.master.execute(
+                `UPDATE properties SET status = ?, updated_at = NOW() WHERE id = ?`,
+                [status, id]
+            )
+            return result as RowDataPacket
+        } catch(error) {
+            console.error("Database Query Error:", error);
+            throw error
         }
     }
     
