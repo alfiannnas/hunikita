@@ -27,6 +27,7 @@ import AdminArtikelCreate from "./pages/admin/AdminArtikelCreate";
 import AdminLogout from "./pages/AdminLogout";
 import AdminPusatBantuan from './pages/admin/AdminPusatBantuan';
 import AdminPusatBantuanEdit from './pages/admin/AdminPusatBantuanEdit';
+import AdminPenyewaEdit from './pages/admin/AdminPenyewaEdit';
 
 function App() {
   return (
@@ -67,6 +68,11 @@ function App() {
         <Route path="/admin-penyewa" element={
           <AdminProtectedRoute>
             <AdminPenyewa />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-penyewa/edit/:id" element={
+          <AdminProtectedRoute>
+            <AdminPenyewaEdit />
           </AdminProtectedRoute>
         } />
         <Route path="/admin-artikel" element={

@@ -122,7 +122,10 @@ const AdminPenyewa = () => {
                                                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(penyewa.harga_property)}
                                             </td>
                                             <td className="py-3 flex space-x-2">
-                                                <button className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">
+                                            <button 
+                                                    onClick={() => navigate(`/admin-penyewa/edit/${penyewa.id}`)}
+                                                    className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+                                                >
                                                     <Edit className="w-5 h-5" />
                                                 </button>
                                                 <button
