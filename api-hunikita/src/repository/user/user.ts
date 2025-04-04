@@ -18,7 +18,6 @@ export class Repository implements IRepository {
                 "SELECT id, name, email, password, role, no_kontak, profile_image FROM users WHERE id = ? LIMIT 1", 
                 [id]
             )
-            console.log(result);
             return result as RowDataPacket
         } catch(error) {
             throw error

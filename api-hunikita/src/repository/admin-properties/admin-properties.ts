@@ -112,7 +112,6 @@ export class Repository implements IRepository {
                 "DELETE FROM properties WHERE id = ?",
                 [id]
             )
-            console.log(result);
             return result as RowDataPacket
         } catch(error) {
             console.error("Database Query Error:", error);

@@ -99,7 +99,8 @@ export class Repository implements IRepository {
                  FROM penyewa p
                  LEFT JOIN users u ON p.user_id = u.id
                  LEFT JOIN properties pr ON p.property_id = pr.id
-                 LEFT JOIN property_types pt ON pr.property_type_id = pt.id`
+                 LEFT JOIN property_types pt ON pr.property_type_id = pt.id
+                 WHERE pr.id IS NOT NULL`
             )
             return result as RowDataPacket
         } catch (error) {
