@@ -186,25 +186,6 @@ const AdminPropertiEdit = () => {
                             </p>
                             <hr className="my-4 border-gray-300" />
                         </div>
-
-                        <div className="block text-sm font-medium text-gray-700 mb-1 mt-4">
-                            {properties?.status === 'Diproses' && (
-                                <div className="flex gap-2 mt-4">
-                                    <button 
-                                        onClick={() => handleUpdateStatus('Disetujui')}
-                                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-                                    >
-                                        Setuju
-                                    </button>
-                                    <button 
-                                        onClick={() => handleUpdateStatus('Ditolak')}
-                                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
-                                    >
-                                        Tolak
-                                    </button>
-                                </div>
-                            )}
-                        </div>
                         <div className="flex gap-12">
                             {/* Kolom Kanan - Lokasi */}
                             <div className="flex-1 max-w-[400px]">
