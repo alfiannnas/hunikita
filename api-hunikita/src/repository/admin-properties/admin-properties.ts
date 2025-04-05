@@ -20,7 +20,11 @@ export class Repository implements IRepository {
         try {
             const [result] = await this.master.execute(
                 `SELECT p.id, p.user_id, p.property_type_id, p.owner_name, p.owner_email, 
-                p.name, p.harga, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, p.owner_phone, pt.name AS property_type_name, p.foto_properti, p.status
+                p.name, p.harga, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, 
+                p.owner_phone, pt.name AS property_type_name, p.foto_properti, p.status,
+                p.province, p.city, p.subdistrict, p.jenis_properti, p.umur_bangunan,
+                p.jam_bertamu, p.pelihara_binatang, p.deskripsi_properti, p.petunjuk_arah,
+                p.longitude, p.latitude
                 FROM properties p
                 LEFT JOIN property_types pt ON p.property_type_id = pt.id
                 WHERE p.id = ? 
@@ -29,6 +33,7 @@ export class Repository implements IRepository {
             )
             return result as RowDataPacket
         } catch(error) {
+            console.error("Database Query Error:", error);
             throw error
         }
     }
