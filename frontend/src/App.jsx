@@ -30,6 +30,7 @@ import AdminPusatBantuanEdit from './pages/admin/AdminPusatBantuanEdit';
 import AdminPenyewaEdit from './pages/admin/AdminPenyewaEdit';
 import AdminPemilikPropertiEdit from './pages/admin/AdminPemilikPropertiEdit';
 import AdminPropertiEdit from './pages/admin/AdminPropertiEdit';
+import AdminArtikelEdit from './pages/admin/AdminArtikelEdit';
 
 function App() {
   return (
@@ -115,6 +116,11 @@ function App() {
         <Route path="/admin-artikel/create" element={
           <AdminProtectedRoute>
             <AdminArtikelCreate />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-artikel/edit/:id" element={
+          <AdminProtectedRoute>
+            <AdminArtikelEdit />
           </AdminProtectedRoute>
         } />
         <Route path="/admin-logout" element={
