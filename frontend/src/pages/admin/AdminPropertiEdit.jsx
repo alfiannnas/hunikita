@@ -244,6 +244,9 @@ const AdminPropertiEdit = () => {
                             <h1 className="text-xl font-medium text-gray-800 mt-4">Petunjuk Arah</h1>
                             <p className="text-gray-700">{properties?.petunjuk_arah || '-'}</p>
                         </div>
+                        <div>
+                            <h1 className="text-xl font-medium text-gray-800 mt-4">Peta</h1>
+                        </div>
                     </div>
                     
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
