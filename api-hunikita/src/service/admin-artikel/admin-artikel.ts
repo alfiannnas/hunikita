@@ -8,6 +8,7 @@ export interface IService {
     create(data: CreateAdminArtikelRequest): Promise<AdminArtikelResponse>
     update(id: number, data: Partial<CreateAdminArtikelRequest>): Promise<AdminArtikelResponse>
     delete(id: number): Promise<AdminArtikelResponse>
+    updateStatus(id: number, status: string): Promise<AdminArtikelResponse>
 }
 
 export class Service implements IService {
@@ -157,6 +158,43 @@ export class Service implements IService {
             return {
                 status: "error",
                 message: "Terjadi kesaasdasdlahan pada server",
+                data: null
+            }
+        }
+    }
+
+    async updateStatus(id: number, status: string): Promise<AdminArtikelResponse> {
+        try {
+            const existingArtikel = await this.repo.take(id)
+            if (!existingArtikel || Array.isArray(existingArtikel) && existingArtikel.length === 0) {
+                return {
+                    status: "error",
+                    message: "Artikel tidak ditemukan",
+                    data: null
+                }
+            }
+
+            const result = await this.repo.updateStatus(id, status)
+            if (!result) {
+                return {
+                    status: "error",
+                    message: "Gagal mengupdate status artikel",
+                    data: null
+                }
+            }
+
+            const updatedArtikel = await this.repo.take(id)
+
+            return {
+                status: "success",
+                message: "Status artikel berhasil diupdate",
+                data: updatedArtikel[0] as AdminArtikel
+            }
+        } catch (error) {
+            console.error("Error updating status:", error);
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
                 data: null
             }
         }

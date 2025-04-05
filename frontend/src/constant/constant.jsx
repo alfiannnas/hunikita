@@ -31,6 +31,7 @@ export const API = {
     POST_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
     UPDATE_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
     DELETE_ADMIN_ARTIKEL: BASE_URL + "/admin-artikel",
+    UPDATE_ADMIN_ARTIKEL_STATUS: BASE_URL + "/artikel-update-status",
 
     // Admin Pusat Bantuan
     GET_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",

@@ -7,6 +7,7 @@ export interface IRepository {
     update(id: number, data: Partial<CreateAdminArtikelRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
     list(): Promise<RowDataPacket>
+    updateStatus(id: number, status: string): Promise<RowDataPacket>
 }
 
 export class Repository implements IRepository {
@@ -136,6 +137,20 @@ export class Repository implements IRepository {
         } catch (error) {
             console.log(error)
 
+            throw error
+        }
+    }
+
+    async updateStatus(id: number, status: string): Promise<RowDataPacket> {
+        try {
+            const [result] = await this.master.execute(
+                `UPDATE artikel SET status = ?, updated_at = NOW() WHERE id = ?`,
+                [status, id]
+            )
+
+            return result as RowDataPacket
+        } catch(error) {
+            console.error("Database Query Error:", error);
             throw error
         }
     }

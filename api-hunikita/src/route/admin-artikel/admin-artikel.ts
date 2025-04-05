@@ -32,4 +32,10 @@ export function adminArtikel(router: Router, handler: Controller) {
         Middleware.Auth, 
         handler.delete.bind(handler)
     );
+
+    router.put('/artikel-update-status/:id', 
+        Middleware.Auth, 
+        Middleware.AdminOnly,
+        handler.updateStatus.bind(handler)
+    );
 }
