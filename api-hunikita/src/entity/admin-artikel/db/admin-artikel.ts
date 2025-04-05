@@ -3,10 +3,13 @@ export interface AdminArtikel {
     judul: string;
     slug: string;
     isi: string;
-    kategori_id: number | null;
+    kategori: string | null;
+    gambar?: string | null;
     status: 'Draft' | 'Published' | 'Rejected';
     created_at: Date;
     updated_at: Date;
+    penulis: string;
+    location: string;
 }
 
 export interface AdminArtikelResponse {
@@ -20,6 +23,8 @@ export interface CreateAdminArtikelRequest {
     slug: string;
     isi: string;
     gambar?: string | null;
-    kategori_id?: number;
+    kategori?: string;
     status?: 'Draft' | 'Published' | 'Rejected';
+    location?: string;
+    penulis?: string;
 } 

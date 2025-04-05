@@ -14,22 +14,21 @@ import { Input } from "../../components/Input";
 
 const AdminArtikelDetail = () => {
     const [artikel, setArtikel] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 8; // Tampilkan 8 artikel per halaman
 
     const auth = useSelector((state) => state.auth);
     const navigate = useNavigate();
-
-    const [idArtikel, setIdArtikel] = useState(null); // State untuk menyimpan ID artikel yang akan dihapus
-    const [isAlertOpen, setIsAlertOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
 
     // Tambahkan state untuk form
     const [formData, setFormData] = useState({
         judul: '',
         konten: '',
         gambar: null,
-        preview: ''
+        preview: '',
+        penulis: '',
+        location: '',
+        created_at: '',
+        kategori: '',
+        isi: '',
     });
 
     // Tambahkan state untuk menyimpan ID dari URL
@@ -105,7 +104,12 @@ const AdminArtikelDetail = () => {
                 judul: artikelData.judul || '',
                 konten: artikelData.isi || '',
                 gambar: artikelData.gambar || null,
-                preview: artikelData.gambar || ''
+                preview: artikelData.gambar || '',
+                penulis: artikelData.penulis || '',
+                location: artikelData.location || '',
+                created_at: artikelData.created_at || '',
+                kategori: artikelData.kategori || '',
+                isi: artikelData.isi || ''
             });
 
         } catch (error) {
@@ -114,130 +118,6 @@ const AdminArtikelDetail = () => {
                 navigate('/admin/login');
             }
             alert('Gagal mengambil data artikel');
-        }
-    };
-
-    // Hitung total halaman
-    const totalPages = Math.ceil(artikel.length / itemsPerPage);
-
-    // Data yang ditampilkan berdasarkan halaman
-    const displayedArtikel = artikel.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
-
-    // Handle perubahan konten editor
-    const handleEditorChange = (content) => {
-        setFormData(prev => ({
-            ...prev,
-            konten: content
-        }));
-    };
-
-    // Tambahkan fungsi untuk mengkonversi gambar ke base64
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
-
-    // Modifikasi handle input gambar untuk mengkonversi ke base64
-    const handleImageChange = async (e) => {
-        try {
-            const file = e.target.files[0];
-            if (file) {
-                const base64 = await convertToBase64(file);
-                setFormData(prev => ({
-                    ...prev,
-                    gambar: base64,
-                    preview: base64
-                }));
-            }
-        } catch (error) {
-            console.error("Error converting image to base64:", error);
-        }
-    };
-
-    // Modifikasi handleSubmit untuk mengirim gambar sebagai base64
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        try {
-            // Buat slug dari judul
-            const slug = formData.judul.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-            
-            // Gunakan objek dengan gambar dalam format base64
-            const dataToSend = {
-                judul: formData.judul.trim(),
-                isi: formData.konten.trim(),
-                slug: slug,
-                gambar: formData.gambar // Kirim gambar sebagai base64
-            };
-            
-            console.log('Data yang akan dikirim:', dataToSend);
-            
-            // Kirim request dengan method PUT untuk update
-            const response = await axios.put(`${API.UPDATE_ADMIN_ARTIKEL}/${artikelId}`, dataToSend, {
-                headers: {
-                    Authorization: `Bearer ${auth.token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            console.log('Response dari server:', response.data);
-            
-            if (response.data.status === 'success') {
-                setIsOpen(true);
-                setFormData({
-                    judul: '',
-                    konten: '',
-                    gambar: null,
-                    preview: ''
-                });
-                
-                // Tambahkan timeout sebelum navigasi agar pesan sukses terlihat
-                setTimeout(() => {
-                    navigate('/admin-artikel'); // Navigasi ke halaman admin artikel
-                }, 1500);
-            } else {
-                alert(response.data.message || 'Terjadi kesalahan saat menyimpan artikel');
-            }
-        } catch (error) {
-            console.error('Error detail:', error);
-            console.error('Response data:', error.response?.data);
-            console.error('Status code:', error.response?.status);
-            alert(error.response?.data?.message || 'Terjadi kesalahan saat menyimpan artikel');
-        }
-    };
-
-    const handleDelete = async () => {
-        if (idArtikel === null) return;
-
-        try {
-            const response = await fetch(`${API.DELETE_ADMIN_ARTIKEL}/${idArtikel}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${auth.token}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Gagal menghapus artikel');
-            }
-
-            setIsAlertOpen(false);
-            setIsOpen(true);
-            fetchArtikel(); // Refresh data setelah menghapus
-        } catch (error) {
-            console.error('Error:', error);
         }
     };
 
@@ -252,78 +132,54 @@ const AdminArtikelDetail = () => {
                     {/* Artikel Section */}
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold">Edit Artikel</h3>
+                            <h3 className="text-lg font-semibold text-gray-800">Detail Artikel</h3>
                         </div>
-                        <div className="overflow-x-auto p-4">
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                {/* Judul Input */}
-                                <Input
-                                    label="Judul Artikel"
-                                    value={formData.judul}
-                                    onChange={(e) => setFormData(prev => ({...prev, judul: e.target.value}))}
-                                    required
+
+                        <div className="overflow-x-auto p-4 space-y-6">
+                            {/* Gambar Utama */}
+                            <img
+                                src={formData.gambar}
+                                alt="Cover Artikel"
+                                className="w-full h-96 object-cover rounded-xl shadow-md"
+                            />
+
+                            {/* Judul Artikel */}
+                            <h1 className="text-2xl font-bold text-gray-900">
+                                {formData.judul}
+                            </h1>
+
+                            {/* Info Penulis & Tanggal */}
+                            <div className="flex items-center text-sm text-gray-500 space-x-4">
+                                <span>Ditulis oleh <strong className="text-gray-700">{formData.penulis}</strong></span>
+                                <span>•</span>
+                                <span className="flex items-center space-x-2">
+                                    <strong className="text-gray-700">{formData.location}</strong>
+                                    <span>{new Date(formData.created_at).toLocaleDateString('id-ID', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    })}</span>
+                                </span>
+                            </div>
+
+                            {/* Kategori/Tag */}
+                            <div className="flex flex-wrap gap-2 mt-2">
+                                <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium">{formData.kategori}</span>
+                            </div>
+                            <hr className="my-4 border-gray-300" />
+
+
+                            {/* Konten Artikel */}
+                            <div className="w-full flex justify-center">
+                                <div
+                                    className="w-[1250px] text-gray-800 
+                                            [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:mb-4 
+                                            [&>p]:mb-4 [&>p]:leading-relaxed"
+                                    dangerouslySetInnerHTML={{ __html: formData.isi }}
                                 />
-
-                                {/* Image Upload */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Gambar Artikel
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageChange}
-                                        className="w-full"
-                                    />
-                                    {formData.preview && (
-                                        <img
-                                            src={formData.preview}
-                                            alt="Preview"
-                                            className="mt-2 h-40 object-cover rounded-md"
-                                        />
-                                    )}
-                                </div>
-
-                                {/* Rich Text Editor */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Konten Artikel
-                                    </label>
-                                    <ReactQuill
-                                        theme="snow"
-                                        value={formData.konten}
-                                        onChange={handleEditorChange}
-                                        modules={modules}
-                                        formats={formats}
-                                        className="h-64 mb-12"
-                                    />
-                                </div>
-
-                                {/* Submit Button */}
-                                <button
-                                    type="submit"
-                                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-                                >
-                                    Simpan Artikel
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </div>
-
-                    <Alert
-                        isOpen={isAlertOpen}
-                        title="Hapus"
-                        message="Apakah anda yakin ingin menghapus artikel ini?"
-                        onCancel={() => setIsAlertOpen(false)}
-                        onConfirm={handleDelete}
-                    />
-                           <SuccessMessage 
-                    isOpen={isOpen} 
-                    onClose={() => setIsOpen(false)}
-                    title="Berhasil"
-                    message="Artikel berhasil ditambahkan!"
-                    type="success"
-                    />
                 </main>
             </div>
         </div>

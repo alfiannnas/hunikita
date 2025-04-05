@@ -7,19 +7,23 @@ export interface AdminResponse {
         slug: string;
         isi: string;
         gambar?: string;
-        kategori_id: number | null;
+        kategori: string | null;
         status: 'Draft' | 'Published' | 'Rejected';
         created_at: Date;
         updated_at: Date;
+        penulis: string;
+        location: string;
     } | Array<{
         id: number;
         judul: string;
         slug: string;
         isi: string;
         gambar?: string;
-        kategori_id: number | null;
+        kategori: string | null;
         status: 'Draft' | 'Published' | 'Rejected';
         created_at: Date;
         updated_at: Date;
+        penulis: string;
+        location: string;
     }> | null;
 }

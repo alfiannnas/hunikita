@@ -18,7 +18,7 @@ export class Repository implements IRepository {
     async take(id: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, judul, slug, isi, kategori_id, status, gambar, created_at, updated_at 
+                `SELECT id, judul, slug, isi, kategori, status, gambar, created_at, updated_at, penulis, location
                 FROM artikel WHERE id = ? LIMIT 1`,
                 [id]
             )
@@ -42,7 +42,9 @@ export class Repository implements IRepository {
                     isi, 
                     gambar,
                     status, 
-                    kategori_id
+                    kategori,
+                    penulis,
+                    location
                 ) VALUES (?, ?, ?, ?, ?, ?)
             `;
 
@@ -52,7 +54,9 @@ export class Repository implements IRepository {
                 data.isi,
                 data.gambar || null,
                 data.status || 'Draft',
-                data.kategori_id || null
+                data.kategori || null,
+                data.penulis, 
+                data.location
             ];
 
             const [result] = await this.master.execute(query, bindParams);
@@ -81,13 +85,21 @@ export class Repository implements IRepository {
                 updateFields.push('isi = ?')
                 values.push(data.isi)
             }
-            if (data.kategori_id !== undefined) {
-                updateFields.push('kategori_id = ?')
-                values.push(data.kategori_id)
+            if (data.kategori !== undefined) {
+                updateFields.push('kategori = ?')
+                values.push(data.kategori)
             }
             if (data.status !== undefined) {
                 updateFields.push('status = ?')
                 values.push(data.status)
+            }
+            if (data.status !== undefined) {
+                updateFields.push('penulis = ?')
+                values.push(data.penulis)
+            }
+            if (data.status !== undefined) {
+                updateFields.push('location = ?')
+                values.push(data.location)
             }
 
             values.push(id)
@@ -117,7 +129,7 @@ export class Repository implements IRepository {
     async list(): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, judul, slug, isi, kategori_id, status, gambar, created_at, updated_at 
+                `SELECT id, judul, slug, isi, kategori, status, gambar, created_at, updated_at 
                  FROM artikel`
             )
             return result as RowDataPacket
