@@ -241,6 +241,92 @@ const AdminPropertiEdit = () => {
                                 </div>
                             </div>
                         </div>
+                        <hr className="my-4 border-gray-300" />
+                        {/* Deskripsi Properti */}
+                        <h1 className="text-xl font-medium text-gray-800 mb-1">Deskripsi {properties.property_type_name}</h1>
+                        
+                        <h1 className="text-lg font-medium text-gray-800 mb-1">
+                            {properties?.fasilitas ? `Kamar Mandi Luar: ${formatRupiah(properties?.harga)} / Bulan` : ''}
+                        </h1>
+                        {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
+                        <div className="flex flex-wrap gap-8">
+                            {/* Fasilitas */}
+                            <div className="flex-1 min-w-[300px]">
+
+                                <h1 className="text-lg font-medium text-gray-800 mb-1">
+                                    {properties?.fasilitas ? `Fasilitas:` : ''}
+                                </h1>
+                                <div 
+                                    className="text-gray-700 facilities-content"
+                                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas || '-' }}
+                                />
+                            </div>
+
+                            {/* Fasilitas Bersama */}
+                            <div className="flex-1 min-w-[300px]">
+                                <h1 className="text-lg font-medium text-gray-800 mb-1">
+                                    {properties?.fasilitas_bersama ? `Fasilitas Bersama:` : ''}
+                                </h1>
+                                <div 
+                                    className="text-gray-700 facilities-content"
+                                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama || '-' }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Style untuk kedua facilities-content */}
+                        <style jsx>{`
+                            .facilities-content ul {
+                                list-style-type: disc;
+                                padding-left: 1.5rem;
+                                margin-bottom: 1rem;
+                            }
+                            .facilities-content li {
+                                margin-bottom: 0.25rem;
+                            }
+                        `}</style>
+
+                        <h1 className="text-lg font-medium text-gray-800 mb-1">
+                            {properties?.fasilitas_1 ? `Kamar Mandi Dalam: ${formatRupiah(properties?.harga)} / Bulan` : ''}
+                        </h1>
+                        {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
+                        <div className="flex flex-wrap gap-8">
+                            {/* Fasilitas */}
+                            <div className="flex-1 min-w-[300px]">
+
+                                <h1 className="text-lg font-medium text-gray-800 mb-1">
+                                    {properties?.fasilitas_1 ? `Fasilitas:` : ''}
+                                </h1>
+                                <div 
+                                    className="text-gray-700 facilities-content"
+                                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas_1 || '' }}
+                                />
+                            </div>
+
+                            {/* Fasilitas Bersama */}
+                            <div className="flex-1 min-w-[300px]">
+                                <h1 className="text-lg font-medium text-gray-800 mb-1">
+                                    {properties?.fasilitas_bersama_1 ? `Fasilitas Bersama:` : ''}
+                                </h1>
+                                <div 
+                                    className="text-gray-700 facilities-content"
+                                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama_1 || '' }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Style untuk kedua facilities-content */}
+                        <style jsx>{`
+                            .facilities-content ul {
+                                list-style-type: disc;
+                                padding-left: 1.5rem;
+                                margin-bottom: 1rem;
+                            }
+                            .facilities-content li {
+                                margin-bottom: 0.25rem;
+                            }
+                        `}</style>
+
                         <div className="w-[1000px]">
                             <h1 className="text-xl font-medium text-gray-800 mt-4">Petunjuk Arah</h1>
                             <p className="text-gray-700">{properties?.petunjuk_arah || '-'}</p>

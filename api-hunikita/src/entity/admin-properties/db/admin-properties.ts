@@ -44,7 +44,10 @@ export interface CreateAdminPropertiesRequest {
     umur_bangunan: number;
     jam_bertamu: string;
     pelihara_binatang: string;
-    deskripsi_properti: string;
+    fasilitas: string;
+    fasilitas_bersama: string;
+    fasilitas_1: string;
+    fasilitas_bersama_1: string;
     petunjuk_arah: string;
     longitude: string;
     latitude: string;
