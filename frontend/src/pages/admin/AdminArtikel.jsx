@@ -5,7 +5,7 @@ import axios from "axios";
 import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Eye, Trash2 } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 
@@ -137,6 +137,10 @@ const AdminArtikel = () => {
                                                 </div>
                                             </td>
                                             <td className="py-3 flex space-x-2">
+                                                <button className="p-2 text-yellow-600 border border-yellow-600 rounded-md hover:bg-yellow-600 hover:text-white transition"
+                                                    onClick={() => navigate(`/admin-artikel/detail/${artikel.id}`)}>
+                                                    <Eye className="w-5 h-5" />
+                                                </button>
                                                 <button className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
                                                 onClick={() => navigate(`/admin-artikel/edit/${artikel.id}`)}>
                                                     <Edit className="w-5 h-5" />

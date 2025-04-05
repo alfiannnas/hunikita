@@ -31,6 +31,7 @@ import AdminPenyewaEdit from './pages/admin/AdminPenyewaEdit';
 import AdminPemilikPropertiEdit from './pages/admin/AdminPemilikPropertiEdit';
 import AdminPropertiEdit from './pages/admin/AdminPropertiEdit';
 import AdminArtikelEdit from './pages/admin/AdminArtikelEdit';
+import AdminArtikelDetail from './pages/admin/AdminArtikelDetail';
 
 function App() {
   return (
@@ -121,6 +122,11 @@ function App() {
         <Route path="/admin-artikel/edit/:id" element={
           <AdminProtectedRoute>
             <AdminArtikelEdit />
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin-artikel/detail/:id" element={
+          <AdminProtectedRoute>
+            <AdminArtikelDetail />
           </AdminProtectedRoute>
         } />
         <Route path="/admin-logout" element={
