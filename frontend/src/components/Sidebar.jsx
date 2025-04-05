@@ -32,7 +32,8 @@ const Sidebar = () => {
                                      (path === '/admin-pusat-bantuan' && location.pathname.startsWith('/admin-pusat-bantuan'))||
                                      (path === '/admin-penyewa' && location.pathname.startsWith('/admin-penyewa')) ||
                                      (path === '/admin-pemilik-properti' && location.pathname.startsWith('/admin-pemilik-properti')) ||
-                                     (path === '/admin-properti' && location.pathname.startsWith('/admin-properti')) 
+                                     (path === '/admin-properti' && location.pathname.startsWith('/admin-properti')) ||
+                                     (path === '/admin-artikel' && location.pathname.startsWith('/admin-artikel'))
 
                                     )
                                     ? 'text-blue-600 bg-blue-50' 
