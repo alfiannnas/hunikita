@@ -102,14 +102,14 @@ const AdminProperti = () => {
                             <h3 className="text-lg font-semibold">Properti</h3>
                         </div>
                         
-                        <div className="flex justify-end mb-4">
+                        {/* <div className="flex justify-end mb-4">
                             <Link 
                                 to={`/admin-properti/create`} 
                                 className="p-1 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 hover:text-white transition"
                             >
                                 Create
                             </Link>
-                        </div>
+                        </div> */}
 
                         <div className="overflow-x-auto">
                             <table className="w-full">

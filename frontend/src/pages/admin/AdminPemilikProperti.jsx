@@ -99,9 +99,9 @@ const AdminPemilikProperti = () => {
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </button>
-                                                <button className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">
+                                                {/* <button className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">
                                                     <Trash2 className="w-5 h-5" />
-                                                </button>
+                                                </button> */}
                                             </td>
                                         </tr>
                                     ))}
