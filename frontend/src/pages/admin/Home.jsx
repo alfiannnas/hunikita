@@ -24,6 +24,7 @@ function AdminHome() {
   const auth = useSelector((state) => state.auth);
   const [properties, setProperties] = useState([]);
   const [artikel, setArtikel] = useState([]);
+  const [penyewa, setPenyewa] = useState([]);
 
   useEffect(() => {
     if (!auth) {
@@ -32,6 +33,7 @@ function AdminHome() {
     }
     fetchProperties();
     fetchArtikel();
+    fetchPenyewa();
   }, [auth, navigate]);
 
   const fetchProperties = async () => {
@@ -62,6 +64,22 @@ function AdminHome() {
       console.error("Error fetching artikel:", error);
       if (error.response?.status === 401) {
         navigate('/admin-login');
+      }
+    }
+  };
+
+  const fetchPenyewa = async () => {
+    try {
+      const response = await axios.get(API.GET_PENYEWA, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      setPenyewa(response.data.data);
+    } catch (error) {
+      console.error("Error fetching penyewa:", error);
+      if (error.response?.status === 401) {
+        navigate('/admin/login');
       }
     }
   };
@@ -128,6 +146,118 @@ function AdminHome() {
                         }`}>
                           {property.status}
                         </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Tambahkan Pemilik Properti Section setelah Properties Section */}
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Pemilik Properti</h3>
+              <button 
+                onClick={() => navigate('/admin-pemilik-properti')}
+                className="text-blue-500 hover:text-blue-600"
+              >
+                Lihat Semua
+              </button>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-gray-500 border-b">
+                    <th className="pb-3">Nama Properti</th>
+                    <th className="pb-3">Jenis Properti</th>
+                    <th className="pb-3">Nama Pemilik Properti</th>
+                    <th className="pb-3">Harga</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {properties.slice(0, 3).map((property) => (
+                    <tr key={property.id} className="border-b">
+                      <td className="py-3">
+                        <div className="flex items-center space-x-3">
+                          {property.foto_properti ? (
+                            <img 
+                              src={property.foto_properti} 
+                              alt={property.name}
+                              className="w-12 h-12 object-cover rounded-md"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                              <span className="text-center text-gray-500 text-xs">No Image</span>
+                            </div>
+                          )}
+                          <span>{property.name}</span>
+                        </div>
+                      </td>
+                      <td className="py-3">{property.property_type_name}</td>
+                      <td className="py-3">{property.owner_name}</td>
+                      <td className="py-3">
+                        {new Intl.NumberFormat('id-ID', { 
+                          style: 'currency', 
+                          currency: 'IDR' 
+                        }).format(property.harga)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Penyewa Section */}
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Penyewa</h3>
+              <button 
+                onClick={() => navigate('/admin-penyewa')}
+                className="text-blue-500 hover:text-blue-600"
+              >
+                Lihat Semua
+              </button>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-gray-500 border-b">
+                    <th className="pb-3">Nama Properti</th>
+                    <th className="pb-3">Jenis Properti</th>
+                    <th className="pb-3">Nama Penyewa</th>
+                    <th className="pb-3">Harga/Bulan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {penyewa.slice(0, 3).map((item) => (
+                    <tr key={item.id} className="border-b">
+                      <td className="py-3">
+                        <div className="flex items-center space-x-3">
+                          {item.foto_properti ? (
+                            <img 
+                              src={item.foto_properti} 
+                              alt={item.property_name}
+                              className="w-12 h-12 object-cover rounded-md"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                              <span className="text-center text-gray-500 text-xs">No Image</span>
+                            </div>
+                          )}
+                          <span>{item.property_name}</span>
+                        </div>
+                      </td>
+                      <td className="py-3">{item.property_type_name}</td>
+                      <td className="py-3">{item.user_name}</td>
+                      <td className="py-3">
+                        {new Intl.NumberFormat('id-ID', { 
+                          style: 'currency', 
+                          currency: 'IDR' 
+                        }).format(item.harga_property)}
                       </td>
                     </tr>
                   ))}
