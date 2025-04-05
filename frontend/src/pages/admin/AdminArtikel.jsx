@@ -120,7 +120,22 @@ const AdminArtikel = () => {
                                 <tbody>
                                     {displayedArtikel.map((artikel) => (
                                         <tr key={artikel.id} className="border-b">
-                                            <td className="py-3">{artikel.judul}</td>
+                                            <td className="py-3">
+                                                <div className="flex items-center space-x-3">
+                                                    {artikel.gambar ? (
+                                                        <img 
+                                                            src={artikel.gambar} 
+                                                            alt={artikel.judul}
+                                                            className="w-12 h-12 object-cover rounded-md"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                                                            <span className="text-gray-500 text-xs text-center">No Image</span>
+                                                        </div>
+                                                    )}
+                                                    <span>{artikel.judul}</span>
+                                                </div>
+                                            </td>
                                             <td className="py-3 flex space-x-2">
                                                 <button className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">
                                                     <Edit className="w-5 h-5" />

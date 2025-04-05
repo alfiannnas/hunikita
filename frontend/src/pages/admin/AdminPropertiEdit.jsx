@@ -131,7 +131,7 @@ const AdminPropertiEdit = () => {
                         <div className="grid grid-cols-1 gap-4">
                             <div className="relative">
                                 <img
-                                    src={properties.profile_img || DEFAULT_PROPERTY_IMAGE}
+                                    src={properties.foto_properti || DEFAULT_PROPERTY_IMAGE}
                                     alt="Property"
                                     className="w-full h-[480px] rounded-lg object-cover shadow-sm"
                                 />

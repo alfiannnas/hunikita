@@ -47,7 +47,7 @@ export class Controller implements IController {
                 judul: req.body.judul,
                 slug: req.body.slug,
                 isi: req.body.isi,
-                gambar: null, // Set gambar ke null dulu
+                gambar: req.body.gambar,
                 status: req.body.status || 'Draft'
             };
             

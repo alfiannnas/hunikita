@@ -18,7 +18,7 @@ export class Repository implements IRepository {
     async take(id: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, judul, slug, isi, kategori_id, status, created_at, updated_at 
+                `SELECT id, judul, slug, isi, kategori_id, status, gambar, created_at, updated_at 
                 FROM artikel WHERE id = ? LIMIT 1`,
                 [id]
             )
@@ -56,6 +56,7 @@ export class Repository implements IRepository {
             ];
 
             const [result] = await this.master.execute(query, bindParams);
+            console.log(result);
             return result as RowDataPacket;
         } catch(error) {
             console.error('Error creating artikel:', error);
@@ -116,7 +117,7 @@ export class Repository implements IRepository {
     async list(): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, judul, slug, isi, kategori_id, status, created_at, updated_at 
+                `SELECT id, judul, slug, isi, kategori_id, status, gambar, created_at, updated_at 
                  FROM artikel`
             )
             return result as RowDataPacket

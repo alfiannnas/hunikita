@@ -125,7 +125,22 @@ const AdminProperti = () => {
                                 <tbody>
                                     {displayedProperties.map((property) => (
                                         <tr key={property.id} className="border-b">
-                                            <td className="py-3">{property.name}</td>
+                                            <td className="py-3">
+                                                <div className="flex items-center space-x-3">
+                                                    {property.foto_properti ? (
+                                                        <img 
+                                                            src={property.foto_properti} 
+                                                            alt={property.name}
+                                                            className="w-12 h-12 object-cover rounded-md"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                                                            <span className="text-center text-gray-500 text-xs">No Image</span>
+                                                        </div>
+                                                    )}
+                                                    <span>{property.name}</span>
+                                                </div>
+                                            </td>
                                             <td className="py-3">{property.property_type_name}</td>
                                             <td className="py-3">{property.owner_name}</td>
                                             <td className="py-3">

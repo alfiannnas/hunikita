@@ -115,7 +115,22 @@ const AdminPenyewa = () => {
                                 <tbody>
                                     {displayedPenyewa.map((penyewa) => (
                                         <tr key={penyewa.id} className="border-b">
-                                            <td className="py-3">{penyewa.property_name}</td>
+                                            <td className="py-3">
+                                                <div className="flex items-center space-x-3">
+                                                    {penyewa.foto_properti ? (
+                                                        <img 
+                                                            src={penyewa.foto_properti} 
+                                                            alt={penyewa.property_name}
+                                                            className="w-12 h-12 object-cover rounded-md"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                                                            <span className="text-center text-gray-500 text-xs">No Image</span>
+                                                        </div>
+                                                    )}
+                                                    <span>{penyewa.property_name}</span>
+                                                </div>
+                                            </td>
                                             <td className="py-3">{penyewa.property_type_name}</td>
                                             <td className="py-3">{penyewa.user_name}</td>
                                             <td className="py-3">

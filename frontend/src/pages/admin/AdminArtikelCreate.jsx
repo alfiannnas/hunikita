@@ -96,19 +96,38 @@ const AdminArtikelCreate = () => {
         }));
     };
 
-    // Handle input gambar
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setFormData(prev => ({
-                ...prev,
-                gambar: file,
-                preview: URL.createObjectURL(file)
-            }));
+    // Tambahkan fungsi untuk mengkonversi gambar ke base64
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+
+    // Modifikasi handle input gambar untuk mengkonversi ke base64
+    const handleImageChange = async (e) => {
+        try {
+            const file = e.target.files[0];
+            if (file) {
+                const base64 = await convertToBase64(file);
+                setFormData(prev => ({
+                    ...prev,
+                    gambar: base64,
+                    preview: base64
+                }));
+            }
+        } catch (error) {
+            console.error("Error converting image to base64:", error);
         }
     };
 
-    // Handle submit form
+    // Modifikasi handleSubmit untuk mengirim gambar sebagai base64
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -116,12 +135,12 @@ const AdminArtikelCreate = () => {
             // Buat slug dari judul
             const slug = formData.judul.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
             
-            // Gunakan objek biasa dulu, bukan FormData
+            // Gunakan objek dengan gambar dalam format base64
             const dataToSend = {
                 judul: formData.judul.trim(),
                 isi: formData.konten.trim(),
                 slug: slug,
-                // Tidak mengirim gambar dulu
+                gambar: formData.gambar // Kirim gambar sebagai base64
             };
             
             console.log('Data yang akan dikirim:', dataToSend);
