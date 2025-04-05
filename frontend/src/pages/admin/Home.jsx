@@ -22,58 +22,49 @@ import { useSelector } from 'react-redux';
 function AdminHome() {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
+  const [properties, setProperties] = useState([]);
+  const [artikel, setArtikel] = useState([]);
 
   useEffect(() => {
     if (!auth) {
       navigate('/admin-login');
       return;
     }
+    fetchProperties();
+    fetchArtikel();
   }, [auth, navigate]);
 
-  const properties = [
-    {
-      id: 1,
-      name: "Kos Jangkar Telang",
-      type: "Kos",
-      owner: "Dimas Putra",
-      status: "Tersedia",
-      image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=200"
-    },
-    {
-      id: 2,
-      name: "Kos Putri Telang",
-      type: "Kos",
-      owner: "Denuarta",
-      status: "Diproses",
-      image: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&q=80&w=200"
-    },
-    {
-      id: 3,
-      name: "Kontrakan Nyaman II",
-      type: "Kontrakan",
-      owner: "Budi",
-      status: "Diterima",
-      image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&q=80&w=200"
+  const fetchProperties = async () => {
+    try {
+      const response = await axios.get(API.GET_ADMIN_PROPERTIES, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      setProperties(response.data.data);
+    } catch (error) {
+      console.error("Error fetching properties:", error);
+      if (error.response?.data?.isRedirect) {
+        navigate('/admin-login');
+      }
     }
-  ];
+  };
 
-  const articles = [
-    {
-      id: 1,
-      title: "Tips makan hemat ala anak kos",
-      image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&q=80&w=200"
-    },
-    {
-      id: 2,
-      title: "5 Rekomendasi makeup murah",
-      image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&q=80&w=200"
-    },
-    {
-      id: 3,
-      title: "3 Wisata Buat Anak Kos",
-      image: "https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?auto=format&fit=crop&q=80&w=200"
+  const fetchArtikel = async () => {
+    try {
+      const response = await axios.get(API.GET_ADMIN_ARTIKEL, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      setArtikel(response.data.data);
+    } catch (error) {
+      console.error("Error fetching artikel:", error);
+      if (error.response?.status === 401) {
+        navigate('/admin-login');
+      }
     }
-  ];
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -89,7 +80,10 @@ function AdminHome() {
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Properti</h3>
-              <button className="text-blue-500 hover:text-blue-600">
+              <button 
+                onClick={() => navigate('/admin-properti')}
+                className="text-blue-500 hover:text-blue-600"
+              >
                 Lihat Semua
               </button>
             </div>
@@ -105,25 +99,32 @@ function AdminHome() {
                   </tr>
                 </thead>
                 <tbody>
-                  {properties.map(property => (
+                  {properties.slice(0, 3).map(property => (
                     <tr key={property.id} className="border-b">
                       <td className="py-3">
                         <div className="flex items-center">
-                          <img
-                            src={property.image}
-                            alt={property.name}
-                            className="w-10 h-10 rounded object-cover mr-3"
-                          />
+                          {property.foto_properti ? (
+                            <img
+                              src={property.foto_properti}
+                              alt={property.name}
+                              className="w-10 h-10 rounded object-cover mr-3"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 bg-gray-200 rounded mr-3 flex items-center justify-center">
+                              <span className="text-gray-500 text-xs">No Image</span>
+                            </div>
+                          )}
                           {property.name}
                         </div>
                       </td>
-                      <td className="py-3">{property.type}</td>
-                      <td className="py-3">{property.owner}</td>
+                      <td className="py-3">{property.property_type_name}</td>
+                      <td className="py-3">{property.owner_name}</td>
                       <td className="py-3">
                         <span className={`px-3 py-1 rounded-full text-sm ${
-                          property.status === 'Tersedia' ? 'bg-yellow-100 text-yellow-800' :
-                          property.status === 'Diproses' ? 'bg-blue-100 text-blue-800' :
-                          'bg-green-100 text-green-800'
+                          property.status === 'Disetujui' ? 'bg-green-500 text-white' : 
+                          property.status === 'Diproses' ? 'bg-yellow-500 text-white' :
+                          property.status === 'Ditolak' ? 'bg-red-500 text-white' : 
+                          'bg-red-800 text-red-800'
                         }`}>
                           {property.status}
                         </span>
@@ -139,22 +140,31 @@ function AdminHome() {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Artikel</h3>
-              <button className="flex items-center text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg">
+              <button 
+                onClick={() => navigate('/admin-artikel/create')}
+                className="flex items-center text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Buat Artikel
               </button>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {articles.map(article => (
+              {artikel.slice(0, 3).map(article => (
                 <div key={article.id} className="border rounded-lg overflow-hidden">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    className="w-full h-40 object-cover"
-                  />
+                  {article.gambar ? (
+                    <img
+                      src={article.gambar}
+                      alt={article.judul}
+                      className="w-full h-40 object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500 text-sm">No Image</span>
+                    </div>
+                  )}
                   <div className="p-4">
-                    <h4 className="font-medium">{article.title}</h4>
+                    <h4 className="font-medium">{article.judul}</h4>
                   </div>
                 </div>
               ))}
