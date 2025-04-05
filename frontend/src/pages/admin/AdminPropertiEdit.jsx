@@ -5,11 +5,12 @@ import axios from "axios";
 import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Edit, MapPinned, Trash2 } from "lucide-react";
+import { Edit, ExternalLink, MapPinned, Trash2 } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 import { Input } from "../../components/Input";
 import { DEFAULT_PROPERTY_IMAGE } from "../../components/DefaultImage";
+import MapComponent from "../../components/MapComponent";
 
 const AdminPropertiEdit = () => {
     const { id } = useParams();
@@ -246,6 +247,23 @@ const AdminPropertiEdit = () => {
                         </div>
                         <div>
                             <h1 className="text-xl font-medium text-gray-800 mt-4">Peta</h1>
+                            <MapComponent 
+                                latitude={properties?.latitude} 
+                                longitude={properties?.longitude} 
+                            />
+                            {properties?.latitude && properties?.longitude && (
+                                <div className="mt-2 flex justify-end">
+                                    <a 
+                                        href={`https://www.google.com/maps?q=${properties.latitude},${properties.longitude}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center gap-2"
+                                    >
+                                        <ExternalLink />
+                                        Lihat di Google Maps
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
                     
