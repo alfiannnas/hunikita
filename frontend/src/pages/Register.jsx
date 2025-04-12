@@ -3,13 +3,15 @@ import { useSelector } from "react-redux"
 import { API } from "../constant";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Input } from "../components/Input";
+import { Select } from "../components/Select";
 
 const Register = () => {
   const [values, setValues] = useState({
     name: "",
     email: "",
     password: "",
-    role: "Penyewa",
+    role: "",
     jenis_kelamin: "",
     kota_asal: "",
     pekerjaan: "",
@@ -47,6 +49,31 @@ const Register = () => {
     });
   };
 
+  const roleOptions = [
+    { value: "Penyewa", label: "Penyewa" },
+    { value: "Pemilik", label: "Pemilik" }
+  ];
+
+  const jenisKelaminOptions = [
+    { value: "Laki-laki", label: "Laki-laki" },
+    { value: "Perempuan", label: "Perempuan" }
+  ];
+
+  const statusOptions = [
+    { value: "Belum Kawin", label: "Belum Kawin" },
+    { value: "Sudah Kawin", label: "Sudah Kawin" }
+  ];
+
+  const pendidikanOptions = [
+    { value: "SD", label: "SD" },
+    { value: "SMP", label: "SMP" },
+    { value: "SMA/SMK", label: "SMA/SMK" },
+    { value: "D3", label: "D3" },
+    { value: "S1", label: "S1" },
+    { value: "S2", label: "S2" },
+    { value: "S3", label: "S3" }
+  ];
+
   return (
     <div className="w-full h-screen flex item-start">
       <div className="w-1/2 h-full bg-[#FFFFFF] flex flex-col p-5 justify-between font-Poppins">
@@ -57,204 +84,144 @@ const Register = () => {
             </h1>
 
             <form className="mt-9" onSubmit={handleSubmit}>
-              <div>
-                <label className="font-semibold block text-gray-700">
-                  Nama
-                </label>
-                <input
-                  type="text"
-                  name="nama"
-                  placeholder="Masukkan nama"
-                  onChange={(e) =>
-                    setValues({ ...values, name: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
-                />
-              </div>
+              <Input
+                label="Nama"
+                name="nama"
+                placeholder="Masukkan nama"
+                value={values.name}
+                onChange={(e) => setValues({ ...values, name: e.target.value })}
+                required
+              />
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Email
-                </label>
-                <input
+                <Input
+                  label="Email"
                   type="email"
                   name="email"
                   placeholder="Masukkan email"
-                  onChange={(e) =>
-                    setValues({ ...values, email: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  value={values.email}
+                  onChange={(e) => setValues({ ...values, email: e.target.value })}
+                  required
                 />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Sandi
-                </label>
-                <input
+                <Input
+                  label="Sandi"
                   type="password"
                   name="password"
                   placeholder="Masukkan sandi"
-                  onChange={(e) =>
-                    setValues({ ...values, password: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  value={values.password}
+                  onChange={(e) => setValues({ ...values, password: e.target.value })}
+                  required
                 />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Peran
-                </label>
-                <select
+                <Select
+                  label="Peran"
                   name="role"
-                  onChange={(e) =>
-                    setValues({ ...values, role: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  options={roleOptions}
                   value={values.role}
-                >
-                  <option value="Penyewa">Penyewa</option>
-                  <option value="Pemilik">Pemilik</option>
-                </select>
+                  onChange={(e) => setValues({ ...values, role: e.target.value })}
+                  placeholder="Pilih Peran"
+                  required
+                />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Jenis Kelamin
-                </label>
-                <select
+                <Select
+                  label="Jenis Kelamin"
                   name="jenis_kelamin"
-                  onChange={(e) =>
-                    setValues({ ...values, jenis_kelamin: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  options={jenisKelaminOptions}
                   value={values.jenis_kelamin}
-                >
-                  <option value="">Pilih Jenis Kelamin</option>
-                  <option value="Laki-laki">Laki-laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                </select>
+                  onChange={(e) => setValues({ ...values, jenis_kelamin: e.target.value })}
+                  placeholder="Pilih Jenis Kelamin"
+                  required
+                />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Kota Asal
-                </label>
-                <input
-                  type="text"
+                <Input
+                  label="Kota Asal"
                   name="kota_asal"
                   placeholder="Masukkan kota asal"
-                  onChange={(e) =>
-                    setValues({ ...values, kota_asal: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  value={values.kota_asal}
+                  onChange={(e) => setValues({ ...values, kota_asal: e.target.value })}
+                  required
                 />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Pekerjaan
-                </label>
-                <input
-                  type="text"
+                <Input
+                  label="Pekerjaan"
                   name="pekerjaan"
                   placeholder="Masukkan pekerjaan"
-                  onChange={(e) =>
-                    setValues({ ...values, pekerjaan: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  value={values.pekerjaan}
+                  onChange={(e) => setValues({ ...values, pekerjaan: e.target.value })}
+                  required
                 />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Nama Kampus
-                </label>
-                <input
-                  type="text"
+                <Input
+                  label="Nama Kampus"
                   name="nama_kampus"
                   placeholder="Masukkan nama kampus"
-                  onChange={(e) =>
-                    setValues({ ...values, nama_kampus: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  value={values.nama_kampus}
+                  onChange={(e) => setValues({ ...values, nama_kampus: e.target.value })}
+                  required
                 />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Status
-                </label>
-                <select
+                <Select
+                  label="Status"
                   name="status"
-                  onChange={(e) =>
-                    setValues({ ...values, status: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  options={statusOptions}
                   value={values.status}
-                >
-                  <option value="">Pilih Status</option>
-                  <option value="Belum Kawin">Belum Kawin</option>
-                  <option value="Sudah Kawin">Sudah Kawin</option>
-                </select>
+                  onChange={(e) => setValues({ ...values, status: e.target.value })}
+                  placeholder="Pilih Status"
+                  required
+                />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Pendidikan Terakhir
-                </label>
-                <select
+                <Select
+                  label="Pendidikan Terakhir"
                   name="pendidikan_terakhir"
-                  onChange={(e) =>
-                    setValues({ ...values, pendidikan_terakhir: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  options={pendidikanOptions}
                   value={values.pendidikan_terakhir}
-                >
-                  <option value="">Pilih Pendidikan Terakhir</option>
-                  <option value="SD">SD</option>
-                  <option value="SMP">SMP</option>
-                  <option value="SMA/SMK">SMA/SMK</option>
-                  <option value="D3">D3</option>
-                  <option value="S1">S1</option>
-                  <option value="S2">S2</option>
-                  <option value="S3">S3</option>
-                </select>
+                  onChange={(e) => setValues({ ...values, pendidikan_terakhir: e.target.value })}
+                  placeholder="Pilih Pendidikan Terakhir"
+                  required
+                />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Nomor Kontak
-                </label>
-                <input
-                  type="text"
+                <Input
+                  label="Nomor Kontak"
                   name="no_kontak"
                   placeholder="Masukkan nomor kontak"
-                  onChange={(e) =>
-                    setValues({ ...values, no_kontak: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  value={values.no_kontak}
+                  onChange={(e) => setValues({ ...values, no_kontak: e.target.value })}
+                  required
                 />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Nomor Kontak Darurat
-                </label>
-                <input
-                  type="text"
+                <Input
+                  label="Nomor Kontak Darurat"
                   name="no_kontak_darurat"
                   placeholder="Masukkan nomor kontak darurat"
-                  onChange={(e) =>
-                    setValues({ ...values, no_kontak_darurat: e.target.value })
-                  }
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+                  value={values.no_kontak_darurat}
+                  onChange={(e) => setValues({ ...values, no_kontak_darurat: e.target.value })}
+                  required
                 />
               </div>
 
               <button
-                className="w-full block bg-blue-500 hover:bg-blue-400 px-1.5 py-1.5 mt-5 rounded-lg font-semibold text-white font-Poppins focus:bg-blue-400 focus:outline-none"
+                className="w-full block bg-blue-500 hover:bg-blue-400 px-1.5 py-1.5 mt-5 rounded-lg font-semibold text-white font-Poppins focus:bg-blue-400 focus:outline-none transition duration-200"
                 type="submit"
               >
                 Daftar
@@ -266,28 +233,6 @@ const Register = () => {
               <Link to="/login">
                 <p className="text-blue-500">Login</p>
               </Link>
-            </div>
-
-            <div className="mt-6">
-              <div className="flex items-center justify-center gap-1">
-                Dengan login kamu menyetujui
-                <Link to="/syaratketentuan">
-                  <p className="text-blue-500 hover:text-blue-700">
-                    {" "}
-                    Syarat & Ketentuan{" "}
-                  </p>
-                </Link>
-                <p> dan</p>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <Link to="/kebijakanprivasi">
-                  <p className="text-blue-500 hover:text-blue-700">
-                    {" "}
-                    Kebijakan Privasi
-                  </p>
-                </Link>
-                <p> huniKita</p>
-              </div>
             </div>
           </div>
         </div>
