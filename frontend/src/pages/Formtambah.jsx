@@ -5,6 +5,9 @@ import { API } from '../constant';
 import axios from 'axios';
 import {useSelector} from "react-redux"
 import { useNavigate } from "react-router-dom";
+import { Input } from '../components/Input';
+import { Select } from "../components/Select";
+
 
 const Formtambah = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -19,14 +22,22 @@ const Formtambah = () => {
 
 
   const [formData, setFormData] = useState({
-    owner_name:"",
-    owner_email:"",
-    phone_number:"",
+    owner_name: "",
+    owner_email: "",
+    phone_number: "",
     name: "",
-    property_type:"",
-    address:"",
-    room_count:0,
-    img_path:""
+    property_type: "",
+    address: "",
+    room_count: "",
+    img_path: "",
+    province: "",
+    city: "",
+    district: "",
+    property_type_id: "",
+    umur_bangunan: "",
+    jam_bertamu: "",
+    pelihara_binatang: "",
+    petunjuk_arah: ""
   });
 
   const handleValidation = () => {
@@ -41,25 +52,28 @@ const Formtambah = () => {
     return true;
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleImageUpload = async () => {
-    const form = new FormData()
-    form.append('file', selectedImage)
-
     try {
-      const res = await axios.post(API.INSERT_PROPERTIES_IMAGE, form, {
-        headers: { Authorization: 'Bearer ' + auth.token },
-      });
-
-      if (res.status === 201) {
-        const path = res.data.data.path
-        setFormData((prevFormData) => ({ ...prevFormData, img_path: path}));
-        return path
+      if (selectedImage) {
+        setFormData((prevFormData) => ({ ...prevFormData, img_path: selectedImage }));
+        return selectedImage;
       }
     } catch (err) {
-      alert('Server Error');
+      alert('Error mengkonversi gambar');
       console.error(err);
     }
-    return null
+    return null;
   }
   
 
@@ -103,11 +117,6 @@ const Formtambah = () => {
     }));
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedImage(file);
-  };
-
   return (
     <div>
         <Navbar />
@@ -116,103 +125,215 @@ const Formtambah = () => {
           <h1 className="text-[36px] font-bold mt-[65px]">Buat Iklan</h1>
           <hr className="mt-[10px] h-[2px] bg-gray-300" />
           <div className="mt-[20px]">
-            <h1 className="text-[32px]">Nama Pemilik</h1>
-            <input
+            <Input
+              label="Nama Pemilik"
               type="text"
               name='owner_name'
+              value={formData.owner_name}
               placeholder="Masukkan Nama"
               onChange={handleChange}
-              className="w-[1148px] h-[65px] border-none rounded-[10px] bg-gray-300 text-[24px] mt-[7px]"
             />
           </div>
           <div className="mt-[20px]">
-            <h1 className="text-[32px]">Email</h1>
-            <input
+            <Input
+              label="Email"
               type="email"
               name='owner_email'
+              value={formData.owner_email}
               autoComplete='on'
               placeholder="Masukkan Email"
               onChange={handleChange}
-              className="w-[1148px] h-[65px] border-none rounded-[10px] bg-gray-300 text-[24px] mt-[7px]"
             />
           </div>
           <div className="mt-[20px]">
-            <h1 className="text-[32px]">No. Handphone</h1>
-            <input
+            <Input
+              label="No. Handphone"
               type="text"
               name='phone_number'
+              value={formData.phone_number}
               placeholder="Masukkan No. Handphone"
               onChange={handleChange}
-              className="w-[1148px] h-[65px] border-none rounded-[10px] bg-gray-300 text-[24px] mt-[7px]"
             />
           </div>
           <div className="mt-[20px]">
-            <h1 className="text-[32px]">Nama Properti</h1>
-            <input
+            <Input
+              label="Nama Properti"
               type="text"
               name='name'
+              value={formData.name}
               placeholder="Masukkan Nama Properti"
               onChange={handleChange}
-              className="w-[1148px] h-[65px] border-none rounded-[10px] bg-gray-300 text-[24px] mt-[7px]"
             />
           </div>
           <div className="mt-[20px]">
-            <h1 className="text-[32px]">Tipe Properti</h1>
-            <input
-              type="text"
+          <Select
+              label="Tipe Properti"
               name='property_type'
-              placeholder="Masukkan Tipe Properti"
+              value={formData.property_type}
+              placeholder="Pilih Tipe Properti"
+              options={[
+                { value: "1", label: "Kos" },
+                { value: "2", label: "Kontrakan" }
+              ]}
               onChange={handleChange}
-              className="w-[1148px] h-[65px] border-none rounded-[10px] bg-gray-300 text-[24px] mt-[7px]"
             />
           </div>
           <div className="mt-[20px]">
-            <h1 className="text-[32px]">Alamat</h1>
-            <input
+            <Input
+              label="Alamat"
               type="text"
               name='address'
+              value={formData.address}
               placeholder="Masukkan Alamat"
               onChange={handleChange}
-              className="w-[1148px] h-[65px] border-none rounded-[10px] bg-gray-300 text-[24px] mt-[7px]"
             />
           </div>
           <div className="mt-[20px]">
-            <h1 className="text-[32px]">Jumlah Kamar</h1>
-            <input
+            <Input
+              label="Jumlah Kamar"
               type="text"
               name='room_count'
+              value={formData.room_count}
               placeholder="Masukkan Jumlah Kamar"
               onChange={handleChange}
-              className="w-[1148px] h-[65px] border-none rounded-[10px] bg-gray-300 text-[24px] mt-[7px]"
             />
           </div>
-          <div className="flex flex-col justify-center w-[270px] h-[209px] mt-[34px]">
-            <h1 className="text-[32px]">Foto Properti</h1>
-
-            <label className="flex flex-col items-center justify-center w-[270px] h-[209px] rounded-lg cursor-pointer bg-gray-300">
-              {selectedImage ? (   
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <img src={URL.createObjectURL(selectedImage)} alt="" className='w-[270px] h-[209px]' />
-              </div>):(   
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <p className="text-[64px]">+</p>
-                <p className="text-[24px]">Tambahkan Gambar</p>
-              </div>)}
-           
-              <input type="file" onChange={handleImageChange} name='img' className="hidden" />
-            </label>
+          <div className="mt-[20px]">
+            <Input
+              label="Provinsi"
+              type="text"
+              name='province'
+              value={formData.province}
+              placeholder="Masukkan Provinsi"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Kota"
+              type="text"
+              name='city'
+              value={formData.city}
+              placeholder="Masukkan Kota"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Kecamatan"
+              type="text"
+              name='district'
+              value={formData.district}
+              placeholder="Masukkan Kecamatan"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Select
+              label="Jenis Properti"
+              name='property_type_id'
+              value={formData.property_type_id}
+              placeholder="Pilih Jenis Properti"
+              options={[
+                { value: "1", label: "Kos Putra" },
+                { value: "2", label: "Kos Putri" },
+                { value: "3", label: "Kos Campur" },
+                { value: "4", label: "Kontrakan" }
+              ]}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Umur Bangunan"
+              type="number"
+              name='umur_bangunan'
+              value={formData.umur_bangunan}
+              placeholder="Masukkan Umur Bangunan (tahun)"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Jam Bertamu"
+              type="text"
+              name='jam_bertamu'
+              value={formData.jam_bertamu}
+              placeholder="Contoh: Bebas/Pukul 08.00 - 20.00 WIB"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Pelihara Binatang"
+              type="text"
+              name='pelihara_binatang'
+              value={formData.pelihara_binatang}
+              placeholder="Contoh: Diperbolehkan/Tidak Diperbolehkan"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <label className="block text-[18px] font-medium text-gray-700 mb-2">Petunjuk Arah</label>
+            <textarea
+              name="petunjuk_arah"
+              value={formData.petunjuk_arah}
+              onChange={handleChange}
+              placeholder="Masukkan petunjuk arah ke properti"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="4"
+            />
+          </div>
+          <div className="mt-[20px]">
+            <label className="block text-[18px] font-medium text-gray-700 mb-2">Foto Properti</label>
+            <div className="flex items-center justify-center w-full">
+              <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                {selectedImage ? (
+                  <div className="relative w-full h-full">
+                    <img 
+                      src={selectedImage} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute top-2 right-2 bg-white bg-opacity-75 rounded-full p-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <p className="mt-2 text-sm text-gray-500">Klik untuk memilih gambar</p>
+                    <p className="text-xs text-gray-500">PNG, JPG, atau JPEG (MAX. 5MB)</p>
+                  </div>
+                )}
+                <input 
+                  type="file" 
+                  onChange={handleImageChange} 
+                  name='img' 
+                  className="hidden" 
+                  accept="image/*"
+                />
+              </label>
+            </div>
           </div>
           <div className="mt-[32px] flex gap-3">
             <input
               type="checkbox"
               name='valid'
-              className="w-[45px] h-[41px] bg-gray-300 border-none"
+              className="bg-gray-300 border-none"
             />
-            <h1 className="text-[25px]">Pastikan semua data sudah benar!</h1>
+            <h1 className="text-md">Pastikan semua data sudah benar!</h1>
           </div>
-          <button className="w-[311px] h-[71px] justify-center items-center flex mx-auto bg-[#4E97D1] text-white text-[26px] rounded-[10px] mt-[59px]">
-            Pasang Iklan
-          </button>
+          <button
+                className="text-md justify-center items-center flex mx-auto bg-blue-500 hover:bg-blue-400 px-2 py-2 mt-5 rounded-lg font-semibold text-white font-Poppins focus:bg-blue-400 focus:outline-none transition duration-200"
+                type="submit"
+              >
+                Pasang Iklan
+              </button>
         </form>
       </div>
       <div className="mt-[50px]">
