@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux"
 import axios from "axios";
 import { API } from "../constant";
 import { doLogin } from "../store";
+import { Input } from "../components/Input";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -40,47 +41,41 @@ const Login = () => {
       });
   };
 
-  return (
-    <div className="w-full h-screen flex item-start">
-      <div className="w-1/2 h-full bg-[#FFFFFF] flex flex-col p-5 justify-between font-Poppins">
-        <div className="bg-white w-full px-6">
-          <div className="w-full h-20">
-            <h1 className="text-xl md:text-2xl text-blue-500 font-bold leading-tight mt-8">
-              Login
-            </h1>
+// ... existing code ...
+return (
+  <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-1/2 h-full bg-[#FFFFFF] flex flex-col p-5 justify-center font-Poppins">
+      <div className="bg-white w-[550px] mx-auto px-6">
+        <div className="w-full">
+          <h1 className="text-xl md:text-2xl text-blue-500 font-bold leading-tight">
+            Login
+          </h1>
+            <p>Masukkan email dan sandi</p>
 
             <form className="mt-9" onSubmit={handleSubmit}>
               <div>
-                <label className="font-semibold block text-gray-700">
-                  Email
-                </label>
-                <input
+                <Input
+                  label="Email"
                   type="email"
                   name="email"
-                  onChange={(e) =>
-                    setValues({ ...values, email: e.target.value })
-                  }
+                  value={values.email}
+                  onChange={(e) => setValues({ ...values, email: e.target.value })}
                   placeholder="Masukkan email"
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
                 />
               </div>
 
               <div className="mt-2">
-                <label className="font-semibold block text-gray-700">
-                  Sandi
-                </label>
-                <input
+                <Input
+                  label="Sandi"
                   type="password"
                   name="password"
-                  onChange={(e) =>
-                    setValues({ ...values, password: e.target.value })
-                  }
+                  value={values.password}
+                  onChange={(e) => setValues({ ...values, password: e.target.value })}
                   placeholder="Masukkan sandi"
-                  className="w-full px-1.5 py-1.5 bg-gray-200 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
                 />
               </div>
               <button
-                className="w-full block bg-blue-500 hover:bg-blue-400 px-1.5 py-1.5 rounded-lg font-semibold text-white font-Poppins focus:bg-blue-400 focus:outline-none mt-3"
+                className="w-full block bg-blue-500 hover:bg-blue-400 px-1.5 py-1.5 rounded-lg font-semibold text-white font-Poppins focus:bg-blue-400 focus:outline-none transition duration-200 mt-3"
                 type="submit"
               >
                 Masuk
@@ -90,30 +85,8 @@ const Login = () => {
             <div className="flex gap-2 justify-center mt-[10px]">
               <p>Belum punya akun?</p>
               <Link to="/register">
-                <p className="text-blue-500">Buat akun</p>
+                <p className="text-blue-500 underline">Buat akun</p>
               </Link>
-            </div>
-
-            <div className="mt-6">
-              <div className=" items-center justify-center flex gap-1">
-                Dengan login kamu menyetujui
-                <Link to="/syaratketentuan">
-                  <p className="text-blue-500 hover:text-blue-700">
-                    {" "}
-                    Syarat & Ketentuan{" "}
-                  </p>
-                </Link>
-                <p> dan</p>
-              </div>
-              <div className=" items-center justify-center flex gap-1">
-                <Link to="/kebijakanprivasi">
-                  <p className="text-blue-500 hover:text-blue-700">
-                    {" "}
-                    Kebijakan Privasi
-                  </p>
-                </Link>
-                <p> huniKita</p>
-              </div>
             </div>
           </div>
         </div>
