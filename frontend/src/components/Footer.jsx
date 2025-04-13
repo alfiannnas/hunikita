@@ -3,14 +3,14 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="w-full bg-[#4E97D1] flex flex-col justify-between relative">
-      <div className="flex justify-between relative mt-[33px]">
-        <div>
-          <img src="/logo-hunikita.png" alt="" className="cursor-pointer" />
+      <div className="flex justify-between relative mt-[33px] px-8">
+        <div className="flex items-start gap-8">
+          <img src="/logo-hunikita.png" alt="" className="cursor-pointer w-[150px]" />
+          <p className="w-[294px] text-white cursor-default">
+            huniKita merupakan sebuah situs yang dibuat untuk menyediakan
+            kebutuhan akomodasi anda, berupa kos-kosan dan kontrakan.
+          </p>
         </div>
-        <p className="w-[294px] text-white cursor-default mt-[5px] mr-[136px]">
-          huniKita merupakan sebuah situs yang dibuat untuk menyediakan
-          kebutuhan akomodasi anda, berupa kos-kosan dan kontrakan.
-        </p>
         <div className="flex gap-8">
           <div className="flex flex-col">
             <h1 className="text-[21px] text-white cursor-default font-bold">
@@ -42,7 +42,7 @@ const Footer = () => {
             <h1 className="text-[21px] text-white cursor-default font-bold">
               Hubungi Kami
             </h1>
-            <ul>
+            <ul className="mt-2 space-y-2">
               <li className="text-[16px] text-white hover:text-gray-200 hover:underline hover:cursor-pointer">
                 Jl. In aja dulu No. 101, Jawa Tengah 50174, Indonesia
               </li>
