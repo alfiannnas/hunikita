@@ -3,7 +3,7 @@ export function doLogin(payload){
   // console.log(payload)
   const body = {
     id: payload.id,
-    name: payload.username,
+    name: payload.name,
     email: payload.email,
     token: payload.token,
     role: payload.role
