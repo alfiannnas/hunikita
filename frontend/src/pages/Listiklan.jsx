@@ -110,14 +110,14 @@ const Listiklan = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen flex flex-col">
       <Navbar />
       <div className="gap-4 ml-[36px] mt-[44px]">
         <h1 className="text-[36px] font-bold">List Properti Anda</h1>
       </div>
 
       {/* Tabel Properti */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6 mx-[36px]">
+      <div className="bg-white rounded-lg shadow-sm p-6 mb-6 mx-[36px] flex-grow">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Daftar Properti</h2>
           <Link to="/properties/create">
@@ -205,9 +205,7 @@ const Listiklan = () => {
         </div>
       </div>
 
-      <div className="mt-[50px]">
-        <Footer />
-      </div>
+      <Footer />
 
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
            style={{ display: isAlertOpen || isOpen ? 'flex' : 'none' }}>
