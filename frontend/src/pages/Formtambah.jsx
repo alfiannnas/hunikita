@@ -7,10 +7,12 @@ import {useSelector} from "react-redux"
 import { useNavigate } from "react-router-dom";
 import { Input } from '../components/Input';
 import { Select } from "../components/Select";
+import MapComponent from '../components/MapComponent';
 
 
 const Formtambah = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const auth = useSelector((state) => state.auth )
   const navigate = useNavigate();
 
@@ -147,6 +149,15 @@ const Formtambah = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
+    }));
+  };
+
+  const handleMapClick = (lat, lng) => {
+    setSelectedLocation({ lat, lng });
+    setFormData(prev => ({
+      ...prev,
+      latitude: lat.toString(),
+      longitude: lng.toString()
     }));
   };
 
@@ -368,24 +379,35 @@ const Formtambah = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Longitude"
-              type="text"
-              name='longitude'
-              value={formData.longitude}
-              placeholder="Masukkan Longitude"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-[20px]">
-            <Input
-              label="Latitude"
-              type="text"
-              name='latitude'
-              value={formData.latitude}
-              placeholder="Masukkan Latitude"
-              onChange={handleChange}
-            />
+            <h1 className="text-xl font-medium text-gray-800 mb-4">Pilih Lokasi di Peta</h1>
+            <div className="w-full h-[400px] mb-4">
+              <MapComponent 
+                latitude={formData.latitude || null} 
+                longitude={formData.longitude || null}
+                onLocationSelect={handleMapClick}
+                isEditable={true}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="Longitude"
+                type="text"
+                name='longitude'
+                value={formData.longitude}
+                placeholder="Longitude akan terisi otomatis"
+                onChange={handleChange}
+                disabled
+              />
+              <Input
+                label="Latitude"
+                type="text"
+                name='latitude'
+                value={formData.latitude}
+                placeholder="Latitude akan terisi otomatis"
+                onChange={handleChange}
+                disabled
+              />
+            </div>
           </div>
           <div className="mt-[20px]">
             <label className="block text-[18px] font-medium text-gray-700 mb-2">Foto Properti</label>
