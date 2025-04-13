@@ -4,7 +4,7 @@ import { IRepository } from "../../repository/pemilik-properties"
 
 export interface IService {
     get(id: number): Promise<PemilikPropertiesResponse>
-    list(): Promise<PemilikPropertiesResponse>
+    list(userId?: number): Promise<PemilikPropertiesResponse>
     create(data: CreatePemilikPropertiesRequest): Promise<PemilikPropertiesResponse>
     update(id: number, data: Partial<CreatePemilikPropertiesRequest>): Promise<PemilikPropertiesResponse>
     delete(id: number): Promise<PemilikPropertiesResponse>
@@ -42,9 +42,9 @@ export class Service implements IService {
         }
     }
 
-    async list(): Promise<PemilikPropertiesResponse> {
+    async list(userId?: number): Promise<PemilikPropertiesResponse> {
         try {
-            const result = await this.repo.list()
+            const result = await this.repo.list(userId)
             return {
                 status: "success",
                 message: "Daftar property berhasil diambil",

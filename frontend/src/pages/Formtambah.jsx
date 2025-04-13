@@ -129,7 +129,7 @@ const Formtambah = () => {
 
       if (response.status === 201 || response.status === 200) {
         alert('Properti berhasil ditambahkan!');
-        navigate('/');
+        navigate('/list-iklan');
       }
     } catch (error) {
       console.error('Error:', error);

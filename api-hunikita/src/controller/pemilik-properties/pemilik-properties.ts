@@ -24,8 +24,9 @@ export class Controller implements IController {
         res.json(result)
     }
 
-    async list(_req: Request, res: Response): Promise<void> {
-        const result = await this.service.list()
+    async list(req: Request, res: Response): Promise<void> {
+        const userId = req.query.userId as string;
+        const result = await this.service.list(userId ? parseInt(userId) : undefined)
         res.json(result)
     }
 
