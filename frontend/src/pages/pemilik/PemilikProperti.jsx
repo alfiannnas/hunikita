@@ -1,14 +1,13 @@
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
 import {useSelector} from 'react-redux'
-import Properti from '../components/Properti'
-import Footer from '../components/Footer'
+import Footer from '../../components/Footer'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from "axios";
-import { API } from '../constant'
+import { API } from '../../constant'
 import { Edit, Trash2 } from "lucide-react";
-import { Alert } from "../components/Alert";
-import { SuccessMessage } from "../components/SuccessMessage";
+import { Alert } from "../../components/Alert";
+import { SuccessMessage } from "../../components/SuccessMessage";
 
 const Listiklan = () => {
   const [data, setData] = useState([]);

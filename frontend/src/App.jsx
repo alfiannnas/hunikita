@@ -9,13 +9,17 @@ import Tentangkami from "./pages/Tentangkami";
 import Pusatbantuan from "./pages/Pusatbantuan";
 import Listkosan from "./pages/Listkosan";
 import Listkontrakan from "./pages/Listkontrakan";
-import Listiklan from "./pages/Listiklan";
 import Listartikel from "./pages/Listartikel";
 import Detailkosan from "./pages/Detailkosan";
 import Detailkontrakan from "./pages/Detailkontrakan";
 import Detailartikel from "./pages/Detailartikel";
-import Formtambah from "./pages/Formtambah";
+
+// Pemilik
+import PemilikProperti from "./pages/pemilik/PemilikProperti";
+import PemilikPropertiCreate from "./pages/pemilik/PemilikPropertiCreate";
 import Formedit from "./pages/Formedit";
+
+// Admin
 import AdminHome from "./pages/admin/Home";
 import AdminProperti from "./pages/admin/AdminProperti";
 import AdminPemilikProperti from "./pages/admin/AdminPemilikProperti";
@@ -45,12 +49,12 @@ function App() {
         <Route path="/pusat-bantuan" element={<Pusatbantuan />} />
         <Route path="/list-kosan" element={<Listkosan />} />
         <Route path="/list-kontrakan" element={<Listkontrakan />} />
-        <Route path="/list-iklan" element={<Listiklan />} />
+        <Route path="/list-iklan" element={<PemilikProperti />} />
         <Route path="/list-artikel" element={<Listartikel />} />
         <Route path="/detail-kosan" element={<Detailkosan />} />
         <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
         <Route path="/detail-artikel" element={<Detailartikel />} />
-        <Route path="/properties/create" element={<Formtambah />} />
+        <Route path="/properties/create" element={<PemilikPropertiCreate />} />
         <Route path="/form-edit" element={<Formedit />} />
 
         {/* Protected Admin Routes */}

@@ -20,7 +20,7 @@ export class Repository implements IRepository {
         try {
             const [result] = await this.master.execute(
                 `SELECT p.id, p.user_id, p.property_type_id, p.owner_name, p.owner_email, 
-                p.name, p.harga, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, 
+                p.name, p.harga, p.harga_1, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, 
                 p.owner_phone, pt.name AS property_type_name, p.foto_properti, p.status,
                 p.province, p.city, p.subdistrict, p.jenis_properti, p.umur_bangunan,
                 p.jam_bertamu, p.pelihara_binatang, p.fasilitas, p.fasilitas_bersama,
@@ -47,9 +47,9 @@ export class Repository implements IRepository {
                     name, address, room_count, foto_properti, province, city,
                     subdistrict, umur_bangunan, jam_bertamu,
                     pelihara_binatang, petunjuk_arah, owner_phone, status,
-                    harga, fasilitas, fasilitas_bersama, fasilitas_1,
+                    harga, harga_1, fasilitas, fasilitas_bersama, fasilitas_1,
                     fasilitas_bersama_1, longitude, latitude, jenis_properti
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     data.user_id,
                     data.property_type_id,
@@ -69,6 +69,7 @@ export class Repository implements IRepository {
                     data.owner_phone,
                     data.status || 'Diproses',
                     data.harga || 0,
+                    data.harga_1 || 0,
                     data.fasilitas,
                     data.fasilitas_bersama,
                     data.fasilitas_1,
@@ -154,7 +155,7 @@ export class Repository implements IRepository {
         try {
             let query = `SELECT p.id, p.user_id, p.property_type_id, pt.name AS property_type_name, 
                         p.owner_name, p.owner_email, p.name, p.address, 
-                        p.room_count, p.img_path, p.status, p.harga, p.foto_properti,
+                        p.room_count, p.img_path, p.status, p.harga, p.foto_properti, p.harga_1,
                         p.created_at, p.updated_at
                  FROM properties p
                  LEFT JOIN property_types pt ON p.property_type_id = pt.id`;

@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import { API } from '../constant';
+import Navbar from '../../components/Navbar'
+import Footer from '../../components/Footer'
+import { API } from '../../constant';
 import axios from 'axios';
 import {useSelector} from "react-redux"
 import { useNavigate } from "react-router-dom";
-import { Input } from '../components/Input';
-import { Select } from "../components/Select";
-import MapComponent from '../components/MapComponent';
+import { Input } from '../../components/Input';
+import { Select } from "../../components/Select";
+import MapComponent from '../../components/MapComponent';
 
 
 const Formtambah = () => {
@@ -41,6 +41,7 @@ const Formtambah = () => {
     petunjuk_arah: "",
     status: "Diproses",
     harga: "",
+    harga_1: "",
     jenis_properti: "",
     fasilitas: "",
     fasilitas_bersama: "",
@@ -318,7 +319,7 @@ const Formtambah = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <label className="block text-[18px] font-medium text-gray-700 mb-2">Petunjuk Arah</label>
+            <label className="block text-sm font-medium text-gray-700">Petunjuk Arah</label>
             <textarea
               name="petunjuk_arah"
               value={formData.petunjuk_arah}
@@ -360,26 +361,36 @@ const Formtambah = () => {
           </div>
           <div className="mt-[20px]">
             <Input
-              label="Fasilitas Tambahan 1"
-              type="text"
-              name='fasilitas_1'
-              value={formData.fasilitas_1}
-              placeholder="Masukkan Fasilitas Tambahan 1"
+              label="Harga Tipe Kamar Mandi Luar (Jika ada)"
+              type="number"
+              name='harga_1'
+              value={formData.harga_1}
+              placeholder="Masukkan Harga Kamar Mandi Luar"
               onChange={handleChange}
             />
           </div>
           <div className="mt-[20px]">
             <Input
-              label="Fasilitas Bersama Tambahan 1"
+              label="Fasilitas Tambahan Kamar Mandi Luar (Jika ada)"
               type="text"
-              name='fasilitas_bersama_1'
-              value={formData.fasilitas_bersama_1}
-              placeholder="Masukkan Fasilitas Bersama Tambahan 1"
+              name='fasilitas_1'
+              value={formData.fasilitas_1}
+              placeholder="Masukkan Fasilitas Tambahan Kamar Mandi Luar"
               onChange={handleChange}
             />
           </div>
           <div className="mt-[20px]">
-            <h1 className="text-xl font-medium text-gray-800 mb-4">Pilih Lokasi di Peta</h1>
+            <Input
+              label="Fasilitas Bersama Tambahan Kamar Mandi Luar (Jika ada)"
+              type="text"
+              name='fasilitas_bersama_1'
+              value={formData.fasilitas_bersama_1}
+              placeholder="Masukkan Fasilitas Bersama Tambahan Kamar Mandi Luar"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-4">
+            <h1 className="block text-[18px] font-medium  text-gray-700">Pilih Lokasi di Peta</h1>
             <div className="w-full h-[400px] mb-4">
               <MapComponent 
                 latitude={formData.latitude || null} 
@@ -409,8 +420,8 @@ const Formtambah = () => {
               />
             </div>
           </div>
-          <div className="mt-[20px]">
-            <label className="block text-[18px] font-medium text-gray-700 mb-2">Foto Properti</label>
+          <div className="mt-[30px]">
+            <label className="block text-[18px] font-medium  text-gray-700 mt-2">Foto Properti</label>
             <div className="flex items-center justify-center w-full">
               <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
                 {selectedImage ? (
