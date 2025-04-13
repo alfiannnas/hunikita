@@ -50,7 +50,7 @@ function App() {
         <Route path="/detail-kosan" element={<Detailkosan />} />
         <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
         <Route path="/detail-artikel" element={<Detailartikel />} />
-        <Route path="/form-tambah" element={<Formtambah />} />
+        <Route path="/properties/create" element={<Formtambah />} />
         <Route path="/form-edit" element={<Formedit />} />
 
         {/* Protected Admin Routes */}

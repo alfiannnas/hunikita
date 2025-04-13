@@ -24,27 +24,44 @@ const Formtambah = () => {
   const [formData, setFormData] = useState({
     owner_name: "",
     owner_email: "",
-    phone_number: "",
+    owner_phone: "",
     name: "",
-    property_type: "",
     address: "",
     room_count: "",
-    img_path: "",
+    foto_properti: "",
     province: "",
     city: "",
-    district: "",
+    subdistrict: "",
     property_type_id: "",
     umur_bangunan: "",
     jam_bertamu: "",
     pelihara_binatang: "",
-    petunjuk_arah: ""
+    petunjuk_arah: "",
+    status: "Diproses",
+    harga: "",
+    jenis_properti: "",
+    fasilitas: "",
+    fasilitas_bersama: "",
+    fasilitas_1: "",
+    fasilitas_bersama_1: "",
+    longitude: "",
+    latitude: ""
   });
 
   const handleValidation = () => {
-    console.log(formData)
-    for (const key in formData) {
-      if (key != "img_path" && !formData[key]) {
-        alert(`Please fill in ${key.replace(/_/g, ' ')}`);
+    const requiredFields = [
+      'owner_name',
+      'owner_email',
+      'owner_phone',
+      'name',
+      'address',
+      'room_count',
+      'property_type_id'
+    ];
+
+    for (const field of requiredFields) {
+      if (!formData[field]) {
+        alert(`Mohon isi ${field.replace(/_/g, ' ')}`);
         return false;
       }
     }
@@ -66,7 +83,7 @@ const Formtambah = () => {
   const handleImageUpload = async () => {
     try {
       if (selectedImage) {
-        setFormData((prevFormData) => ({ ...prevFormData, img_path: selectedImage }));
+        setFormData((prevFormData) => ({ ...prevFormData, foto_properti: selectedImage }));
         return selectedImage;
       }
     } catch (err) {
@@ -80,34 +97,50 @@ const Formtambah = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if(!selectedImage) {
-      alert('upload image first')
-      return 
+    if(!handleValidation()) {
+      return;
     }
 
-    if(!handleValidation() ) {
-      return 
-    }
+    try {
+      const imageUrl = await handleImageUpload();
+      
+      if (!imageUrl) {
+        alert('Mohon upload gambar properti');
+        return;
+      }
 
-    await handleImageUpload()
+      const token = auth?.token;
+      const userId = auth?.id;
+      
+      const response = await axios.post(API.POST_PROPERTIES_BY_PEMILIK, 
+        {
+          ...formData,
+          foto_properti: imageUrl,
+          user_id: userId
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.status === 201 || response.status === 200) {
+        alert('Properti berhasil ditambahkan!');
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      if (error.response?.status === 401) {
+        alert('Sesi anda telah berakhir. Silakan login kembali.');
+        navigate('/login');
+      } else {
+        alert('Terjadi kesalahan saat menambahkan properti. Silakan coba lagi.');
+        console.error('Error details:', error.response?.data);
+      }
+    }
   };
 
-  useEffect(() => {
-    if (formData.img_path !== '') {
-        axios.post(API.INSERT_PROPERTIES, formData, {headers: {Authorization: 'Bearer ' + auth.token}}).then((res)=> {
-        if(res.status == 201) {
-          navigate("/list-iklan")
-        }
-      }).catch((err) => {
-        if (err.response.status == 404) {
-          alert(err.response.data.detail)
-        } else {
-          alert("Server Error! Coba lagi beberapa saat")
-        }
-        return 
-      })
-    }
-  },[formData.img_path, formData, auth.token,  navigate])
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -149,8 +182,8 @@ const Formtambah = () => {
             <Input
               label="No. Handphone"
               type="text"
-              name='phone_number'
-              value={formData.phone_number}
+              name='owner_phone'
+              value={formData.owner_phone}
               placeholder="Masukkan No. Handphone"
               onChange={handleChange}
             />
@@ -168,8 +201,8 @@ const Formtambah = () => {
           <div className="mt-[20px]">
           <Select
               label="Tipe Properti"
-              name='property_type'
-              value={formData.property_type}
+              name='property_type_id'
+              value={formData.property_type_id}
               placeholder="Pilih Tipe Properti"
               options={[
                 { value: "1", label: "Kos" },
@@ -222,8 +255,8 @@ const Formtambah = () => {
             <Input
               label="Kecamatan"
               type="text"
-              name='district'
-              value={formData.district}
+              name='subdistrict'
+              value={formData.subdistrict}
               placeholder="Masukkan Kecamatan"
               onChange={handleChange}
             />
@@ -231,13 +264,13 @@ const Formtambah = () => {
           <div className="mt-[20px]">
             <Select
               label="Jenis Properti"
-              name='property_type_id'
-              value={formData.property_type_id}
+              name='jenis_properti'
+              value={formData.jenis_properti}
               placeholder="Pilih Jenis Properti"
               options={[
-                { value: "1", label: "Kos Putra" },
-                { value: "2", label: "Kos Putri" },
-                { value: "3", label: "Kos Campur" },
+                { value: "Kost Putra", label: "Kost Putra" },
+                { value: "Kost Putri", label: "Kost Putri" },
+                { value: "Kost Campur", label: "Kost Campur" },
                 { value: "4", label: "Kontrakan" }
               ]}
               onChange={handleChange}
@@ -282,6 +315,76 @@ const Formtambah = () => {
               placeholder="Masukkan petunjuk arah ke properti"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="4"
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Harga"
+              type="number"
+              name='harga'
+              value={formData.harga}
+              placeholder="Masukkan Harga"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Fasilitas"
+              type="text"
+              name='fasilitas'
+              value={formData.fasilitas}
+              placeholder="Masukkan Fasilitas"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Fasilitas Bersama"
+              type="text"
+              name='fasilitas_bersama'
+              value={formData.fasilitas_bersama}
+              placeholder="Masukkan Fasilitas Bersama"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Fasilitas Tambahan 1"
+              type="text"
+              name='fasilitas_1'
+              value={formData.fasilitas_1}
+              placeholder="Masukkan Fasilitas Tambahan 1"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Fasilitas Bersama Tambahan 1"
+              type="text"
+              name='fasilitas_bersama_1'
+              value={formData.fasilitas_bersama_1}
+              placeholder="Masukkan Fasilitas Bersama Tambahan 1"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Longitude"
+              type="text"
+              name='longitude'
+              value={formData.longitude}
+              placeholder="Masukkan Longitude"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-[20px]">
+            <Input
+              label="Latitude"
+              type="text"
+              name='latitude'
+              value={formData.latitude}
+              placeholder="Masukkan Latitude"
+              onChange={handleChange}
             />
           </div>
           <div className="mt-[20px]">

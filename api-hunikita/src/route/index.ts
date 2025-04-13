@@ -36,6 +36,11 @@ import { Service as AdminPusatBantuanSvc } from "@service/admin-pusat-bantuan"
 import { Repository as AdminPusatBantuanRepo } from "@repository/admin-pusat-bantuan"
 import { Controller as AdminPusatBantuanController } from "@controller/admin-pusat-bantuan"
 
+import { pemilikProperties } from "./pemilik-properties"
+import { Service as PemilikPropertiesSvc } from "@service/pemilik-properties"
+import { Repository as PemilikPropertiesRepo } from "@repository/pemilik-properties"
+import { Controller as PemilikPropertiesController } from "@controller/pemilik-properties"
+
 export const Route = {
     register: async (router: Router)=> {
         let con!:Connection
@@ -55,6 +60,7 @@ export const Route = {
         const adminPenyewaRepo = new AdminPenyewaRepo(con)
         const adminArtikelRepo = new AdminArtikelRepo(con)
         const adminPusatBantuanRepo = new AdminPusatBantuanRepo(con)
+        const pemilikPropertiesRepo = new PemilikPropertiesRepo(con)
 
         const propertyTypeSvc = new PropertyTypeSvc(propertyTypeRepo)
         const oauthSvc = new OauthService(oauthRepo)
@@ -64,6 +70,7 @@ export const Route = {
         const penyewaSvc = new AdminPenyewaSvc(adminPenyewaRepo)
         const artikelSvc = new AdminArtikelSvc(adminArtikelRepo)
         const adminPusatBantuanSvc = new AdminPusatBantuanSvc(adminPusatBantuanRepo)
+        const pemilikPropertiesSvc = new PemilikPropertiesSvc(pemilikPropertiesRepo)
 
         const oauthCtrl = new Controller(oauthSvc)
         const propertyCtrl = new PropertyController(propertySvc)
@@ -72,6 +79,7 @@ export const Route = {
         const adminPenyewaCtrl = new AdminPenyewaController(penyewaSvc)
         const adminArtikelCtrl = new AdminArtikelController(artikelSvc)
         const adminPusatBantuanCtrl = new AdminPusatBantuanController(adminPusatBantuanSvc)
+        const pemilikPropertiesCtrl = new PemilikPropertiesController(pemilikPropertiesSvc)
 
         oauth(router, oauthCtrl)
         property(router, propertyCtrl)
@@ -80,5 +88,6 @@ export const Route = {
         adminPenyewa(router, adminPenyewaCtrl)
         adminArtikel(router, adminArtikelCtrl)
         adminPusatBantuan(router, adminPusatBantuanCtrl)
+        pemilikProperties(router, pemilikPropertiesCtrl)
     }
 }

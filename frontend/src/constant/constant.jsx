@@ -5,8 +5,7 @@ export const API = {
     ADMIN_LOGIN: BASE_URL + "/admin-login",
     REGISTER: BASE_URL + "/register",
     GET_PROPERTIES_BY_USER: BASE_URL + "/properties/users",
-    INSERT_PROPERTIES_IMAGE: BASE_URL + "/properties/images",
-    INSERT_PROPERTIES: BASE_URL + "/properties",
+    POST_PROPERTIES_BY_PEMILIK: BASE_URL + "/pemilik-properties",
 
     GET_USER_DATA: BASE_URL + "/get-user",
     UPDATE_USER_DATA: BASE_URL + "/admin-profil/:id",
