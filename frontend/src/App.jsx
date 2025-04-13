@@ -17,6 +17,7 @@ import Detailartikel from "./pages/Detailartikel";
 // Pemilik
 import PemilikProperti from "./pages/pemilik/PemilikProperti";
 import PemilikPropertiCreate from "./pages/pemilik/PemilikPropertiCreate";
+import PemilikProfil from './pages/pemilik/PemilikProfil';
 import Formedit from "./pages/Formedit";
 
 // Admin
@@ -50,6 +51,7 @@ function App() {
         <Route path="/list-kosan" element={<Listkosan />} />
         <Route path="/list-kontrakan" element={<Listkontrakan />} />
         <Route path="/list-iklan" element={<PemilikProperti />} />
+        <Route path="/pemilik-profile" element={<PemilikProfil />} />
         <Route path="/list-artikel" element={<Listartikel />} />
         <Route path="/detail-kosan" element={<Detailkosan />} />
         <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
