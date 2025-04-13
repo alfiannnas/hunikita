@@ -6,10 +6,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from "axios";
 import { API } from '../constant'
+import { Edit, Trash2 } from "lucide-react";
+import { Alert } from "../components/Alert";
+import { SuccessMessage } from "../components/SuccessMessage";
 
 const Listiklan = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [idProperty, setIdProperty] = useState(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const itemsPerPage = 8;
   const auth = useSelector((state) => state.auth )
   const navigate = useNavigate();
@@ -77,8 +83,34 @@ const Listiklan = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+  const handleDelete = async () => {
+    if (idProperty === null) return;
+
+    try {
+      const response = await axios.delete(`${API.DELETE_PROPERTIES_BY_USER}/${idProperty}`, {
+        headers: {
+          Authorization: 'Bearer ' + auth.token
+        }
+      });
+
+      if (response.status === 200) {
+        setIsAlertOpen(false);
+        setIsOpen(true);
+        // Refresh data setelah menghapus
+        setData(data.filter(item => item.id !== idProperty));
+      }
+    } catch (err) {
+      console.error("Error deleting property:", err);
+      if (err.response?.status === 400) {
+        alert(err.response.data.detail)
+      } else {
+        alert("Server Error! Coba lagi beberapa saat")
+      }
+    }
+  };
+
   return (
-    <div>
+    <div className="relative">
       <Navbar />
       <div className="gap-4 ml-[36px] mt-[44px]">
         <h1 className="text-[36px] font-bold">List Properti Anda</h1>
@@ -102,6 +134,7 @@ const Listiklan = () => {
                 <th className="pb-3">Jenis Properti</th>
                 <th className="pb-3">Alamat</th>
                 <th className="pb-3">Status</th>
+                <th className="pb-3">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -135,6 +168,17 @@ const Listiklan = () => {
                       {item.status || 'Diproses'}
                     </span>
                   </td>
+                  <td className="py-3 flex space-x-2">
+                    <button
+                      onClick={() => {
+                        setIdProperty(item.id);
+                        setIsAlertOpen(true);
+                      }}
+                      className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -163,6 +207,25 @@ const Listiklan = () => {
 
       <div className="mt-[50px]">
         <Footer />
+      </div>
+
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+           style={{ display: isAlertOpen || isOpen ? 'flex' : 'none' }}>
+        <Alert
+          isOpen={isAlertOpen}
+          title="Hapus"
+          message="Apakah anda yakin ingin menghapus properti ini?"
+          onCancel={() => setIsAlertOpen(false)}
+          onConfirm={handleDelete}
+        />
+        
+        <SuccessMessage 
+          isOpen={isOpen} 
+          onClose={() => setIsOpen(false)}
+          title="Hapus Sukses"
+          message="Data properti telah berhasil dihapus!"
+          type="delete"
+        />
       </div>
     </div>
   )
