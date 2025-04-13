@@ -52,4 +52,7 @@ export class LoginRequest {
     @IsString()
     @IsNotEmpty()
     password:string = ''
+
+    @IsString()
+    role:string = ''
 }

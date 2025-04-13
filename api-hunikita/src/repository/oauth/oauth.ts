@@ -18,6 +18,7 @@ export interface IRepository {
         no_kontak?: string,
     ):Promise<ResultSetHeader>
     takeByEmail(email:string):Promise<RowDataPacket>
+    roleAccess(requestRole: string, email: string): Promise<boolean>
 }
 
 export class Repository implements IRepository {
@@ -81,6 +82,28 @@ export class Repository implements IRepository {
             return results as RowDataPacket
         }catch (error) {
             throw error
+        }
+    }
+
+    async roleAccess(requestRole: string, email: string): Promise<boolean> {
+        try {
+            const [results] = await this.master.execute(
+                "SELECT role FROM users WHERE email = ? LIMIT 1",
+                [email]
+            );
+            
+            const rows = results as RowDataPacket[];
+            if (rows.length === 0) {
+                return false;
+            }
+
+            const userRole = rows[0].role;
+
+
+            return requestRole === userRole;
+            
+        } catch (error) {
+            throw error;
         }
     }
 }

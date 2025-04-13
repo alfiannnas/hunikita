@@ -65,7 +65,7 @@ export class Controller {
         await this.svc.login(loginReq).then((resp)=> {
             res.status(status.OK).send({data: resp})
         }).catch((err: Error)=> {
-            if (err == error.USER_NOT_FOUND || err == error.WRONG_PASSWORD) {
+            if (err == error.USER_NOT_FOUND || err == error.WRONG_PASSWORD || err == error.PERMISSION_DENIED) {
                 res.status(status.BAD_REQUEST).
                     send({detail:err.message})
                 return 
