@@ -227,7 +227,7 @@ const AdminPropertiEdit = () => {
                         <h1 className="text-xl font-medium text-gray-800 mb-1">Deskripsi {properties.property_type_name}</h1>
                         
                         <h1 className="text-lg font-medium text-gray-800 mb-1">
-                            {properties?.fasilitas ? `Kamar Mandi Luar: ${formatRupiah(properties?.harga)} / Bulan` : ''}
+                            {properties?.fasilitas ? `Kamar Mandi Dalam: ${formatRupiah(properties?.harga)} / Bulan` : ''}
                         </h1>
                         {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
                         <div className="flex flex-wrap gap-8">
@@ -268,7 +268,7 @@ const AdminPropertiEdit = () => {
                         `}</style>
 
                         <h1 className="text-lg font-medium text-gray-800 mb-1">
-                            {properties?.fasilitas_1 ? `Kamar Mandi Dalam: ${formatRupiah(properties?.harga)} / Bulan` : ''}
+                            {properties?.fasilitas_1 ? `Kamar Mandi Luar: ${formatRupiah(properties?.harga_1)} / Bulan` : ''}
                         </h1>
                         {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
                         <div className="flex flex-wrap gap-8">

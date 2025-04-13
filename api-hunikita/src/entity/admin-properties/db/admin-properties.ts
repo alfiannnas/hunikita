@@ -10,6 +10,7 @@ export interface AdminProperties {
     img_path?: string;
     status: string;
     harga: number;
+    harga_1: number;
     created_at: Date;
     updated_at: Date;
     owner_phone: string;
@@ -32,6 +33,7 @@ export interface CreateAdminPropertiesRequest {
     address: string;
     status: string;
     harga: number;
+    harga_1: number;
     room_count: number;
     img_path?: string;
     owner_phone: string;

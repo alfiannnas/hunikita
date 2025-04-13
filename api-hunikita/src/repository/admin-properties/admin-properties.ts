@@ -25,7 +25,7 @@ export class Repository implements IRepository {
                 p.province, p.city, p.subdistrict, p.jenis_properti, p.umur_bangunan,
                 p.jam_bertamu, p.pelihara_binatang, p.fasilitas, p.fasilitas_bersama,
                 p.fasilitas_1, p.fasilitas_bersama_1, p.petunjuk_arah,
-                p.longitude, p.latitude
+                p.longitude, p.latitude, p.harga_1
                 FROM properties p
                 LEFT JOIN property_types pt ON p.property_type_id = pt.id
                 WHERE p.id = ? 
