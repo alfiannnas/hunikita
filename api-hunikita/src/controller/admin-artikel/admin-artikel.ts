@@ -49,7 +49,10 @@ export class Controller implements IController {
                 slug: req.body.slug,
                 isi: req.body.isi,
                 gambar: req.body.gambar,
-                status: req.body.status || 'Draft'
+                status: req.body.status || 'Draft',
+                penulis: req.body.penulis,
+                location: req.body.location,
+                kategori: req.body.kategori
             };
             
             console.log('Data yang akan dikirim ke service:', data);

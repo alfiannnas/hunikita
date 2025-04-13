@@ -11,6 +11,7 @@ import { SuccessMessage } from "../../components/SuccessMessage";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Input } from "../../components/Input";
+import { Select } from "../../components/Select";
 
 const AdminArtikelEdit = () => {
     const [artikel, setArtikel] = useState([]);
@@ -29,11 +30,24 @@ const AdminArtikelEdit = () => {
         judul: '',
         konten: '',
         gambar: null,
-        preview: ''
+        preview: '',
+        penulis: '',
+        location: '',
+        kategori: ''
     });
 
     // Tambahkan state untuk menyimpan ID dari URL
     const [artikelId, setArtikelId] = useState(null);
+
+    // Opsi kategori untuk dropdown
+    const kategoriOptions = [
+        { value: 'Berita', label: 'Berita' },
+        { value: 'Tips & Trik', label: 'Tips & Trik' },
+        { value: 'Lifestyle', label: 'Lifestyle' },
+        { value: 'Properti', label: 'Properti' },
+        { value: 'Travel', label: 'Travel' },
+        { value: 'Lainnya', label: 'Lainnya' }
+    ];
 
     // Konfigurasi modules untuk Quill
     const modules = {
@@ -104,7 +118,10 @@ const AdminArtikelEdit = () => {
                 judul: artikelData.judul || '',
                 konten: artikelData.isi || '',
                 gambar: artikelData.gambar || null,
-                preview: artikelData.gambar || ''
+                preview: artikelData.gambar || '',
+                penulis: artikelData.penulis || '',
+                location: artikelData.location || '',
+                kategori: artikelData.kategori || ''
             });
 
         } catch (error) {
@@ -169,20 +186,18 @@ const AdminArtikelEdit = () => {
         e.preventDefault();
         
         try {
-            // Buat slug dari judul
             const slug = formData.judul.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
             
-            // Gunakan objek dengan gambar dalam format base64
             const dataToSend = {
                 judul: formData.judul.trim(),
                 isi: formData.konten.trim(),
                 slug: slug,
-                gambar: formData.gambar // Kirim gambar sebagai base64
+                gambar: formData.gambar,
+                penulis: formData.penulis.trim(),
+                location: formData.location.trim(),
+                kategori: formData.kategori
             };
             
-            console.log('Data yang akan dikirim:', dataToSend);
-            
-            // Kirim request dengan method PUT untuk update
             const response = await axios.put(`${API.UPDATE_ADMIN_ARTIKEL}/${artikelId}`, dataToSend, {
                 headers: {
                     Authorization: `Bearer ${auth.token}`,
@@ -190,20 +205,20 @@ const AdminArtikelEdit = () => {
                 }
             });
             
-            console.log('Response dari server:', response.data);
-            
             if (response.data.status === 'success') {
                 setIsOpen(true);
                 setFormData({
                     judul: '',
                     konten: '',
                     gambar: null,
-                    preview: ''
+                    preview: '',
+                    penulis: '',
+                    location: '',
+                    kategori: ''
                 });
                 
-                // Tambahkan timeout sebelum navigasi agar pesan sukses terlihat
                 setTimeout(() => {
-                    navigate('/admin-artikel'); // Navigasi ke halaman admin artikel
+                    navigate('/admin-artikel');
                 }, 1500);
             } else {
                 alert(response.data.message || 'Terjadi kesalahan saat menyimpan artikel');
@@ -263,6 +278,34 @@ const AdminArtikelEdit = () => {
                                     required
                                 />
 
+                                {/* Kategori Input */}
+                                <Select
+                                    label="Kategori Artikel"
+                                    options={kategoriOptions}
+                                    value={formData.kategori}
+                                    onChange={(e) => setFormData(prev => ({...prev, kategori: e.target.value}))}
+                                    required
+                                    placeholder="Pilih kategori artikel"
+                                />
+
+                                {/* Penulis Input */}
+                                <Input
+                                    label="Nama Penulis"
+                                    value={formData.penulis}
+                                    onChange={(e) => setFormData(prev => ({...prev, penulis: e.target.value}))}
+                                    required
+                                    placeholder="Masukkan nama penulis"
+                                />
+
+                                {/* Location Input */}
+                                <Input
+                                    label="Lokasi Penerbitan"
+                                    value={formData.location}
+                                    onChange={(e) => setFormData(prev => ({...prev, location: e.target.value}))}
+                                    required
+                                    placeholder="Masukkan lokasi penerbitan"
+                                />
+
                                 {/* Image Upload */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -303,7 +346,7 @@ const AdminArtikelEdit = () => {
                                     type="submit"
                                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
                                 >
-                                    Simpan Artikel
+                                    Update Artikel
                                 </button>
                             </form>
                         </div>
@@ -316,12 +359,12 @@ const AdminArtikelEdit = () => {
                         onCancel={() => setIsAlertOpen(false)}
                         onConfirm={handleDelete}
                     />
-                           <SuccessMessage 
-                    isOpen={isOpen} 
-                    onClose={() => setIsOpen(false)}
-                    title="Berhasil"
-                    message="Artikel berhasil ditambahkan!"
-                    type="success"
+                    <SuccessMessage 
+                        isOpen={isOpen} 
+                        onClose={() => setIsOpen(false)}
+                        title="Berhasil"
+                        message="Artikel berhasil diperbarui!"
+                        type="success"
                     />
                 </main>
             </div>

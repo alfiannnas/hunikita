@@ -46,7 +46,7 @@ export class Repository implements IRepository {
                     kategori,
                     penulis,
                     location
-                ) VALUES (?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
             const bindParams = [
@@ -56,8 +56,8 @@ export class Repository implements IRepository {
                 data.gambar || null,
                 data.status || 'Draft',
                 data.kategori || null,
-                data.penulis, 
-                data.location
+                data.penulis || null, 
+                data.location || null,
             ];
 
             const [result] = await this.master.execute(query, bindParams);
@@ -94,11 +94,11 @@ export class Repository implements IRepository {
                 updateFields.push('status = ?')
                 values.push(data.status)
             }
-            if (data.status !== undefined) {
+            if (data.penulis !== undefined) {
                 updateFields.push('penulis = ?')
                 values.push(data.penulis)
             }
-            if (data.status !== undefined) {
+            if (data.location !== undefined) {
                 updateFields.push('location = ?')
                 values.push(data.location)
             }

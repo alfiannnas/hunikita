@@ -11,6 +11,7 @@ import { SuccessMessage } from "../../components/SuccessMessage";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Input } from "../../components/Input";
+import { Select } from "../../components/Select";
 
 const AdminArtikelCreate = () => {
     const [artikel, setArtikel] = useState([]);
@@ -29,8 +30,21 @@ const AdminArtikelCreate = () => {
         judul: '',
         konten: '',
         gambar: null,
-        preview: ''
+        preview: '',
+        penulis: '',
+        location: '',
+        kategori: ''
     });
+
+    // Opsi kategori untuk dropdown
+    const kategoriOptions = [
+        { value: 'Berita', label: 'Berita' },
+        { value: 'Tips & Trik', label: 'Tips & Trik' },
+        { value: 'Lifestyle', label: 'Lifestyle' },
+        { value: 'Properti', label: 'Properti' },
+        { value: 'Travel', label: 'Travel' },
+        { value: 'Lainnya', label: 'Lainnya' }
+    ];
 
     // Konfigurasi modules untuk Quill
     const modules = {
@@ -140,10 +154,11 @@ const AdminArtikelCreate = () => {
                 judul: formData.judul.trim(),
                 isi: formData.konten.trim(),
                 slug: slug,
-                gambar: formData.gambar // Kirim gambar sebagai base64
+                gambar: formData.gambar,
+                penulis: formData.penulis.trim(),
+                location: formData.location.trim(),
+                kategori: formData.kategori
             };
-            
-            console.log('Data yang akan dikirim:', dataToSend);
             
             // Kirim request dengan Content-Type application/json
             const response = await axios.post(API.POST_ADMIN_ARTIKEL, dataToSend, {
@@ -161,7 +176,10 @@ const AdminArtikelCreate = () => {
                     judul: '',
                     konten: '',
                     gambar: null,
-                    preview: ''
+                    preview: '',
+                    penulis: '',
+                    location: '',
+                    kategori: ''
                 });
                 
                 // Tambahkan timeout sebelum navigasi agar pesan sukses terlihat
@@ -224,6 +242,34 @@ const AdminArtikelCreate = () => {
                                     value={formData.judul}
                                     onChange={(e) => setFormData(prev => ({...prev, judul: e.target.value}))}
                                     required
+                                />
+
+                                {/* Kategori Input */}
+                                <Select
+                                    label="Kategori Artikel"
+                                    options={kategoriOptions}
+                                    value={formData.kategori}
+                                    onChange={(e) => setFormData(prev => ({...prev, kategori: e.target.value}))}
+                                    required
+                                    placeholder="Pilih kategori artikel"
+                                />
+
+                                {/* Penulis Input */}
+                                <Input
+                                    label="Nama Penulis"
+                                    value={formData.penulis}
+                                    onChange={(e) => setFormData(prev => ({...prev, penulis: e.target.value}))}
+                                    required
+                                    placeholder="Masukkan nama penulis"
+                                />
+
+                                {/* Location Input */}
+                                <Input
+                                    label="Lokasi Penerbitan"
+                                    value={formData.location}
+                                    onChange={(e) => setFormData(prev => ({...prev, location: e.target.value}))}
+                                    required
+                                    placeholder="Masukkan lokasi penerbitan"
                                 />
 
                                 {/* Image Upload */}
