@@ -1,13 +1,14 @@
 import { useCallback, useState, useEffect, useRef } from "react";
 import { doLogout } from "../store";
 import {useSelector, useDispatch} from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DropdownHover from "./Dropdownhover";
 import { User } from "lucide-react";
 
 const Navbar = () => {
   const auth = useSelector((state)=> state.auth)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   
@@ -26,7 +27,8 @@ const Navbar = () => {
 
   const logoutHandler = useCallback(() => {
     dispatch(doLogout())
-  }, [dispatch])
+    navigate('/login')
+  }, [dispatch, navigate])
 
   return (
     <div className="w-full flex justify-between bg-[#4E97D1] items-center relative">
