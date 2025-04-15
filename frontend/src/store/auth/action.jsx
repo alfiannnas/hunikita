@@ -1,4 +1,5 @@
-import {LOGIN, LOGOUT} from './type'
+import {LOGIN, LOGOUT, UPDATE_AUTH} from './type'
+
 export function doLogin(payload){
   // console.log(payload)
   const body = {
@@ -15,6 +16,12 @@ export function doLogin(payload){
   }
 }
 
+export function updateAuth(payload){
+  return {
+    type: UPDATE_AUTH,
+    payload: payload
+  }
+}
 
 export function doLogout(){
   return {

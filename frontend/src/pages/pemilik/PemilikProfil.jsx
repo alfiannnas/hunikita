@@ -1,5 +1,5 @@
 import Navbar from '../../components/Navbar'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import Footer from '../../components/Footer'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
@@ -10,16 +10,23 @@ import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 import { Input } from '../../components/Input'
 import { Select } from '../../components/Select'
+import { updateAuth } from '../../store/auth/action'
 
 const PemilikProfil = () => {
-  const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [idProperty, setIdProperty] = useState(null);
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const itemsPerPage = 8;
-  const auth = useSelector((state) => state.auth )
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const auth = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Format tanggal dari ISO string ke format YYYY-MM-DD
+  const formatDate = (isoString) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    return date.toISOString().split('T')[0];
+  };
+
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -33,6 +40,8 @@ const PemilikProfil = () => {
     pendidikan_terakhir: "",
     no_kontak: "",
     no_kontak_darurat: "",
+    tgl_lahir: "",
+    profile_image: ""
   });
 
   // Opsi untuk dropdown
@@ -56,94 +65,73 @@ const PemilikProfil = () => {
     { value: "S3", label: "S3" }
   ];
 
-  console.log(API.GET_PROPERTIES_BY_USER)
-  const fetchData = useCallback(() => {
-    const userId = auth?.id;
-    
-    if (!userId) {
-      console.error("User ID tidak tersedia");
-      return;
-    }
-    
-    axios
-      .get(API.GET_PROPERTIES_BY_USER, {
-        params: {
-          userId: userId,
-          limit: 10,
-          offset: 0
-        }, 
+  // Fetch user profile data
+  const fetchUserProfile = useCallback(async () => {
+    try {
+      const response = await axios.get(API.GET_PEMILIK_PROFILE, {
         headers: {
           Authorization: 'Bearer ' + auth.token
         }
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          setData((data) => [...data, ...res.data.data])
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching properties:", err);
-        if (err.response?.status === 400) {
-          alert(err.response.data.detail)
-        } else {
-          alert("Server Error! Coba lagi beberapa saat")
+      });
+
+      if (response.data.status) {
+        const userData = response.data.data;
+        setValues({
+          ...userData,
+          tgl_lahir: formatDate(userData.tgl_lahir)
+        });
+      }
+    } catch (err) {
+      console.error("Error fetching user profile:", err);
+      setError("Gagal mengambil data profil");
+    }
+  }, [auth.token]);
+
+  // Update user profile
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const formData = {
+        ...values,
+      };
+
+      const response = await axios.put(API.UPDATE_PEMILIK_PROFILE, formData, {
+        headers: {
+          Authorization: 'Bearer ' + auth.token
         }
       });
-  }, [auth.token, auth?.id])
-  
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
+
+      if (response.data.status) {
+        setIsSuccess(true);
+        // Update redux state dengan data terbaru
+        dispatch(updateAuth({
+          ...auth,
+          name: values.name,
+          email: values.email,
+          role: values.role,
+          no_kontak: values.no_kontak
+        }));
+        // Refresh data setelah update
+        fetchUserProfile();
+      }
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      setError(err.response?.data?.message || "Gagal mengupdate profil");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!auth) {
       navigate('/login');
+    } else {
+      fetchUserProfile();
     }
-  }, [auth, navigate]);
-
-  // Hitung total halaman
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-
-  // Data yang ditampilkan berdasarkan halaman
-  const displayedProperties = data.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // Fungsi untuk navigasi halaman
-  const nextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const prevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  const handleDelete = async () => {
-    if (idProperty === null) return;
-
-    try {
-      const response = await axios.delete(`${API.DELETE_PROPERTIES_BY_USER}/${idProperty}`, {
-        headers: {
-          Authorization: 'Bearer ' + auth.token
-        }
-      });
-
-      if (response.status === 200) {
-        setIsAlertOpen(false);
-        setIsOpen(true);
-        // Refresh data setelah menghapus
-        setData(data.filter(item => item.id !== idProperty));
-      }
-    } catch (err) {
-      console.error("Error deleting property:", err);
-      if (err.response?.status === 400) {
-        alert(err.response.data.detail)
-      } else {
-        alert("Server Error! Coba lagi beberapa saat")
-      }
-    }
-  };
+  }, [auth, navigate, fetchUserProfile]);
 
   return (
     <div className="relative min-h-screen flex flex-col">
@@ -153,13 +141,26 @@ const PemilikProfil = () => {
       </div>
 
       {/* Form Profil */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6 mx-[36px]">
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-6 mb-6 mx-[36px]">
         <h2 className="text-xl font-semibold mb-6">Data Profil</h2>
+        
+        {/* Alert Error */}
+        {error && (
+          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+
+        {isSuccess && (
+          <div className="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
+            Profil berhasil diperbarui!
+          </div>
+        )}
         
         <div className="grid grid-cols-2 gap-4">
           <Input
             label="Nama"
-            name="nama"
+            name="name"
             placeholder="Masukkan nama"
             value={values.name}
             onChange={(e) => setValues({ ...values, name: e.target.value })}
@@ -174,6 +175,14 @@ const PemilikProfil = () => {
             value={values.email}
             onChange={(e) => setValues({ ...values, email: e.target.value })}
             required
+          />
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            placeholder="Masukkan password baru"
+            value={''}
+            onChange={(e) => setValues({ ...values, password: e.target.value })}
           />
 
           <Select
@@ -250,29 +259,41 @@ const PemilikProfil = () => {
             onChange={(e) => setValues({ ...values, no_kontak_darurat: e.target.value })}
             required
           />
+
+          <Input
+            label="Tanggal Lahir"
+            type="date"
+            name="tgl_lahir"
+            value={values.tgl_lahir}
+            onChange={(e) => setValues({ ...values, tgl_lahir: e.target.value })}
+            required
+          />
         </div>
 
         <div className="mt-6 flex justify-end">
-          <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-            Simpan Perubahan
+          <button 
+            type="submit"
+            disabled={isLoading}
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+          >
+            {isLoading ? "Menyimpan..." : "Simpan Perubahan"}
           </button>
         </div>
-      </div>
-
+      </form>
 
       <Footer />
 
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
-           style={{ display: isAlertOpen || isOpen ? 'flex' : 'none' }}>
-        
-        <SuccessMessage 
-          isOpen={isOpen} 
-          onClose={() => setIsOpen(false)}
-          title="Hapus Sukses"
-          message="Data properti telah berhasil dihapus!"
-          type="delete"
-        />
-      </div>
+      {isSuccess && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <SuccessMessage 
+            isOpen={isSuccess} 
+            onClose={() => setIsSuccess(false)}
+            title="Update Sukses"
+            message="Data profil telah berhasil diperbarui!"
+            type="success"
+          />
+        </div>
+      )}
     </div>
   )
 }

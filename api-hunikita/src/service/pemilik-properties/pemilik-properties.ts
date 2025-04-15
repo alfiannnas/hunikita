@@ -1,6 +1,7 @@
 import { ERROR } from "@constant"
 import { PemilikProperties, PemilikPropertiesResponse, CreatePemilikPropertiesRequest } from "@entity/pemilik-properties/db"
 import { IRepository } from "../../repository/pemilik-properties"
+import { GetUserResponse } from "@entity/pemilik-properties/http"
 
 export interface IService {
     get(id: number): Promise<PemilikPropertiesResponse>
@@ -9,6 +10,8 @@ export interface IService {
     update(id: number, data: Partial<CreatePemilikPropertiesRequest>): Promise<PemilikPropertiesResponse>
     delete(id: number): Promise<PemilikPropertiesResponse>
     updateStatus(id: number, status: string): Promise<PemilikPropertiesResponse>
+    getUser(id: number): Promise<GetUserResponse>
+    updateUser(id: number, updateData: Partial<GetUserResponse>): Promise<GetUserResponse>
 }
 
 export class Service implements IService {
@@ -197,6 +200,77 @@ export class Service implements IService {
                 message: "Terjadi kesalahan pada server",
                 data: null
             }
+        }
+    }
+
+    async getUser(id: number): Promise<GetUserResponse> {
+        try {
+            // Ambil data dari repository
+            const result = await this.repo.takeUser(id)
+
+            // Jika user tidak ditemukan
+            if (!result || Array.isArray(result) && result.length === 0) {
+                throw new Error("User tidak ditemukan")
+            }
+
+            // Mapping data ke format yang diinginkan
+            const user = result[0]
+            return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                no_kontak: user.no_kontak,
+                password: user.password,
+                profile_image: user.profile_image,
+                jenis_kelamin: user.jenis_kelamin,
+                kota_asal: user.kota_asal,
+                pekerjaan: user.pekerjaan,
+                nama_kampus: user.nama_kampus,
+                status: user.status,
+                pendidikan_terakhir: user.pendidikan_terakhir,
+                no_kontak_darurat: user.no_kontak_darurat,
+                tgl_lahir: user.tgl_lahir
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async updateUser(id: number, updateData: Partial<GetUserResponse>): Promise<GetUserResponse> {
+        try {
+            // Cek apakah user ada
+            const existingUser = await this.repo.takeUser(id)
+            if (!existingUser || Array.isArray(existingUser) && existingUser.length === 0) {
+                throw new Error("User tidak ditemukan")
+            }
+
+            // Update data user
+            await this.repo.updateUser(id, updateData)
+
+            // Ambil data user yang sudah diupdate
+            const updatedUser = await this.repo.takeUser(id)
+            const user = updatedUser[0]
+
+            return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                no_kontak: user.no_kontak,
+                password: user.password,
+                profile_image: user.profile_image,
+                jenis_kelamin: user.jenis_kelamin,
+                kota_asal: user.kota_asal,
+                pekerjaan: user.pekerjaan,
+                nama_kampus: user.nama_kampus,
+                status: user.status,
+                pendidikan_terakhir: user.pendidikan_terakhir,
+                no_kontak_darurat: user.no_kontak_darurat,
+                tgl_lahir: user.tgl_lahir
+            }
+        } catch (error) {
+            throw error
         }
     }
 }

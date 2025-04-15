@@ -4,9 +4,13 @@ export const API = {
     LOGIN: BASE_URL + "/login",
     ADMIN_LOGIN: BASE_URL + "/admin-login",
     REGISTER: BASE_URL + "/register",
+
+    // Pemilik Properties
     GET_PROPERTIES_BY_USER: BASE_URL + "/pemilik-properties",
     POST_PROPERTIES_BY_PEMILIK: BASE_URL + "/pemilik-properties",
     DELETE_PROPERTIES_BY_USER: BASE_URL + "/pemilik-properties",
+    GET_PEMILIK_PROFILE: BASE_URL + "/user/me",
+    UPDATE_PEMILIK_PROFILE: BASE_URL + "/user/me",
 
     GET_USER_DATA: BASE_URL + "/get-user",
     UPDATE_USER_DATA: BASE_URL + "/admin-profil/:id",

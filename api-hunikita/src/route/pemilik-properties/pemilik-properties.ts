@@ -37,4 +37,16 @@ export function pemilikProperties(router: Router, handler: Controller) {
         Middleware.Auth,
         handler.delete.bind(handler)
     );
+
+    // Get current user
+    router.get('/user/me',
+        Middleware.Auth,
+        handler.getCurrentUser.bind(handler)
+    );
+
+    // Edit user
+    router.put('/user/me',
+        Middleware.Auth,
+        handler.editUser.bind(handler)
+    );
 }
