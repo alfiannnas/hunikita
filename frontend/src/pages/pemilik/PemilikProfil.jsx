@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from "axios";
 import { API } from '../../constant'
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 import { Input } from '../../components/Input'
@@ -19,6 +19,7 @@ const PemilikProfil = () => {
   const auth = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   // Format tanggal dari ISO string ke format YYYY-MM-DD
   const formatDate = (isoString) => {
@@ -76,8 +77,11 @@ const PemilikProfil = () => {
 
       if (response.data.status) {
         const userData = response.data.data;
+        // Jangan set password dari response
+        const { password, ...userDataWithoutPassword } = userData;
         setValues({
-          ...userData,
+          ...userDataWithoutPassword,
+          password: '', // Set password kosong
           tgl_lahir: formatDate(userData.tgl_lahir)
         });
       }
@@ -94,8 +98,13 @@ const PemilikProfil = () => {
     setError(null);
 
     try {
+      // Buat object formData tanpa password terlebih dahulu
+      const { password, ...formDataWithoutPassword } = values;
+      
+      // Hanya masukkan password ke formData jika tidak kosong dan bukan string kosong
       const formData = {
-        ...values,
+        ...formDataWithoutPassword,
+        ...(password && password.trim() !== '' ? { password } : {})
       };
 
       const response = await axios.put(API.UPDATE_PEMILIK_PROFILE, formData, {
@@ -114,6 +123,8 @@ const PemilikProfil = () => {
           role: values.role,
           no_kontak: values.no_kontak
         }));
+        // Reset password field
+        setValues(prev => ({ ...prev, password: '' }));
         // Refresh data setelah update
         fetchUserProfile();
       }
@@ -176,14 +187,23 @@ const PemilikProfil = () => {
             onChange={(e) => setValues({ ...values, email: e.target.value })}
             required
           />
-          <Input
-            label="Password"
-            type="password"
-            name="password"
-            placeholder="Masukkan password baru"
-            value={''}
-            onChange={(e) => setValues({ ...values, password: e.target.value })}
-          />
+          <div className="relative">
+            <Input
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Masukkan password baru"
+              value={values.password}
+              onChange={(e) => setValues({ ...values, password: e.target.value })}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-[38px] text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
           <Select
             label="Jenis Kelamin"
