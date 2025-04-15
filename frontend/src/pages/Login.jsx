@@ -12,6 +12,7 @@ const Login = () => {
     password: "",
     role: "Pemilik"
   });
+  const [error, setError] = useState(null);
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -30,6 +31,8 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setError(null);
+
     axios
       .post(API.LOGIN, values)
       .then((res) => {
@@ -39,10 +42,10 @@ const Login = () => {
         }
       })
       .catch((err) => {
-          if (err.response.status == 400) {
-            alert(err.response.data.detail)
+          if (err.response?.status === 400) {
+            setError(err.response.data.detail);
           } else {
-            alert("Server Error! Coba lagi beberapa saat")
+            setError("Server Error! Coba lagi beberapa saat");
           }
       });
   };
@@ -56,6 +59,12 @@ const Login = () => {
               Login
             </h1>
             <p>Masukkan email dan sandi</p>
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
 
             <form className="mt-9" onSubmit={handleSubmit}>
               <div>
