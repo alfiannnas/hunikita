@@ -8,13 +8,25 @@ import { useNavigate } from "react-router-dom";
 import { Input } from '../../components/Input';
 import { Select } from "../../components/Select";
 import MapComponent from '../../components/MapComponent';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const Formtambah = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const auth = useSelector((state) => state.auth )
   const navigate = useNavigate();
+
+  // Konfigurasi modules untuk Quill - hanya bullets
+  const modules = {
+    toolbar: [
+      [{ 'list': 'bullet' }],
+    ],
+  };
+
+  const formats = [
+    'list',
+  ];
 
   useEffect(() => {
     if (!auth) {
@@ -174,6 +186,22 @@ const Formtambah = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  // Handle perubahan untuk editor Quill
+  const handleQuillChange = (value, name) => {
+    // Jika konten kosong, tambahkan bullet list
+    if (!value || value === '<p><br></p>') {
+      value = '<ul><li><br></li></ul>';
+    } else if (!value.includes('<ul>')) {
+      // Jika konten tidak memiliki bullet, bungkus dalam <ul>
+      value = `<ul><li>${value.replace(/<p>|<\/p>/g, '')}</li></ul>`;
+    }
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -367,23 +395,25 @@ const Formtambah = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas"
-              type="text"
-              name='fasilitas'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas}
-              placeholder="Masukkan Fasilitas"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas Bersama"
-              type="text"
-              name='fasilitas_bersama'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas Bersama</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas_bersama}
-              placeholder="Masukkan Fasilitas Bersama"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas_bersama')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-[20px]">
@@ -397,23 +427,25 @@ const Formtambah = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas Tambahan Kamar Mandi Luar (Jika ada)"
-              type="text"
-              name='fasilitas_1'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas Tambahan Kamar Mandi Luar (Jika ada)</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas_1}
-              placeholder="Masukkan Fasilitas Tambahan Kamar Mandi Luar"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas_1')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas Bersama Tambahan Kamar Mandi Luar (Jika ada)"
-              type="text"
-              name='fasilitas_bersama_1'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas Bersama Tambahan Kamar Mandi Luar (Jika ada)</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas_bersama_1}
-              placeholder="Masukkan Fasilitas Bersama Tambahan Kamar Mandi Luar"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas_bersama_1')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-4">
