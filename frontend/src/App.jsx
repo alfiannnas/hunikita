@@ -17,6 +17,8 @@ import Detailartikel from "./pages/Detailartikel";
 // Pemilik
 import PemilikProperti from "./pages/pemilik/PemilikProperti";
 import PemilikPropertiCreate from "./pages/pemilik/PemilikPropertiCreate";
+import PemilikPropertiEdit from "./pages/pemilik/PemilikPropertiEdit";
+
 import PemilikProfil from './pages/pemilik/PemilikProfil';
 import Formedit from "./pages/Formedit";
 
@@ -57,6 +59,11 @@ function App() {
         <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
         <Route path="/detail-artikel" element={<Detailartikel />} />
         <Route path="/properties/create" element={<PemilikPropertiCreate />} />
+        <Route path="/properties/edit/:id" element={
+          <UserProtectedRoute>
+            <PemilikPropertiEdit />
+          </UserProtectedRoute>
+        } />
         <Route path="/form-edit" element={<Formedit />} />
 
         {/* Protected Admin Routes */}

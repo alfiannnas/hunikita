@@ -7,7 +7,9 @@ export const API = {
 
     // Pemilik Properties
     GET_PROPERTIES_BY_USER: BASE_URL + "/pemilik-properties",
+    GET_PROPERTY_BY_ID: BASE_URL + "/pemilik-properties",
     POST_PROPERTIES_BY_PEMILIK: BASE_URL + "/pemilik-properties",
+    UPDATE_PROPERTIES_BY_PEMILIK: BASE_URL + "/pemilik-properties",
     DELETE_PROPERTIES_BY_USER: BASE_URL + "/pemilik-properties",
     GET_PEMILIK_PROFILE: BASE_URL + "/user/me",
     UPDATE_PEMILIK_PROFILE: BASE_URL + "/user/me",

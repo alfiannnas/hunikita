@@ -112,9 +112,69 @@ export class Repository implements IRepository {
                 updateFields.push('owner_email = ?')
                 values.push(data.owner_email)
             }
+            if (data.province !== undefined) {
+                updateFields.push('province = ?')
+                values.push(data.province)
+            }
+            if (data.subdistrict !== undefined) {
+                updateFields.push('subdistrict = ?')
+                values.push(data.subdistrict)
+            }
+            if (data.city !== undefined) {
+                updateFields.push('city = ?')
+                values.push(data.city)
+            }
+            if (data.owner_email !== undefined) {
+                updateFields.push('owner_phone = ?')
+                values.push(data.owner_phone)
+            }
             if (data.name !== undefined) {
                 updateFields.push('name = ?')
                 values.push(data.name)
+            }
+            if (data.jam_bertamu !== undefined) {
+                updateFields.push('jam_bertamu = ?')
+                values.push(data.jam_bertamu)
+            }
+            if (data.pelihara_binatang !== undefined) {
+                updateFields.push('pelihara_binatang = ?')
+                values.push(data.pelihara_binatang)
+            }
+            if (data.jenis_properti !== undefined) {
+                updateFields.push('jenis_properti = ?')
+                values.push(data.jenis_properti)
+            }
+            if (data.umur_bangunan !== undefined) {
+                updateFields.push('umur_bangunan = ?')
+                values.push(data.umur_bangunan)
+            }
+            if (data.petunjuk_arah !== undefined) {
+                updateFields.push('petunjuk_arah = ?')
+                values.push(data.petunjuk_arah)
+            }
+            if (data.harga !== undefined) {
+                updateFields.push('harga = ?')
+                values.push(data.harga)
+            }
+            if (data.harga_1 !== undefined) {
+                updateFields.push('harga_1 = ?')
+                values.push(data.harga_1)
+            }
+            if (data.fasilitas !== undefined) {
+                updateFields.push('fasilitas = ?')
+                values.push(data.fasilitas)
+            }
+            if (data.fasilitas_1 !== undefined) {
+                updateFields.push('fasilitas_1 = ?')
+                values.push(data.fasilitas_1)
+            }
+            if (data.fasilitas_bersama !== undefined) {
+                updateFields.push('fasilitas_bersama = ?')
+                values.push(data.fasilitas_bersama)
+            }
+            if (data.fasilitas_bersama_1 !== undefined) {
+                updateFields.push('fasilitas_bersama_1 = ?')
+                values.push(data.fasilitas_bersama_1)
             }
             if (data.address !== undefined) {
                 updateFields.push('address = ?')
@@ -127,6 +187,14 @@ export class Repository implements IRepository {
             if (data.foto_properti !== undefined) {
                 updateFields.push('foto_properti = ?')
                 values.push(data.foto_properti)
+            }
+            if (data.longitude !== undefined) {
+                updateFields.push('longitude = ?')
+                values.push(data.longitude)
+            }
+            if (data.latitude !== undefined) {
+                updateFields.push('latitude = ?')
+                values.push(data.latitude)
             }
 
             values.push(id)
