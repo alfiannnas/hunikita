@@ -11,6 +11,7 @@ import { RowDataPacket } from "mysql2";
 export interface IService {
     register(req: RegisterRequest): Promise<RegisterResponse>
     login(req:LoginRequest):Promise<LoginResponse>
+    adminLogin(req:LoginRequest):Promise<LoginResponse>
 }
 
 export class Service implements IService{
@@ -95,6 +96,41 @@ export class Service implements IService{
             if (!roleAccess) {
                 throw ERROR.PERMISSION_DENIED
             }
+
+            token = jwt.sign({id: user.id, name: user.name, email: user.email, role:user.role}, "jwt-secret-key", {
+                expiresIn: "1d",
+            });
+
+            return {
+                id: user.id, 
+                name: user.name, 
+                email: user.email, 
+                role: user.role,
+                token
+            }
+        } catch(error) {
+            throw error as Error
+        }
+    }
+
+    async adminLogin(req:LoginRequest): Promise<LoginResponse> {
+        let token:string|undefined
+        try {
+            const result = await this.repo.takeByEmail(req.email)
+            if(result.length <= 0) {
+                throw ERROR.USER_NOT_FOUND
+            }
+
+            const user = result[0] as User
+            const v = await bcrypt.compare(req.password, user.password)
+            if (!v) {
+                throw ERROR.WRONG_PASSWORD
+            }
+
+            // const roleAccess = await this.repo.roleAccess(req.role, req.email)
+            // if (!roleAccess) {
+            //     throw ERROR.PERMISSION_DENIED
+            // }
 
             token = jwt.sign({id: user.id, name: user.name, email: user.email, role:user.role}, "jwt-secret-key", {
                 expiresIn: "1d",

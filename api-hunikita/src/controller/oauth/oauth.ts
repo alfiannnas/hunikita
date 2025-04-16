@@ -96,7 +96,7 @@ export class Controller {
         }
     
         try {
-            const resp = await this.svc.login(loginReq);
+            const resp = await this.svc.adminLogin(loginReq);
     
             if (resp.role !== 'Admin') {
                 res.status(status.FORBIDDEN).send({
@@ -122,7 +122,7 @@ export class Controller {
             console.error(err);
             res.status(status.INTERNAL_SERVER_ERROR).send({ 
                 message: "Internal Server Error",
-                alert: { type: 'error', message: "Terjadixxx kesalahan pada server" } 
+                alert: { type: 'error', message: "Terjadi kesalahan pada server" } 
             });
         }
     }
