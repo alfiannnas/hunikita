@@ -57,6 +57,14 @@ const Formedit = () => {
     latitude: ""
   });
 
+  // Tambahkan state untuk checkbox
+  const [isChecked, setIsChecked] = useState(false);
+
+  // Tambahkan handler untuk checkbox
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
+
   // Fungsi untuk mengambil data properti yang akan diedit
   const fetchPropertyData = async () => {
     try {
@@ -112,6 +120,17 @@ const Formedit = () => {
   };
 
   const handleValidation = () => {
+    // Validasi checkbox terlebih dahulu
+    if (!isChecked) {
+      alert('Mohon centang kotak konfirmasi bahwa data sudah benar');
+      return false;
+    }
+
+    if (!selectedImage) {
+      alert('Mohon upload foto properti');
+      return false;
+    }
+
     const requiredFields = [
       'owner_name',
       'owner_email',
@@ -119,7 +138,18 @@ const Formedit = () => {
       'name',
       'address',
       'room_count',
-      'property_type_id'
+      'property_type_id',
+      'province',
+      'city',
+      'subdistrict',
+      'jenis_properti',
+      'umur_bangunan',
+      'jam_bertamu',
+      'pelihara_binatang',
+      'petunjuk_arah',
+      'harga',
+      'fasilitas',
+      'fasilitas_bersama',
     ];
 
     for (const field of requiredFields) {
@@ -535,7 +565,10 @@ const Formedit = () => {
             <input
               type="checkbox"
               name='valid'
+              checked={isChecked}
+              onChange={handleCheckboxChange}
               className="bg-gray-300 border-none"
+              required
             />
             <h1 className="text-md">Pastikan semua data sudah benar!</h1>
           </div>

@@ -51,8 +51,18 @@ const Formtambah = () => {
     latitude: ""
   });
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
+
   const handleValidation = () => {
-    // Validasi foto properti terlebih dahulu
+    if (!isChecked) {
+      alert('Mohon centang kotak konfirmasi bahwa data sudah benar');
+      return false;
+    }
+
     if (!selectedImage) {
       alert('Mohon upload foto properti');
       return false;
@@ -477,7 +487,10 @@ const Formtambah = () => {
             <input
               type="checkbox"
               name='valid'
+              checked={isChecked}
+              onChange={handleCheckboxChange}
               className="bg-gray-300 border-none"
+              required
             />
             <h1 className="text-md">Pastikan semua data sudah benar!</h1>
           </div>
