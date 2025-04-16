@@ -52,6 +52,12 @@ const Formtambah = () => {
   });
 
   const handleValidation = () => {
+    // Validasi foto properti terlebih dahulu
+    if (!selectedImage) {
+      alert('Mohon upload foto properti');
+      return false;
+    }
+
     const requiredFields = [
       'owner_name',
       'owner_email',
@@ -59,7 +65,18 @@ const Formtambah = () => {
       'name',
       'address',
       'room_count',
-      'property_type_id'
+      'property_type_id',
+      'province',
+      'city',
+      'subdistrict',
+      'jenis_properti',
+      'umur_bangunan',
+      'jam_bertamu',
+      'pelihara_binatang',
+      'petunjuk_arah',
+      'harga',
+      'fasilitas',
+      'fasilitas_bersama',
     ];
 
     for (const field of requiredFields) {
