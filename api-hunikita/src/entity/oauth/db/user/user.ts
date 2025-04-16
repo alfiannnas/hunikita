@@ -12,4 +12,5 @@ export interface User{
     pendidikan_terakhir:string
     no_kontak_darurat:string
     no_kontak: string
+    tgl_lahir: string
 }

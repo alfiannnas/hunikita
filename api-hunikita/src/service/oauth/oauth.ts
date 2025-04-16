@@ -63,7 +63,8 @@ export class Service implements IService{
                 req.status, 
                 req.pendidikan_terakhir, 
                 req.no_kontak_darurat,
-                req.no_kontak
+                req.no_kontak,
+                req.tgl_lahir
             )
             insertedId = res.insertId
         } catch(error) {

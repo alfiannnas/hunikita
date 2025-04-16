@@ -20,6 +20,7 @@ const Register = () => {
     pendidikan_terakhir: "",
     no_kontak: "",
     no_kontak_darurat: "",
+    tgl_lahir: ""
   });
 
   const navigate = useNavigate();
@@ -33,6 +34,8 @@ const Register = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log('Data yang akan dikirim:', values);
+    console.log('Tanggal lahir saat submit:', values.tgl_lahir);
     axios
       .post(API.REGISTER, values)
       .then((res) => {
@@ -41,6 +44,7 @@ const Register = () => {
         } 
       })
       .catch((err) => {
+        console.error('Error data:', err.response?.data);
         if (err.response.status == 400) {
           alert(err.response.data.detail)
         } else {
@@ -216,6 +220,21 @@ const Register = () => {
                   placeholder="Masukkan nomor kontak darurat"
                   value={values.no_kontak_darurat}
                   onChange={(e) => setValues({ ...values, no_kontak_darurat: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="mt-2">
+                <Input
+                  label="Tanggal Lahir"
+                  type="date"
+                  name="tgl_lahir"
+                  value={values.tgl_lahir}
+                  onChange={(e) => {
+                    console.log('Nilai tanggal yang dipilih:', e.target.value);
+                    console.log('Tipe data tanggal:', typeof e.target.value);
+                    setValues({ ...values, tgl_lahir: e.target.value });
+                  }}
                   required
                 />
               </div>

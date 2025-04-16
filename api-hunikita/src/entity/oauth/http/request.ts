@@ -35,6 +35,9 @@ export class RegisterRequest{
     
     @IsString()
     pendidikan_terakhir:string = ''
+
+    @IsString()
+    tgl_lahir:string = ''
     
     @IsString()
     no_kontak_darurat:string = ''

@@ -16,6 +16,7 @@ export interface IRepository {
         pendidikan_terakhir?:string, 
         no_kontak_darurat?:string,
         no_kontak?: string,
+        tgl_lahir?: string,
     ):Promise<ResultSetHeader>
     takeByEmail(email:string):Promise<RowDataPacket>
     roleAccess(requestRole: string, email: string): Promise<boolean>
@@ -58,19 +59,21 @@ export class Repository implements IRepository {
         pendidikan_terakhir:string = '', 
         no_kontak_darurat:string = '',
         no_kontak: string = '',
+        tgl_lahir: string = '',
     ): Promise<ResultSetHeader> {
         try {
             await this.master.beginTransaction();
 
             const [results] = await this.master.execute(
-                "INSERT INTO users(name, email, password, role, jenis_kelamin, kota_asal, pekerjaan, nama_kampus, status, pendidikan_terakhir, no_kontak_darurat, no_kontak) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
-                [name, email, password, role, jenis_kelamin, kota_asal, pekerjaan, nama_kampus, status, pendidikan_terakhir, no_kontak_darurat, no_kontak]
+                "INSERT INTO users(name, email, password, role, jenis_kelamin, kota_asal, pekerjaan, nama_kampus, status, pendidikan_terakhir, no_kontak_darurat, no_kontak, tgl_lahir) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+                [name, email, password, role, jenis_kelamin, kota_asal, pekerjaan, nama_kampus, status, pendidikan_terakhir, no_kontak_darurat, no_kontak, tgl_lahir || null]
             );
 
             await this.master.commit();
             
             return results as ResultSetHeader
         }catch (error) {
+            console.error('Error saat insert tgl_lahir:', error);
             await this.master.rollback(); 
             throw error
         }
