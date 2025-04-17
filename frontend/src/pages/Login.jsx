@@ -60,11 +60,12 @@ const Login = () => {
             </h1>
             <p>Masukkan email dan sandi</p>
 
-            {error && (
-              <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
+          {/* Alert */}
+          {error&& (
+            <div className="mt-4 p-3 rounded-lg text-sm text-white bg-red-500">
+              {error}
+            </div>
+          )}
 
             <form className="mt-9" onSubmit={handleSubmit}>
               <div>
