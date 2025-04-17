@@ -137,77 +137,87 @@ const Listiklan = () => {
               </tr>
             </thead>
             <tbody>
-              {displayedProperties.map((item, index) => (
-                <tr key={index} className="border-b">
-                  <td className="py-3">
-                    <div className="flex items-center space-x-3">
-                      {item.foto_properti ? (
-                        <img 
-                          src={item.foto_properti} 
-                          alt={item.name}
-                          className="w-12 h-12 object-cover rounded-md"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                          <span className="text-center text-gray-500 text-xs">No Image</span>
-                        </div>
-                      )}
-                      <span>{item.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-3">{item.property_type_name}</td>
-                  <td className="py-3">{item.address}</td>
-                  <td className="py-3">
-                    <span className={`px-2 py-1 rounded-full text-sm ${
-                      item.status === 'Disetujui' ? 'bg-green-500 text-white' : 
-                      item.status === 'Diproses' ? 'bg-yellow-500 text-white' :
-                      item.status === 'Ditolak' ? 'bg-red-500 text-white' : 
-                      'bg-gray-500 text-white'
-                    }`}>
-                      {item.status || 'Diproses'}
-                    </span>
-                  </td>
-                  <td className="py-3 flex space-x-2">
-                    <Link
-                      to={`/properties/edit/${item.id}`}
-                      className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
-                    >
-                      <Edit className="w-5 h-5" />
-                    </Link>
-                    <button
-                      onClick={() => {
-                        setIdProperty(item.id);
-                        setIsAlertOpen(true);
-                      }}
-                      className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+              {displayedProperties.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="text-center py-6 text-gray-500">
+                    No data found
                   </td>
                 </tr>
-              ))}
+              ) : (
+                displayedProperties.map((item, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="py-3">
+                      <div className="flex items-center space-x-3">
+                        {item.foto_properti ? (
+                          <img 
+                            src={item.foto_properti} 
+                            alt={item.name}
+                            className="w-12 h-12 object-cover rounded-md"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                            <span className="text-center text-gray-500 text-xs">No Image</span>
+                          </div>
+                        )}
+                        <span>{item.name}</span>
+                      </div>
+                    </td>
+                    <td className="py-3">{item.property_type_name}</td>
+                    <td className="py-3">{item.address}</td>
+                    <td className="py-3">
+                      <span className={`px-2 py-1 rounded-full text-sm ${
+                        item.status === 'Disetujui' ? 'bg-green-500 text-white' : 
+                        item.status === 'Diproses' ? 'bg-yellow-500 text-white' :
+                        item.status === 'Ditolak' ? 'bg-red-500 text-white' : 
+                        'bg-gray-500 text-white'
+                      }`}>
+                        {item.status || 'Diproses'}
+                      </span>
+                    </td>
+                    <td className="py-3 flex space-x-2">
+                      <Link
+                        to={`/properties/edit/${item.id}`}
+                        className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+                      >
+                        <Edit className="w-5 h-5" />
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setIdProperty(item.id);
+                          setIsAlertOpen(true);
+                        }}
+                        className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
 
         {/* Pagination Controls */}
-        <div className="flex justify-between items-center mt-4">
-          <button
-            onClick={prevPage}
-            disabled={currentPage === 1}
-            className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
-          >
-            Prev
-          </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button
-            onClick={nextPage}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
+        {displayedProperties.length > 0 && (
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       <Footer />
