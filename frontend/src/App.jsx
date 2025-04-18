@@ -50,6 +50,8 @@ function App() {
         <Route path="/pusat-bantuan" element={<Pusatbantuan />} />
         <Route path="/list-kosan" element={<Listkosan />} />
         <Route path="/list-kontrakan" element={<Listkontrakan />} />
+
+        {/* Pemilik Properti Route */}
         <Route path="/list-iklan" element={<PemilikProperti />} />
         <Route path="/pemilik-profile" element={<PemilikProfil />} />
         <Route path="/list-artikel" element={<Listartikel />} />
@@ -57,11 +59,7 @@ function App() {
         <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
         <Route path="/detail-artikel" element={<Detailartikel />} />
         <Route path="/properties/create" element={<PemilikPropertiCreate />} />
-        <Route path="/properties/edit/:id" element={
-          <UserProtectedRoute>
-            <PemilikPropertiEdit />
-          </UserProtectedRoute>
-        } />
+        <Route path="/properties/edit/:id" element={<PemilikPropertiEdit />} />
 
         {/* Protected Admin Routes */}
         <Route path="/admin-home" element={
