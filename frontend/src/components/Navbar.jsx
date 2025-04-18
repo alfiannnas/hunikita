@@ -57,11 +57,13 @@ const Navbar = () => {
           <li>
             <DropdownHover />
           </li>
-          <Link to="/list-iklan">
-            <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
-              Iklan
-            </li>
-          </Link>
+          {auth && auth.role === "Pemilik" && (
+            <Link to="/list-iklan">
+              <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
+                Iklan
+              </li>
+            </Link>
+          )}
           <Link to="/list-artikel">
             <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
               Artikel
