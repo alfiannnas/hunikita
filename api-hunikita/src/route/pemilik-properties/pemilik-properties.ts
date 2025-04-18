@@ -39,13 +39,13 @@ export function pemilikProperties(router: Router, handler: Controller) {
     );
 
     // Get current user
-    router.get('/user/me',
+    router.get('/profil/me',
         Middleware.Auth,
         handler.getCurrentUser.bind(handler)
     );
 
     // Edit user
-    router.put('/user/me',
+    router.put('/profil/me',
         Middleware.Auth,
         handler.editUser.bind(handler)
     );
