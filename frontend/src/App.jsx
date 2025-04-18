@@ -20,7 +20,6 @@ import PemilikPropertiCreate from "./pages/pemilik/PemilikPropertiCreate";
 import PemilikPropertiEdit from "./pages/pemilik/PemilikPropertiEdit";
 
 import PemilikProfil from './pages/pemilik/PemilikProfil';
-import Formedit from "./pages/Formedit";
 
 // Admin
 import AdminHome from "./pages/admin/Home";
@@ -64,7 +63,6 @@ function App() {
             <PemilikPropertiEdit />
           </UserProtectedRoute>
         } />
-        <Route path="/form-edit" element={<Formedit />} />
 
         {/* Protected Admin Routes */}
         <Route path="/admin-home" element={
