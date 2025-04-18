@@ -8,6 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Input } from '../../components/Input';
 import { Select } from "../../components/Select";
 import MapComponent from '../../components/MapComponent';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 
 const Formedit = () => {
@@ -63,6 +65,33 @@ const Formedit = () => {
   // Tambahkan handler untuk checkbox
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
+  };
+
+  // Tambahkan konfigurasi Quill
+  const modules = {
+    toolbar: [
+      [{ 'list': 'bullet' }],
+    ],
+  };
+
+  const formats = [
+    'list',
+  ];
+
+  // Tambahkan handler untuk Quill
+  const handleQuillChange = (value, name) => {
+    // Jika konten kosong, tambahkan bullet list
+    if (!value || value === '<p><br></p>') {
+      value = '<ul><li><br></li></ul>';
+    } else if (!value.includes('<ul>')) {
+      // Jika konten tidak memiliki bullet, bungkus dalam <ul>
+      value = `<ul><li>${value.replace(/<p>|<\/p>/g, '')}</li></ul>`;
+    }
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   // Fungsi untuk mengambil data properti yang akan diedit
@@ -445,23 +474,25 @@ const Formedit = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas"
-              type="text"
-              name='fasilitas'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas}
-              placeholder="Masukkan Fasilitas"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas Bersama"
-              type="text"
-              name='fasilitas_bersama'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas Bersama</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas_bersama}
-              placeholder="Masukkan Fasilitas Bersama"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas_bersama')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-[20px]">
@@ -475,23 +506,25 @@ const Formedit = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas Tambahan Kamar Mandi Luar (Jika ada)"
-              type="text"
-              name='fasilitas_1'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas Tambahan Kamar Mandi Luar (Jika ada)</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas_1}
-              placeholder="Masukkan Fasilitas Tambahan Kamar Mandi Luar"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas_1')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Fasilitas Bersama Tambahan Kamar Mandi Luar (Jika ada)"
-              type="text"
-              name='fasilitas_bersama_1'
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fasilitas Bersama Tambahan Kamar Mandi Luar (Jika ada)</label>
+            <ReactQuill
+              theme="snow"
               value={formData.fasilitas_bersama_1}
-              placeholder="Masukkan Fasilitas Bersama Tambahan Kamar Mandi Luar"
-              onChange={handleChange}
+              onChange={(value) => handleQuillChange(value, 'fasilitas_bersama_1')}
+              modules={modules}
+              formats={formats}
+              className="h-32 mb-12"
             />
           </div>
           <div className="mt-4">
