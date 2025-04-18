@@ -117,38 +117,46 @@ function AdminHome() {
                   </tr>
                 </thead>
                 <tbody>
-                  {properties.slice(0, 3).map(property => (
-                    <tr key={property.id} className="border-b">
-                      <td className="py-3">
-                        <div className="flex items-center">
-                          {property.foto_properti ? (
-                            <img
-                              src={property.foto_properti}
-                              alt={property.name}
-                              className="w-10 h-10 rounded object-cover mr-3"
-                            />
-                          ) : (
-                            <div className="w-10 h-10 bg-gray-200 rounded mr-3 flex items-center justify-center">
-                              <span className="text-gray-500 text-xs">No Image</span>
-                            </div>
-                          )}
-                          {property.name}
-                        </div>
-                      </td>
-                      <td className="py-3">{property.property_type_name}</td>
-                      <td className="py-3">{property.owner_name}</td>
-                      <td className="py-3">
-                        <span className={`px-3 py-1 rounded-full text-sm ${
-                          property.status === 'Disetujui' ? 'bg-green-500 text-white' : 
-                          property.status === 'Diproses' ? 'bg-yellow-500 text-white' :
-                          property.status === 'Ditolak' ? 'bg-red-500 text-white' : 
-                          'bg-red-800 text-red-800'
-                        }`}>
-                          {property.status}
-                        </span>
+                  {properties.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" className="text-center py-6 text-gray-500">
+                        No data found
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    properties.slice(0, 3).map(property => (
+                      <tr key={property.id} className="border-b">
+                        <td className="py-3">
+                          <div className="flex items-center">
+                            {property.foto_properti ? (
+                              <img
+                                src={property.foto_properti}
+                                alt={property.name}
+                                className="w-10 h-10 rounded object-cover mr-3"
+                              />
+                            ) : (
+                              <div className="w-10 h-10 bg-gray-200 rounded mr-3 flex items-center justify-center">
+                                <span className="text-gray-500 text-xs">No Image</span>
+                              </div>
+                            )}
+                            {property.name}
+                          </div>
+                        </td>
+                        <td className="py-3">{property.property_type_name}</td>
+                        <td className="py-3">{property.owner_name}</td>
+                        <td className="py-3">
+                          <span className={`px-3 py-1 rounded-full text-sm ${
+                            property.status === 'Disetujui' ? 'bg-green-500 text-white' : 
+                            property.status === 'Diproses' ? 'bg-yellow-500 text-white' :
+                            property.status === 'Ditolak' ? 'bg-red-500 text-white' : 
+                            'bg-red-800 text-red-800'
+                          }`}>
+                            {property.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -177,34 +185,42 @@ function AdminHome() {
                   </tr>
                 </thead>
                 <tbody>
-                  {properties.slice(0, 3).map((property) => (
-                    <tr key={property.id} className="border-b">
-                      <td className="py-3">
-                        <div className="flex items-center space-x-3">
-                          {property.foto_properti ? (
-                            <img 
-                              src={property.foto_properti} 
-                              alt={property.name}
-                              className="w-12 h-12 object-cover rounded-md"
-                            />
-                          ) : (
-                            <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                              <span className="text-center text-gray-500 text-xs">No Image</span>
-                            </div>
-                          )}
-                          <span>{property.name}</span>
-                        </div>
-                      </td>
-                      <td className="py-3">{property.property_type_name}</td>
-                      <td className="py-3">{property.owner_name}</td>
-                      <td className="py-3">
-                        {new Intl.NumberFormat('id-ID', { 
-                          style: 'currency', 
-                          currency: 'IDR' 
-                        }).format(property.harga)}
+                  {properties.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" className="text-center py-6 text-gray-500">
+                        No data found
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    properties.slice(0, 3).map((property) => (
+                      <tr key={property.id} className="border-b">
+                        <td className="py-3">
+                          <div className="flex items-center space-x-3">
+                            {property.foto_properti ? (
+                              <img 
+                                src={property.foto_properti} 
+                                alt={property.name}
+                                className="w-12 h-12 object-cover rounded-md"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                                <span className="text-center text-gray-500 text-xs">No Image</span>
+                              </div>
+                            )}
+                            <span>{property.name}</span>
+                          </div>
+                        </td>
+                        <td className="py-3">{property.property_type_name}</td>
+                        <td className="py-3">{property.owner_name}</td>
+                        <td className="py-3">
+                          {new Intl.NumberFormat('id-ID', { 
+                            style: 'currency', 
+                            currency: 'IDR' 
+                          }).format(property.harga)}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -233,34 +249,42 @@ function AdminHome() {
                   </tr>
                 </thead>
                 <tbody>
-                  {penyewa.slice(0, 3).map((item) => (
-                    <tr key={item.id} className="border-b">
-                      <td className="py-3">
-                        <div className="flex items-center space-x-3">
-                          {item.foto_properti ? (
-                            <img 
-                              src={item.foto_properti} 
-                              alt={item.property_name}
-                              className="w-12 h-12 object-cover rounded-md"
-                            />
-                          ) : (
-                            <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                              <span className="text-center text-gray-500 text-xs">No Image</span>
-                            </div>
-                          )}
-                          <span>{item.property_name}</span>
-                        </div>
-                      </td>
-                      <td className="py-3">{item.property_type_name}</td>
-                      <td className="py-3">{item.user_name}</td>
-                      <td className="py-3">
-                        {new Intl.NumberFormat('id-ID', { 
-                          style: 'currency', 
-                          currency: 'IDR' 
-                        }).format(item.harga_property)}
+                  {penyewa.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" className="text-center py-6 text-gray-500">
+                        No data found
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    penyewa.slice(0, 3).map((item) => (
+                      <tr key={item.id} className="border-b">
+                        <td className="py-3">
+                          <div className="flex items-center space-x-3">
+                            {item.foto_properti ? (
+                              <img 
+                                src={item.foto_properti} 
+                                alt={item.property_name}
+                                className="w-12 h-12 object-cover rounded-md"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                                <span className="text-center text-gray-500 text-xs">No Image</span>
+                              </div>
+                            )}
+                            <span>{item.property_name}</span>
+                          </div>
+                        </td>
+                        <td className="py-3">{item.property_type_name}</td>
+                        <td className="py-3">{item.user_name}</td>
+                        <td className="py-3">
+                          {new Intl.NumberFormat('id-ID', { 
+                            style: 'currency', 
+                            currency: 'IDR' 
+                          }).format(item.harga_property)}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -280,24 +304,30 @@ function AdminHome() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {artikel.slice(0, 3).map(article => (
-                <div key={article.id} className="border rounded-lg overflow-hidden">
-                  {article.gambar ? (
-                    <img
-                      src={article.gambar}
-                      alt={article.judul}
-                      className="w-full h-40 object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
-                      <span className="text-gray-500 text-sm">No Image</span>
-                    </div>
-                  )}
-                  <div className="p-4">
-                    <h4 className="font-medium">{article.judul}</h4>
-                  </div>
+              {artikel.length === 0 ? (
+                <div className="col-span-3 text-center py-6 text-gray-500">
+                  No data found
                 </div>
-              ))}
+              ) : (
+                artikel.slice(0, 3).map(article => (
+                  <div key={article.id} className="border rounded-lg overflow-hidden">
+                    {article.gambar ? (
+                      <img
+                        src={article.gambar}
+                        alt={article.judul}
+                        className="w-full h-40 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-500 text-sm">No Image</span>
+                      </div>
+                    )}
+                    <div className="p-4">
+                      <h4 className="font-medium">{article.judul}</h4>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </main>

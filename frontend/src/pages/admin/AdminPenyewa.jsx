@@ -113,70 +113,80 @@ const AdminPenyewa = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {displayedPenyewa.map((penyewa) => (
-                                        <tr key={penyewa.id} className="border-b">
-                                            <td className="py-3">
-                                                <div className="flex items-center space-x-3">
-                                                    {penyewa.foto_properti ? (
-                                                        <img 
-                                                            src={penyewa.foto_properti} 
-                                                            alt={penyewa.property_name}
-                                                            className="w-12 h-12 object-cover rounded-md"
-                                                        />
-                                                    ) : (
-                                                        <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                                                            <span className="text-center text-gray-500 text-xs">No Image</span>
-                                                        </div>
-                                                    )}
-                                                    <span>{penyewa.property_name}</span>
-                                                </div>
-                                            </td>
-                                            <td className="py-3">{penyewa.property_type_name}</td>
-                                            <td className="py-3">{penyewa.user_name}</td>
-                                            <td className="py-3">
-                                                {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(penyewa.harga_property)}
-                                            </td>
-                                            <td className="py-3 flex space-x-2">
-                                            <button 
-                                                    onClick={() => navigate(`/admin-penyewa/edit/${penyewa.id}`)}
-                                                    className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
-                                                >
-                                                    <Edit className="w-5 h-5" />
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setIdPenyewa(penyewa.id); // Set ID penyewa yang akan dihapus
-                                                        setIsAlertOpen(true);
-                                                    }}
-                                                    className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
+                                    {displayedPenyewa.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="5" className="text-center py-6 text-gray-500">
+                                                No data found
                                             </td>
                                         </tr>
-                                    ))}
+                                    ) : (
+                                        displayedPenyewa.map((penyewa) => (
+                                            <tr key={penyewa.id} className="border-b">
+                                                <td className="py-3">
+                                                    <div className="flex items-center space-x-3">
+                                                        {penyewa.foto_properti ? (
+                                                            <img 
+                                                                src={penyewa.foto_properti} 
+                                                                alt={penyewa.property_name}
+                                                                className="w-12 h-12 object-cover rounded-md"
+                                                            />
+                                                        ) : (
+                                                            <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                                                                <span className="text-center text-gray-500 text-xs">No Image</span>
+                                                            </div>
+                                                        )}
+                                                        <span>{penyewa.property_name}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="py-3">{penyewa.property_type_name}</td>
+                                                <td className="py-3">{penyewa.user_name}</td>
+                                                <td className="py-3">
+                                                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(penyewa.harga_property)}
+                                                </td>
+                                                <td className="py-3 flex space-x-2">
+                                                <button 
+                                                        onClick={() => navigate(`/admin-penyewa/edit/${penyewa.id}`)}
+                                                        className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+                                                    >
+                                                        <Edit className="w-5 h-5" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setIdPenyewa(penyewa.id); // Set ID penyewa yang akan dihapus
+                                                            setIsAlertOpen(true);
+                                                        }}
+                                                        className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
+                                                    >
+                                                        <Trash2 className="w-5 h-5" />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
 
-                        {/* Pagination Controls */}
-                        <div className="flex justify-between items-center mt-4">
-                            <button
-                                onClick={prevPage}
-                                disabled={currentPage === 1}
-                                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
-                            >
-                                Prev
-                            </button>
-                            <span>Page {currentPage} of {totalPages}</span>
-                            <button
-                                onClick={nextPage}
-                                disabled={currentPage === totalPages}
-                                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
-                            >
-                                Next
-                            </button>
-                        </div>
+                        {/* Pagination Controls - hanya tampil jika ada data */}
+                        {displayedPenyewa.length > 0 && (
+                            <div className="flex justify-between items-center mt-4">
+                                <button
+                                    onClick={prevPage}
+                                    disabled={currentPage === 1}
+                                    className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+                                >
+                                    Prev
+                                </button>
+                                <span>Page {currentPage} of {totalPages}</span>
+                                <button
+                                    onClick={nextPage}
+                                    disabled={currentPage === totalPages}
+                                    className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     <Alert

@@ -110,59 +110,66 @@ const AdminPusatBantuan = () => {
                                         <th className="pb-3">Tentang</th>
                                         <th className="pb-3">Pesan</th>
                                         <th className="pb-3">Action</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {displayedPusatBantuan.map((item) => (
-                                        <tr key={item.id} className="border-b">
-                                            <td className="py-3">{item.nama_lengkap}</td>
-                                            <td className="py-3">{item.email}</td>
-                                            <td className="py-3">{item.tentang}</td>
-                                            <td className="py-3">{item.pesan}</td>
-
-
-                                            <td className="py-3 flex space-x-2">
-                                                <button 
-                                                    onClick={() => navigate(`/admin-pusat-bantuan/edit/${item.id}`)}
-                                                    className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
-                                                >
-                                                    <Edit className="w-5 h-5" />
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setIdPusatBantuan(item.id);
-                                                        setIsAlertOpen(true);
-                                                    }}
-                                                    className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
+                                    {displayedPusatBantuan.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="5" className="text-center py-6 text-gray-500">
+                                                No data found
                                             </td>
                                         </tr>
-                                    ))}
+                                    ) : (
+                                        displayedPusatBantuan.map((item) => (
+                                            <tr key={item.id} className="border-b">
+                                                <td className="py-3">{item.nama_lengkap}</td>
+                                                <td className="py-3">{item.email}</td>
+                                                <td className="py-3">{item.tentang}</td>
+                                                <td className="py-3">{item.pesan}</td>
+                                                <td className="py-3 flex space-x-2">
+                                                    <button 
+                                                        onClick={() => navigate(`/admin-pusat-bantuan/edit/${item.id}`)}
+                                                        className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+                                                    >
+                                                        <Edit className="w-5 h-5" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setIdPusatBantuan(item.id);
+                                                            setIsAlertOpen(true);
+                                                        }}
+                                                        className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
+                                                    >
+                                                        <Trash2 className="w-5 h-5" />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
 
-                        {/* Pagination Controls */}
-                        <div className="flex justify-between items-center mt-4">
-                            <button
-                                onClick={prevPage}
-                                disabled={currentPage === 1}
-                                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
-                            >
-                                Prev
-                            </button>
-                            <span>Page {currentPage} of {totalPages}</span>
-                            <button
-                                onClick={nextPage}
-                                disabled={currentPage === totalPages}
-                                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
-                            >
-                                Next
-                            </button>
-                        </div>
+                        {/* Pagination Controls - hanya tampil jika ada data */}
+                        {displayedPusatBantuan.length > 0 && (
+                            <div className="flex justify-between items-center mt-4">
+                                <button
+                                    onClick={prevPage}
+                                    disabled={currentPage === 1}
+                                    className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+                                >
+                                    Prev
+                                </button>
+                                <span>Page {currentPage} of {totalPages}</span>
+                                <button
+                                    onClick={nextPage}
+                                    disabled={currentPage === totalPages}
+                                    className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 disabled:opacity-50"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     <Alert
