@@ -14,11 +14,10 @@ import Detailkosan from "./pages/Detailkosan";
 import Detailkontrakan from "./pages/Detailkontrakan";
 import Detailartikel from "./pages/Detailartikel";
 
-// Pemilik
+// Pemilik Properti
 import PemilikProperti from "./pages/pemilik/PemilikProperti";
 import PemilikPropertiCreate from "./pages/pemilik/PemilikPropertiCreate";
 import PemilikPropertiEdit from "./pages/pemilik/PemilikPropertiEdit";
-
 import PemilikProfil from './pages/pemilik/PemilikProfil';
 
 // Admin
