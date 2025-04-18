@@ -21,7 +21,7 @@ import PemilikPropertiEdit from "./pages/pemilik/PemilikPropertiEdit";
 import PemilikProfil from './pages/pemilik/PemilikProfil';
 
 // Admin
-import AdminHome from "./pages/admin/Home";
+import AdminHome from "./pages/admin/AdminHome";
 import AdminProperti from "./pages/admin/AdminProperti";
 import AdminPemilikProperti from "./pages/admin/AdminPemilikProperti";
 import AdminPenyewa from "./pages/admin/AdminPenyewa";
