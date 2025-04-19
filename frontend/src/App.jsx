@@ -20,6 +20,9 @@ import PemilikPropertiCreate from "./pages/pemilik/PemilikPropertiCreate";
 import PemilikPropertiEdit from "./pages/pemilik/PemilikPropertiEdit";
 import PemilikProfil from './pages/pemilik/PemilikProfil';
 
+// Penyewa Properti
+import PenyewaProperti from './pages/penyewa/PenyewaProperti';
+
 // Admin
 import AdminHome from "./pages/admin/AdminHome";
 import AdminProperti from "./pages/admin/AdminProperti";
@@ -60,6 +63,9 @@ function App() {
         <Route path="/detail-artikel" element={<Detailartikel />} />
         <Route path="/properties/create" element={<PemilikPropertiCreate />} />
         <Route path="/properties/edit/:id" element={<PemilikPropertiEdit />} />
+        
+        {/* Penyewa Properti */}
+        <Route path="/penyewa-properti" element={<PenyewaProperti />} />
 
         {/* Protected Admin Routes */}
         <Route path="/admin-home" element={

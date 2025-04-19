@@ -54,9 +54,17 @@ const Navbar = () => {
               Pusat Bantuan
             </li>
           </Link>
+          <Link to="/list-artikel">
+            <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
+              Artikel
+            </li>
+          </Link>
+          {/* Permission by Role */}
+          {auth && auth.role === "Penyewa" && (
           <li>
             <DropdownHover />
           </li>
+          )}
           {/* Permission by Role */}
           {auth && auth.role === "Pemilik" && (
             <Link to="/list-iklan">
@@ -65,11 +73,6 @@ const Navbar = () => {
               </li>
             </Link>
           )}
-          <Link to="/list-artikel">
-            <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
-              Artikel
-            </li>
-          </Link>
         </ul>
       </div>
 
