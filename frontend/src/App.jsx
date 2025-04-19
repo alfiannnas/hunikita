@@ -117,7 +117,7 @@ function App() {
             <AdminPusatBantuanEdit />
           </AdminProtectedRoute>
         } />
-        <Route path="/admin-profil/edit/:id" element={
+        <Route path="/admin-profil/edit" element={
           <AdminProtectedRoute>
             <AdminProfilEdit />
           </AdminProtectedRoute>

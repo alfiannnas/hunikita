@@ -5,15 +5,9 @@ import axios from "axios";
 import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { Edit, Trash2 } from "lucide-react";
-import { Alert } from "../../components/Alert";
-import { SuccessMessage } from "../../components/SuccessMessage";
-import { Input } from "../../components/Input";
-import { Label } from "../../components/Label";
 import { DEFAULT_PROFILE_IMAGE } from "../../components/DefaultImage";
 
 const AdminProfil = () => {
-
     const auth = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
@@ -30,11 +24,23 @@ const AdminProfil = () => {
             return;
         }
 
-        // Ambil data dari localStorage
-        const storedUserData = localStorage.getItem('userData');
-        if (storedUserData) {
-            setUserData(JSON.parse(storedUserData));
-        }
+        // Mengambil data profil admin menggunakan endpoint /profil/me
+        const fetchAdminProfile = async () => {
+            try {
+                const response = await axios.get(API.GET_PEMILIK_PROFILE, {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                });
+                setUserData(response.data.data);
+                // Simpan ke localStorage untuk penggunaan offline
+                localStorage.setItem('userData', JSON.stringify(response.data.data));
+            } catch (error) {
+                console.error('Error fetching admin profile:', error);
+            }
+        };
+
+        fetchAdminProfile();
     }, [auth, navigate]);
 
     return (
@@ -45,7 +51,6 @@ const AdminProfil = () => {
                 <main className="p-6">
                     <h2 className="text-2xl font-semibold mb-6">Profil Admin</h2>
 
-                    {/* Artikel Section */}
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <p className="text-sm">Foto Profil</p>
 
@@ -102,7 +107,7 @@ const AdminProfil = () => {
 
                         <div className="flex justify-end mt-4">
                             <Link 
-                                to={`/admin-profil/edit/${userData.id}`} 
+                                to="/admin-profil/edit"
                                 className="p-1 px-5 text-white bg-blue-500 rounded-md hover:bg-blue-600 hover:text-white transition"
                             >
                                 Edit

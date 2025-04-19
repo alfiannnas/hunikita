@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../constant/constant";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { Edit, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 import { Input } from "../../components/Input";
@@ -13,7 +12,6 @@ import { Label } from "../../components/Label";
 import { DEFAULT_PROFILE_IMAGE } from "../../components/DefaultImage";
 
 const AdminProfilEdit = () => {
-    const { id } = useParams();
     const auth = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
@@ -30,7 +28,7 @@ const AdminProfilEdit = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(API.GET_USER_DATA, {
+            const response = await axios.get(API.GET_PEMILIK_PROFILE, {
                 headers: {
                     Authorization: `Bearer ${auth.token}`
                 }
@@ -82,21 +80,6 @@ const AdminProfilEdit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Gunakan FormData untuk mengirim file
-            const formData = new FormData();
-            
-            // Tambahkan console log untuk debugging
-            console.log('Data yang akan dikirim:', userData);
-            
-            // Pastikan data tidak kosong sebelum append ke FormData
-            if (userData.name) formData.append('name', userData.name);
-            if (userData.email) formData.append('email', userData.email);
-            if (userData.no_kontak) formData.append('no_kontak', userData.no_kontak);
-            
-            if (userData.password && userData.password.trim() !== '') {
-                formData.append('password', userData.password);
-            }
-            
             // Buat objek data untuk dikirim sebagai JSON
             const jsonData = {
                 name: userData.name,
@@ -117,9 +100,9 @@ const AdminProfilEdit = () => {
             
             console.log('Mengirim data sebagai JSON:', jsonData);
             
-            // Kirim data sebagai JSON
+            // Kirim data sebagai JSON menggunakan endpoint baru
             const response = await axios.put(
-                API.UPDATE_USER_DATA.replace(':id', id),
+                API.UPDATE_PEMILIK_PROFILE,
                 jsonData,
                 {
                     headers: {
