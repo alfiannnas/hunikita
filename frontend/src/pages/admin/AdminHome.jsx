@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  LayoutGrid,
-  Home,
-  Users,
-  UserCircle,
-  FileText,
-  HelpCircle,
-  UserCog,
-  LogOut,
-  Search,
-  Plus
-} from 'lucide-react';
+import { Plus } from 'lucide-react';
 import axios from 'axios';
 import Sidebar from "../../components/Sidebar";
 import { API } from '../../constant';
