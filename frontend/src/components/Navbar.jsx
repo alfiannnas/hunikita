@@ -57,6 +57,7 @@ const Navbar = () => {
           <li>
             <DropdownHover />
           </li>
+          {/* Permission by Role */}
           {auth && auth.role === "Pemilik" && (
             <Link to="/list-iklan">
               <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
