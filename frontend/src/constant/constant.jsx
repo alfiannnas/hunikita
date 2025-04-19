@@ -1,9 +1,13 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 export const API = {
+    // Login, Admin Login, and Register
     LOGIN: BASE_URL + "/login",
     ADMIN_LOGIN: BASE_URL + "/admin-login",
     REGISTER: BASE_URL + "/register",
+
+    // Get User Data
+    GET_USER_DATA: BASE_URL + "/get-user",
 
     // Pemilik Properties
     GET_PROPERTIES_BY_USER: BASE_URL + "/pemilik-properties",
@@ -14,9 +18,7 @@ export const API = {
     GET_PEMILIK_PROFILE: BASE_URL + "/profil/me",
     UPDATE_PEMILIK_PROFILE: BASE_URL + "/profil/me",
 
-    GET_USER_DATA: BASE_URL + "/get-user",
-
-    // Admin
+    // Admin Properties
     GET_ADMIN_PROPERTIES: BASE_URL + "/admin-properties",
     GET_ADMIN_PROPERTY_BY_ID: BASE_URL + "/admin-properties",
     POST_ADMIN_PROPERTY: BASE_URL + "/admin-properties",
@@ -24,6 +26,7 @@ export const API = {
     DELETE_ADMIN_PROPERTY: BASE_URL + "/admin-properties",
     UPDATE_ADMIN_PROPERTY_STATUS: BASE_URL + "/update-status",
 
+    // Admin Penyewa
     GET_PENYEWA: BASE_URL + "/admin-penyewa",
     GET_PENYEWA_BY_ID: BASE_URL + "/admin-penyewa",
     POST_PENYEWA: BASE_URL + "/admin-penyewa",
