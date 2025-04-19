@@ -15,7 +15,6 @@ export const API = {
     UPDATE_PEMILIK_PROFILE: BASE_URL + "/profil/me",
 
     GET_USER_DATA: BASE_URL + "/get-user",
-    UPDATE_USER_DATA: BASE_URL + "/admin-profil/:id",
 
     // Admin
     GET_ADMIN_PROPERTIES: BASE_URL + "/admin-properties",
