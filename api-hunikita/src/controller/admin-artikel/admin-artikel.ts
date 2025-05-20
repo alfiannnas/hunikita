@@ -31,7 +31,7 @@ export class Controller implements IController {
 
     async create(req: Request, res: Response): Promise<void> {
         try {
-            console.log('Request body:', req.body);
+            // console.log('Request body:', req.body);
             
             // Validasi data yang diperlukan
             if (!req.body.judul || !req.body.slug || !req.body.isi) {

@@ -41,6 +41,11 @@ import { Service as PemilikPropertiesSvc } from "@service/pemilik-properties"
 import { Repository as PemilikPropertiesRepo } from "@repository/pemilik-properties"
 import { Controller as PemilikPropertiesController } from "@controller/pemilik-properties"
 
+import { pengajuan } from "./pengajuan"
+import { Service as Pengajuan } from "@service/pengajuan"
+import { Repository as PengajuanRepo } from "@repository/pengajuan"
+import { Controller as PengajuanController } from "@controller/pengajuan"
+
 export const Route = {
     register: async (router: Router)=> {
         let con!:Connection
@@ -61,6 +66,7 @@ export const Route = {
         const adminArtikelRepo = new AdminArtikelRepo(con)
         const adminPusatBantuanRepo = new AdminPusatBantuanRepo(con)
         const pemilikPropertiesRepo = new PemilikPropertiesRepo(con)
+        const pengajuanRepo = new PengajuanRepo(con)
 
         const propertyTypeSvc = new PropertyTypeSvc(propertyTypeRepo)
         const oauthSvc = new OauthService(oauthRepo)
@@ -71,6 +77,7 @@ export const Route = {
         const artikelSvc = new AdminArtikelSvc(adminArtikelRepo)
         const adminPusatBantuanSvc = new AdminPusatBantuanSvc(adminPusatBantuanRepo)
         const pemilikPropertiesSvc = new PemilikPropertiesSvc(pemilikPropertiesRepo)
+        const pengajuanSvc = new Pengajuan(pengajuanRepo)
 
         const oauthCtrl = new Controller(oauthSvc)
         const propertyCtrl = new PropertyController(propertySvc)
@@ -80,6 +87,7 @@ export const Route = {
         const adminArtikelCtrl = new AdminArtikelController(artikelSvc)
         const adminPusatBantuanCtrl = new AdminPusatBantuanController(adminPusatBantuanSvc)
         const pemilikPropertiesCtrl = new PemilikPropertiesController(pemilikPropertiesSvc)
+        const pengajuanCtrl = new PengajuanController(pengajuanSvc)
 
         oauth(router, oauthCtrl)
         property(router, propertyCtrl)
@@ -89,5 +97,6 @@ export const Route = {
         adminArtikel(router, adminArtikelCtrl)
         adminPusatBantuan(router, adminPusatBantuanCtrl)
         pemilikProperties(router, pemilikPropertiesCtrl)
+        pengajuan(router, pengajuanCtrl)
     }
 }
