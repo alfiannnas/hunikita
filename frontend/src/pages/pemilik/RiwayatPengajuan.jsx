@@ -31,21 +31,22 @@ const RiwayatPengajuan = () => {
     axios
       .get(API.GET_PENGAJUAN, {
         params: {
-          userId: userId,
-          limit: 10,
-          offset: 0
+          userId: userId
         }, 
         headers: {
           Authorization: 'Bearer ' + auth.token
         }
       })
       .then((res) => {
-        if (res.status === 200) {
-          setData((data) => [...data, ...res.data.data])
+        if (res.status === 200 && res.data.data) {
+          setData(res.data.data);
+        } else {
+          setData([]);
         }
       })
       .catch((err) => {
-        console.error("Error fetching properties:", err);
+        console.error("Error fetching pengajuan:", err);
+        setData([]);
         if (err.response?.status === 400) {
           alert(err.response.data.detail)
         } else {
@@ -65,13 +66,13 @@ const RiwayatPengajuan = () => {
   }, [auth, navigate]);
 
   // Hitung total halaman
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil((data?.length || 0) / itemsPerPage);
 
   // Data yang ditampilkan berdasarkan halaman
-  const displayedProperties = data.slice(
+  const displayedProperties = data?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  );
+  ) || [];
 
   // Fungsi untuk navigasi halaman
   const nextPage = () => {
@@ -129,9 +130,9 @@ const RiwayatPengajuan = () => {
           <table className="w-full">
             <thead>
               <tr className="text-left text-gray-500 border-b">
+                <th className="pb-3">Invoice No.</th>
+                <th className="pb-3">Nama Penyewa</th>
                 <th className="pb-3">Nama Properti</th>
-                <th className="pb-3">Jenis Properti</th>
-                <th className="pb-3">Alamat</th>
                 <th className="pb-3">Status</th>
                 <th className="pb-3">Action</th>
               </tr>
@@ -146,24 +147,9 @@ const RiwayatPengajuan = () => {
               ) : (
                 displayedProperties.map((item, index) => (
                   <tr key={index} className="border-b">
-                    <td className="py-3">
-                      <div className="flex items-center space-x-3">
-                        {item.foto_properti ? (
-                          <img 
-                            src={item.foto_properti} 
-                            alt={item.name}
-                            className="w-12 h-12 object-cover rounded-md"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                            <span className="text-center text-gray-500 text-xs">No Image</span>
-                          </div>
-                        )}
-                        <span>{item.name}</span>
-                      </div>
-                    </td>
-                    <td className="py-3">{item.property_type_name}</td>
-                    <td className="py-3">{item.address}</td>
+                    <td className="py-3">{item.invoice_number}</td>
+                    <td className="py-3">{item.user_name}</td>
+                    <td className="py-3">{item.property_name}</td>
                     <td className="py-3">
                       <span className={`px-2 py-1 rounded-full text-sm ${
                         item.status === 'Disetujui' ? 'bg-green-500 text-white' : 
@@ -227,7 +213,7 @@ const RiwayatPengajuan = () => {
         <Alert
           isOpen={isAlertOpen}
           title="Hapus"
-          message="Apakah anda yakin ingin menghapus properti ini?"
+          message="Apakah anda yakin ingin menghapus pengajuan ini?"
           onCancel={() => setIsAlertOpen(false)}
           onConfirm={handleDelete}
         />
@@ -236,7 +222,7 @@ const RiwayatPengajuan = () => {
           isOpen={isOpen} 
           onClose={() => setIsOpen(false)}
           title="Hapus Sukses"
-          message="Data properti telah berhasil dihapus!"
+          message="Data pengajuan telah berhasil dihapus!"
           type="delete"
         />
       </div>

@@ -19,8 +19,27 @@ export class Controller implements IController {
         res.json(result)
     }
 
-    async list(_req: Request, res: Response): Promise<void> {
-        const result = await this.service.list()
-        res.json(result)
+    async list(req: Request, res: Response): Promise<void> {
+        try {
+            const userId = parseInt(req.query.userId as string)
+
+            if (!userId) {
+                res.status(400).json({
+                    status: "error",
+                    message: "userId harus diisi",
+                    data: null
+                })
+                return
+            }
+
+            const result = await this.service.list(userId)
+            res.json(result)
+        } catch (error) {
+            res.status(500).json({
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            })
+        }
     }
 }

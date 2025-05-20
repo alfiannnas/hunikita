@@ -3,7 +3,10 @@ import { CreatePengajuanRequest} from "../../entity/pengajuan/db/pengajuan"
 
 export interface IRepository {
     take(id: number): Promise<RowDataPacket>
-    list(): Promise<RowDataPacket>
+    list(userId: number): Promise<RowDataPacket>
+    create(data: CreatePengajuanRequest): Promise<RowDataPacket>
+    update(id: number, data: Partial<CreatePengajuanRequest>): Promise<RowDataPacket>
+    delete(id: number): Promise<RowDataPacket>
 }
 
 export class Repository implements IRepository {
@@ -87,7 +90,7 @@ export class Repository implements IRepository {
         }
     }
 
-    async list(): Promise<RowDataPacket> {
+    async list(userId: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
                 `SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
@@ -98,7 +101,8 @@ export class Repository implements IRepository {
                  LEFT JOIN users u ON p.user_id = u.id
                  LEFT JOIN properties pr ON p.property_id = pr.id
                  LEFT JOIN property_types pt ON pr.property_type_id = pt.id
-                 WHERE pr.id IS NOT NULL`
+                 WHERE p.user_id = ?`,
+                [userId]
             )
             return result as RowDataPacket
         } catch (error) {

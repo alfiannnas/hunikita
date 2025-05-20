@@ -1,10 +1,13 @@
 import { ERROR } from "@constant"
 import { Pengajuan, PengajuanResponse, CreatePengajuanRequest } from "@entity/pengajuan/db"
-import { IRepository } from "../../repository/admin-penyewa"
+import { IRepository } from "../../repository/pengajuan"
 
 export interface IService {
     get(id: number): Promise<PengajuanResponse>
-    list(): Promise<PengajuanResponse>
+    list(userId: number): Promise<PengajuanResponse>
+    create(data: CreatePengajuanRequest): Promise<PengajuanResponse>
+    update(id: number, data: Partial<CreatePengajuanRequest>): Promise<PengajuanResponse>
+    delete(id: number): Promise<PengajuanResponse>
 }
 
 export class Service implements IService {
@@ -38,9 +41,17 @@ export class Service implements IService {
         }
     }
 
-    async list(): Promise<PengajuanResponse> {
+    async list(userId: number): Promise<PengajuanResponse> {
         try {
-            const result = await this.repo.list()
+            if (!userId) {
+                return {
+                    status: "error",
+                    message: "userId harus diisi",
+                    data: null
+                }
+            }
+
+            const result = await this.repo.list(userId)
             return {
                 status: "success",
                 message: "Daftar pengajuan berhasil diambil",
@@ -53,5 +64,20 @@ export class Service implements IService {
                 data: null
             }
         }
+    }
+
+    async create(data: CreatePengajuanRequest): Promise<PengajuanResponse> {
+        // Implementation of create method
+        throw new Error("Method not implemented")
+    }
+
+    async update(id: number, data: Partial<CreatePengajuanRequest>): Promise<PengajuanResponse> {
+        // Implementation of update method
+        throw new Error("Method not implemented")
+    }
+
+    async delete(id: number): Promise<PengajuanResponse> {
+        // Implementation of delete method
+        throw new Error("Method not implemented")
     }
 }
