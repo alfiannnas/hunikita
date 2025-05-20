@@ -24,9 +24,21 @@ export class Controller implements IController {
         res.json(result)
     }
 
-    async list(_req: Request, res: Response): Promise<void> {
-        const result = await this.service.list()
-        res.json(result)
+    async list(req: Request, res: Response): Promise<void> {
+        try {
+            const propertyTypeId = req.query.property_type_id 
+                ? parseInt(req.query.property_type_id as string) 
+                : undefined;
+            
+            const result = await this.service.list(propertyTypeId)
+            res.json(result)
+        } catch (error) {
+            res.status(500).json({
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            })
+        }
     }
 
     async create(req: Request, res: Response): Promise<void> {

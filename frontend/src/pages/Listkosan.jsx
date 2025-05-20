@@ -26,7 +26,7 @@ const Listkosan = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await axios.get(API.GET_PROPERTIES)
+      const response = await axios.get(`${API.GET_PROPERTIES}?property_type_id=1`)
       const data = response.data.data
       setProperties(data)
       // Hitung total halaman

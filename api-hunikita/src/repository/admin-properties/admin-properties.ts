@@ -6,7 +6,7 @@ export interface IRepository {
     create(data: CreateAdminPropertiesRequest): Promise<RowDataPacket>
     update(id: number, data: Partial<CreateAdminPropertiesRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
-    list(): Promise<RowDataPacket>
+    list(propertyTypeId?: number): Promise<RowDataPacket>
     updateStatus(id: number, status: string): Promise<RowDataPacket>
 }
 
@@ -126,16 +126,25 @@ export class Repository implements IRepository {
         }
     }
 
-    async list(): Promise<RowDataPacket> {
+    async list(propertyTypeId?: number): Promise<RowDataPacket> {
         try {
-            const [result] = await this.master.execute(
-                `SELECT p.id, p.user_id, p.property_type_id, pt.name AS property_type_name, 
+            let query = `
+                SELECT p.id, p.user_id, p.property_type_id, pt.name AS property_type_name, 
                         p.owner_name, p.owner_email, p.name, p.address, 
                         p.room_count, p.img_path, p.status, p.harga, p.foto_properti,
                         p.created_at, p.updated_at
-                 FROM properties p
-                 LEFT JOIN property_types pt ON p.property_type_id = pt.id`
-            );
+                FROM properties p
+                LEFT JOIN property_types pt ON p.property_type_id = pt.id
+            `;
+
+            const params: any[] = [];
+
+            if (propertyTypeId) {
+                query += ` WHERE p.property_type_id = ?`;
+                params.push(propertyTypeId);
+            }
+
+            const [result] = await this.master.execute(query, params);
             return result as RowDataPacket;
         } catch (error) {
             console.error("Database Query Error:", error);

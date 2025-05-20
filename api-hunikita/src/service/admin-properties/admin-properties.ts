@@ -4,7 +4,7 @@ import { IRepository } from "../../repository/admin-properties"
 
 export interface IService {
     get(id: number): Promise<AdminPropertiesResponse>
-    list(): Promise<AdminPropertiesResponse>
+    list(propertyTypeId?: number): Promise<AdminPropertiesResponse>
     create(data: CreateAdminPropertiesRequest): Promise<AdminPropertiesResponse>
     update(id: number, data: Partial<CreateAdminPropertiesRequest>): Promise<AdminPropertiesResponse>
     delete(id: number): Promise<AdminPropertiesResponse>
@@ -42,9 +42,9 @@ export class Service implements IService {
         }
     }
 
-    async list(): Promise<AdminPropertiesResponse> {
+    async list(propertyTypeId?: number): Promise<AdminPropertiesResponse> {
         try {
-            const result = await this.repo.list()
+            const result = await this.repo.list(propertyTypeId)
             return {
                 status: "success",
                 message: "Daftar property berhasil diambil",
