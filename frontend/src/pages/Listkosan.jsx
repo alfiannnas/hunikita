@@ -107,7 +107,7 @@ const Listkosan = () => {
                         />
                         <div className="absolute w-[339px] h-[30px] top-[35px] left-[33px]">
                           <p className="absolute w-[337px] top-0 left-0 [font-family:'Poppins',Helvetica] font-normal text-[#000000cc] text-[10px] text-justify tracking-[0] leading-[normal]">
-                            {property.address}
+                            {property.address}, {property.subdistrict}, {property.city}, {property.province}
                           </p>
                         </div>
                       </div>
