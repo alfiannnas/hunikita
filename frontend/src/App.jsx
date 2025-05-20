@@ -40,6 +40,7 @@ import AdminPemilikPropertiEdit from './pages/admin/AdminPemilikPropertiEdit';
 import AdminPropertiEdit from './pages/admin/AdminPropertiEdit';
 import AdminArtikelEdit from './pages/admin/AdminArtikelEdit';
 import AdminArtikelDetail from './pages/admin/AdminArtikelDetail';
+import RiwayatPengajuan from './pages/pemilik/RiwayatPengajuan';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
 
         {/* Pemilik Properti Route */}
         <Route path="/list-iklan" element={<PemilikProperti />} />
+        <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
         <Route path="/pemilik-profile" element={<PemilikProfil />} />
         <Route path="/list-artikel" element={<Listartikel />} />
         <Route path="/detail-kosan" element={<Detailkosan />} />

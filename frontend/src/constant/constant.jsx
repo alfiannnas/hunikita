@@ -47,5 +47,8 @@ export const API = {
     POST_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
     UPDATE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
     DELETE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
-    UPDATE_ADMIN_PUSAT_BANTUAN_POSTING: BASE_URL + "/post-bantuan"
+    UPDATE_ADMIN_PUSAT_BANTUAN_POSTING: BASE_URL + "/post-bantuan",
+
+    // Penyewa
+    GET_PENGAJUAN: BASE_URL + "/pengajuan",
 }

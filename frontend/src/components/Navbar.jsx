@@ -73,6 +73,13 @@ const Navbar = () => {
               </li>
             </Link>
           )}
+          {auth && auth.role === "Pemilik" && (
+            <Link to="/riwayat-pengajuan">
+              <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
+                Riwayat Pengajuan
+              </li>
+            </Link>
+          )}
         </ul>
       </div>
 
