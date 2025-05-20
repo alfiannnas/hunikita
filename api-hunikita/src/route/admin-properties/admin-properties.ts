@@ -10,6 +10,11 @@ export function adminProperties(router: Router, handler: Controller) {
         handler.list.bind(handler)
     );
 
+    router.get('/properties', 
+        handler.list.bind(handler)
+    );
+
+
     // Ambil property by ID
     router.get('/admin-properties/:id', 
         Middleware.Auth, 
