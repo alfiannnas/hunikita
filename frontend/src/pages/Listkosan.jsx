@@ -98,7 +98,7 @@ const Listkosan = () => {
                   </div>
                   <div className="flex flex-col w-[62px] h-[21px] items-center justify-center gap-[10px] p-[10px] absolute top-[162px] left-[120px] bg-[#108006] rounded-[4px]">
                     <div className="relative w-fit mt-[-8.00px] mb-[-6.00px] ml-[-1.00px] mr-[-1.00px] [font-family:'Poppins',Helvetica] font-semibold text-white text-[10px] text-justify tracking-[0] leading-[normal]">
-                      {property.status}
+                      {property.status_sewa}
                     </div>
                   </div>
                 </div>
