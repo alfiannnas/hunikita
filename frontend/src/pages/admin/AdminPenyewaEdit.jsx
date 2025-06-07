@@ -119,7 +119,7 @@ const AdminPenyewaEdit = () => {
                             <Input
                                 label="Nama Pemilik"
                                 name="nama_pemilik"
-                                value={penyewa.owner_property}
+                                value={penyewa.nama}
                                 onChange={handleChange}
                             />
                             <Input

@@ -109,7 +109,7 @@ const AdminPemilikProperti = () => {
                                                     </div>
                                                 </td>
                                                 <td className="py-3">{property.property_type_name}</td>
-                                                <td className="py-3">{property.owner_name}</td>
+                                                <td className="py-3">{property.nama}</td>
                                                 <td className="py-3">
                                                     {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(property.harga)}
                                                 </td>

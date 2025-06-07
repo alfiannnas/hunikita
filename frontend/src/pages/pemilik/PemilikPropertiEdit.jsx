@@ -32,9 +32,6 @@ const Formedit = () => {
   }, [auth, navigate, id]);
 
   const [formData, setFormData] = useState({
-    owner_name: "",
-    owner_email: "",
-    owner_phone: "",
     name: "",
     address: "",
     room_count: "",
@@ -106,9 +103,6 @@ const Formedit = () => {
       if (response.data) {
         const propertyData = response.data.data;
         setFormData({
-          owner_name: propertyData.owner_name || "",
-          owner_email: propertyData.owner_email || "",
-          owner_phone: propertyData.owner_phone || "",
           name: propertyData.name || "",
           address: propertyData.address || "",
           room_count: propertyData.room_count || "",
@@ -161,9 +155,6 @@ const Formedit = () => {
     }
 
     const requiredFields = [
-      'owner_name',
-      'owner_email',
-      'owner_phone',
       'name',
       'address',
       'room_count',
@@ -303,37 +294,6 @@ const Formedit = () => {
         <form onSubmit={handleSubmit}>
           <h1 className="text-[36px] font-bold mt-[65px]">Edit Iklan</h1>
           <hr className="mt-[10px] h-[2px] bg-gray-300" />
-          <div className="mt-[20px]">
-            <Input
-              label="Nama Pemilik"
-              type="text"
-              name='owner_name'
-              value={formData.owner_name}
-              placeholder="Masukkan Nama"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-[20px]">
-            <Input
-              label="Email"
-              type="email"
-              name='owner_email'
-              value={formData.owner_email}
-              autoComplete='on'
-              placeholder="Masukkan Email"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-[20px]">
-            <Input
-              label="No. Handphone"
-              type="text"
-              name='owner_phone'
-              value={formData.owner_phone}
-              placeholder="Masukkan No. Handphone"
-              onChange={handleChange}
-            />
-          </div>
           <div className="mt-[20px]">
             <Input
               label="Nama Properti"

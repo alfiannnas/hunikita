@@ -164,7 +164,7 @@ const AdminPropertiEdit = () => {
                                 </div>
                                 <div className="flex justify-center mt-4">
                                     <a 
-                                        href={`https://wa.me/${properties?.owner_phone?.replace(/^0/, '62')}`}
+                                        href={`https://wa.me/${properties?.no_kontak?.replace(/^0/, '62')}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="px-4 py-2 bg-white text-blue-500 font-bold rounded-md 
@@ -338,14 +338,7 @@ const AdminPropertiEdit = () => {
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold">Data Properti</h3>
                         </div>
-                        <div className="grid grid-cols-1 gap-4">
-                            <Input
-                                label="Pemilik Properti"
-                                name="owner_name"
-                                value={properties?.owner_name || ''}
-                                onChange={() => {}}
-                                disabled
-                            />                            
+                        <div className="grid grid-cols-1 gap-4">                        
                             <Input
                                 label="Jenis Properti"
                                 name="property_type_name"

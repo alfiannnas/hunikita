@@ -20,7 +20,7 @@ export class Repository implements IRepository {
             const [result] = await this.master.execute(
                 `SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
                         pr.name AS property_name, pt.name AS property_type_name, pr.harga as harga_property,
-                        p.created_at, p.updated_at, pr.owner_name AS owner_property, u.jenis_kelamin AS gender, u.tgl_lahir AS born_date, kota_asal AS city_from, u.pekerjaan AS job_user, u.nama_kampus AS nama_instansi, u.status AS stats, u.pendidikan_terakhir AS last_education, no_kontak_darurat AS emergency_number, u.profile_image AS profil_img
+                        p.created_at, p.updated_at, u.name as nama, u.email, u.no_kontak, u.jenis_kelamin AS gender, u.tgl_lahir AS born_date, kota_asal AS city_from, u.pekerjaan AS job_user, u.nama_kampus AS nama_instansi, u.status AS stats, u.pendidikan_terakhir AS last_education, no_kontak_darurat AS emergency_number, u.profile_image AS profil_img
                  FROM penyewa p
                  LEFT JOIN users u ON p.user_id = u.id
                  LEFT JOIN properties pr ON p.property_id = pr.id

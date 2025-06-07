@@ -149,7 +149,7 @@ const AdminProperti = () => {
                                                     </div>
                                                 </td>
                                                 <td className="py-3">{property.property_type_name}</td>
-                                                <td className="py-3">{property.owner_name}</td>
+                                                <td className="py-3">{property.nama}</td>
                                                 <td className="py-3">
                                                     <span className={`px-2 py-1 rounded-full text-sm ${
                                                         property.status === 'Disetujui' ? 'bg-green-500 text-white' : 

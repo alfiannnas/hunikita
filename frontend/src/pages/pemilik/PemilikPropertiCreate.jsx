@@ -36,9 +36,6 @@ const Formtambah = () => {
 
 
   const [formData, setFormData] = useState({
-    owner_name: "",
-    owner_email: "",
-    owner_phone: "",
     name: "",
     address: "",
     room_count: "",
@@ -81,9 +78,6 @@ const Formtambah = () => {
     }
 
     const requiredFields = [
-      'owner_name',
-      'owner_email',
-      'owner_phone',
       'name',
       'address',
       'room_count',
@@ -226,37 +220,6 @@ const Formtambah = () => {
           <hr className="mt-[10px] h-[2px] bg-gray-300" />
           <div className="mt-[20px]">
             <Input
-              label="Nama Pemilik"
-              type="text"
-              name='owner_name'
-              value={formData.owner_name}
-              placeholder="Masukkan Nama"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-[20px]">
-            <Input
-              label="Email"
-              type="email"
-              name='owner_email'
-              value={formData.owner_email}
-              autoComplete='on'
-              placeholder="Masukkan Email"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-[20px]">
-            <Input
-              label="No. Handphone"
-              type="text"
-              name='owner_phone'
-              value={formData.owner_phone}
-              placeholder="Masukkan No. Handphone"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-[20px]">
-            <Input
               label="Nama Properti"
               type="text"
               name='name'
@@ -291,7 +254,7 @@ const Formtambah = () => {
           <div className="mt-[20px]">
             <Input
               label="Jumlah Kamar"
-              type="text"
+              type="number"
               name='room_count'
               value={formData.room_count}
               placeholder="Masukkan Jumlah Kamar"

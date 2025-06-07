@@ -12,11 +12,6 @@ export class InsertRequest{
     property_type_id!:number
     user_id!:number
 
-    @IsNotEmpty()
-    owner_name!:string;
-    
-    @IsNotEmpty()
-    owner_email!:string;
 
     @IsNotEmpty()
     phone_number!:string;
@@ -43,12 +38,6 @@ export class UpdateRequest{
 
     @IsNotEmpty()
     id!:number
-
-    @IsNotEmpty()
-    owner_name!:string;
-    
-    @IsNotEmpty()
-    owner_email!:string;
 
     @IsNotEmpty()
     phone_number!:string;

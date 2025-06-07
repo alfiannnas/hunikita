@@ -132,7 +132,7 @@ function AdminHome() {
                           </div>
                         </td>
                         <td className="py-3">{property.property_type_name}</td>
-                        <td className="py-3">{property.owner_name}</td>
+                        <td className="py-3">{property.nama}</td>
                         <td className="py-3">
                           <span className={`px-3 py-1 rounded-full text-sm ${
                             property.status === 'Disetujui' ? 'bg-green-500 text-white' : 
@@ -200,7 +200,7 @@ function AdminHome() {
                           </div>
                         </td>
                         <td className="py-3">{property.property_type_name}</td>
-                        <td className="py-3">{property.owner_name}</td>
+                        <td className="py-3">{property.nama}</td>
                         <td className="py-3">
                           {new Intl.NumberFormat('id-ID', { 
                             style: 'currency', 

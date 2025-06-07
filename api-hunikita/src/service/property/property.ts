@@ -44,8 +44,6 @@ export class Service implements IService{
             for (let i = 0; i < entities.length; i ++) {
                 responses.push({
                     id: entities[i].id,
-                    owner_email:entities[i].owner_email,
-                    owner_name:entities[i].owner_name,
                     phone_number:entities[i].phone_number,
                     name: entities[i].name,
                     img_path: entities[i].img_path,

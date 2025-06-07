@@ -38,7 +38,7 @@ export class Repository implements IRepository {
         try {
             await this.master.beginTransaction();
 
-            const [results] = await this.master.execute("INSERT INTO properties(user_id,property_type_id,owner_name,owner_email, name, address, room_count, img_path) VALUES(:user_id,:property_type_id,:owner_name,:owner_email,:name,:address,:room_count,:img_path)", data);
+            const [results] = await this.master.execute("INSERT INTO properties(user_id,property_type_id, name, address, room_count, img_path) VALUES(:user_id,:property_type_id,:name,:address,:room_count,:img_path)", data);
 
             await this.master.commit();
             
@@ -67,8 +67,7 @@ export class Repository implements IRepository {
         try {
             await this.master.beginTransaction();
 
-            await this.master.execute(`UPDATE properties SET address = :address, img_path = :img_path, name = :name, owner_email = :owner_email, owner_name = :owner_name, 
-            property_type_id = :property_type_id, room_count = :room_count WHERE id = :id`, data);
+            await this.master.execute(`UPDATE properties SET address = :address, img_path = :img_path, name = :name, property_type_id = :property_type_id, room_count = :room_count WHERE id = :id`, data);
 
             await this.master.commit();
             return 

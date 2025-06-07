@@ -75,20 +75,20 @@ const AdminPemilikPropertiEdit = () => {
                         <div className="grid grid-cols-1 gap-4">
                             <Input
                                 label="Nama Pemilik"
-                                name="owner_name"
-                                value={properties.owner_name || ''}
+                                name="nama"
+                                value={properties.nama || ''}
                                 onChange={handleChange}
                             />
                             <Input
                                 label="Nama Email"
-                                name="owner_email"
-                                value={properties.owner_email || ''}
+                                name="email"
+                                value={properties.email || ''}
                                 onChange={handleChange}
                             />
                             <Input
                                 label="Nomor Handphone"
                                 name="no_kontak"
-                                value={properties.owner_phone || ''}
+                                value={properties.no_kontak || ''}
                                 onChange={handleChange}
                             />
                             <Input

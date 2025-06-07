@@ -22,9 +22,9 @@ export class Repository implements IRepository {
     async take(id: number): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT p.id, p.user_id, p.property_type_id, p.owner_name, p.owner_email, 
+                `SELECT p.id, p.user_id, p.property_type_id,
                 p.name, p.harga, p.harga_1, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, 
-                p.owner_phone, pt.name AS property_type_name, p.foto_properti, p.status,
+                pt.name AS property_type_name, p.foto_properti, p.status,
                 p.province, p.city, p.subdistrict, p.jenis_properti, p.umur_bangunan,
                 p.jam_bertamu, p.pelihara_binatang, p.fasilitas, p.fasilitas_bersama,
                 p.fasilitas_1, p.fasilitas_bersama_1, p.petunjuk_arah,
@@ -46,18 +46,16 @@ export class Repository implements IRepository {
         try {
             const [result] = await this.master.execute(
                 `INSERT INTO properties (
-                    user_id, property_type_id, owner_name, owner_email,
+                    user_id, property_type_id,
                     name, address, room_count, foto_properti, province, city,
                     subdistrict, umur_bangunan, jam_bertamu,
-                    pelihara_binatang, petunjuk_arah, owner_phone, status,
+                    pelihara_binatang, petunjuk_arah, status,
                     harga, harga_1, fasilitas, fasilitas_bersama, fasilitas_1,
                     fasilitas_bersama_1, longitude, latitude, jenis_properti
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     data.user_id,
                     data.property_type_id,
-                    data.owner_name,
-                    data.owner_email,
                     data.name,
                     data.address,
                     data.room_count,
@@ -69,7 +67,6 @@ export class Repository implements IRepository {
                     data.jam_bertamu,
                     data.pelihara_binatang,
                     data.petunjuk_arah,
-                    data.owner_phone,
                     data.status || 'Diproses',
                     data.harga || 0,
                     data.harga_1 || 0,
@@ -104,14 +101,6 @@ export class Repository implements IRepository {
                 updateFields.push('property_type_id = ?')
                 values.push(data.property_type_id)
             }
-            if (data.owner_name !== undefined) {
-                updateFields.push('owner_name = ?')
-                values.push(data.owner_name)
-            }
-            if (data.owner_email !== undefined) {
-                updateFields.push('owner_email = ?')
-                values.push(data.owner_email)
-            }
             if (data.province !== undefined) {
                 updateFields.push('province = ?')
                 values.push(data.province)
@@ -123,10 +112,6 @@ export class Repository implements IRepository {
             if (data.city !== undefined) {
                 updateFields.push('city = ?')
                 values.push(data.city)
-            }
-            if (data.owner_email !== undefined) {
-                updateFields.push('owner_phone = ?')
-                values.push(data.owner_phone)
             }
             if (data.name !== undefined) {
                 updateFields.push('name = ?')
@@ -225,11 +210,12 @@ export class Repository implements IRepository {
     async list(userId?: number): Promise<RowDataPacket> {
         try {
             let query = `SELECT p.id, p.user_id, p.property_type_id, pt.name AS property_type_name, 
-                        p.owner_name, p.owner_email, p.name, p.address, 
+                        p.name, p.address, 
                         p.room_count, p.img_path, p.status, p.harga, p.foto_properti, p.harga_1,
-                        p.created_at, p.updated_at
+                        p.created_at, p.updated_at, us.name as nama, us.email, us.no_kontak
                  FROM properties p
-                 LEFT JOIN property_types pt ON p.property_type_id = pt.id`;
+                 LEFT JOIN property_types pt ON p.property_type_id = pt.id
+                 LEFT JOIN users us ON p.user_id = us.id`;
             
             const params = [];
             if (userId) {
