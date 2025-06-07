@@ -254,11 +254,15 @@ const Formtambah = () => {
           <div className="mt-[20px]">
             <Input
               label="Jumlah Kamar"
-              type="number"
-              name='room_count'
+              type="text"
+              inputMode="numeric"
+              name="room_count"
               value={formData.room_count}
               placeholder="Masukkan Jumlah Kamar"
-              onChange={handleChange}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/\D/g, '');
+                handleChange({ target: { name: 'room_count', value: onlyNums } });
+              }}
             />
           </div>
           <div className="mt-[20px]">
@@ -309,11 +313,15 @@ const Formtambah = () => {
           <div className="mt-[20px]">
             <Input
               label="Umur Bangunan"
-              type="number"
-              name='umur_bangunan'
+              type="text"
+              inputMode="numeric"
+              name="umur_bangunan"
               value={formData.umur_bangunan}
               placeholder="Masukkan Umur Bangunan (tahun)"
-              onChange={handleChange}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/\D/g, '');
+                handleChange({ target: { name: 'umur_bangunan', value: onlyNums } });
+              }}
             />
           </div>
           <div className="mt-[20px]">
@@ -350,11 +358,15 @@ const Formtambah = () => {
           <div className="mt-[20px]">
             <Input
               label="Harga"
-              type="number"
-              name='harga'
+              type="text"
+              inputMode="numeric"
+              name="harga"
               value={formData.harga}
               placeholder="Masukkan Harga"
-              onChange={handleChange}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/\D/g, '');
+                handleChange({ target: { name: 'harga', value: onlyNums } });
+              }}
             />
           </div>
           <div className="mt-[20px]">
@@ -382,11 +394,15 @@ const Formtambah = () => {
           <div className="mt-[20px]">
             <Input
               label="Harga Tipe Kamar Mandi Luar (Jika ada)"
-              type="number"
-              name='harga_1'
+              type="text"
+              inputMode="numeric"
+              name="harga_1"
               value={formData.harga_1}
               placeholder="Masukkan Harga Kamar Mandi Luar"
-              onChange={handleChange}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/\D/g, '');
+                handleChange({ target: { name: 'harga_1', value: onlyNums } });
+              }}
             />
           </div>
           <div className="mt-[20px]">
