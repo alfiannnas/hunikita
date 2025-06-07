@@ -102,8 +102,11 @@ export class Repository implements IRepository {
 
             const userRole = rows[0].role;
 
-
-            return requestRole === userRole;
+            if(userRole == "Admin") {
+                return false
+            } else {
+                return true
+            }
             
         } catch (error) {
             throw error;
