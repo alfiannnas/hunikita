@@ -215,6 +215,11 @@ const Formedit = () => {
     }
   };
 
+  const formatNumber = (value) => {
+    if (!value) return '';
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   const handleValidation = () => {
     // Validasi checkbox terlebih dahulu
     if (!isChecked) {
@@ -591,7 +596,7 @@ const Formedit = () => {
               type="text"
               inputMode="numeric"
               name="harga"
-              value={formData.harga}
+              value={formatNumber(formData.harga)}
               placeholder="Masukkan Harga"
               onChange={(e) => {
                 const onlyNums = e.target.value.replace(/\D/g, '');
@@ -627,7 +632,7 @@ const Formedit = () => {
               type="text"
               inputMode="numeric"
               name="harga_1"
-              value={formData.harga_1}
+              value={formatNumber(formData.harga_1)}
               placeholder="Masukkan Harga Kamar Mandi Luar"
               onChange={(e) => {
                 const onlyNums = e.target.value.replace(/\D/g, '');
