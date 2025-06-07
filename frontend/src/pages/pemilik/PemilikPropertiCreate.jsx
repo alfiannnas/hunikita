@@ -380,15 +380,20 @@ const Formtambah = () => {
             )}
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Pelihara Binatang"
-              type="text"
-              name='pelihara_binatang'
+            <label className="block text-sm font-medium text-gray-700 mb-1">Pelihara Binatang</label>
+
+            <Select
+              name="pelihara_binatang"
               value={formData.pelihara_binatang}
-              placeholder="Contoh: Diperbolehkan/Tidak Diperbolehkan"
               onChange={handleChange}
+              options={[
+                { label: 'Pilih Opsi', value: '' },
+                { label: 'Diperbolehkan', value: 'Diperbolehkan' },
+                { label: 'Tidak Diperbolehkan', value: 'Tidak Diperbolehkan' },
+              ]}
             />
           </div>
+
           <div className="mt-[20px]">
             <label className="block text-sm font-medium text-gray-700">Petunjuk Arah</label>
             <textarea
