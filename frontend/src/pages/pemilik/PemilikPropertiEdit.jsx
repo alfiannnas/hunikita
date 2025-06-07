@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { API } from '../../constant';
 import axios from 'axios';
-import {useSelector} from "react-redux"
+import { useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom";
 import { Input } from '../../components/Input';
 import { Select } from "../../components/Select";
@@ -58,6 +58,17 @@ const Formedit = () => {
 
   // Tambahkan state untuk checkbox
   const [isChecked, setIsChecked] = useState(false);
+  const [jamBertamuMode, setJamBertamuMode] = useState('');
+
+  useEffect(() => {
+    if (formData.jam_bertamu === 'Bebas') {
+      setJamBertamuMode('Bebas');
+    } else if (formData.jam_bertamu.includes(' - ')) {
+      setJamBertamuMode('Pukul');
+    } else {
+      setJamBertamuMode('');
+    }
+  }, [formData.jam_bertamu]);
 
   // Tambahkan handler untuk checkbox
   const handleCheckboxChange = (event) => {
@@ -210,17 +221,17 @@ const Formedit = () => {
     }
     return null;
   }
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if(!handleValidation()) {
+    if (!handleValidation()) {
       return;
     }
 
     try {
       const imageUrl = await handleImageUpload();
-      
+
       if (!imageUrl) {
         alert('Mohon upload gambar properti');
         return;
@@ -228,8 +239,8 @@ const Formedit = () => {
 
       const token = auth?.token;
       const userId = auth?.id;
-      
-      const response = await axios.put(`${API.UPDATE_PROPERTIES_BY_PEMILIK}/${id}`, 
+
+      const response = await axios.put(`${API.UPDATE_PROPERTIES_BY_PEMILIK}/${id}`,
         {
           ...formData,
           foto_properti: imageUrl,
@@ -289,7 +300,7 @@ const Formedit = () => {
 
   return (
     <div>
-        <Navbar />
+      <Navbar />
       <div className="w-[1148px] mx-auto">
         <form onSubmit={handleSubmit}>
           <h1 className="text-[36px] font-bold mt-[65px]">Edit Iklan</h1>
@@ -305,7 +316,7 @@ const Formedit = () => {
             />
           </div>
           <div className="mt-[20px]">
-          <Select
+            <Select
               label="Tipe Properti"
               name='property_type_id'
               value={formData.property_type_id}
@@ -401,15 +412,58 @@ const Formedit = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <Input
-              label="Jam Bertamu"
-              type="text"
-              name='jam_bertamu'
-              value={formData.jam_bertamu}
-              placeholder="Contoh: Bebas/Pukul 08.00 - 20.00 WIB"
-              onChange={handleChange}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Jam Bertamu</label>
+
+            <Select
+              name="jam_bertamu"
+              value={jamBertamuMode}
+              onChange={(e) => {
+                const value = e.target.value;
+                setJamBertamuMode(value);
+
+                if (value === 'Bebas') {
+                  handleChange({ target: { name: 'jam_bertamu', value: 'Bebas' } });
+                } else {
+                  // Kosongkan saat ganti ke "Pukul" agar user isi waktu
+                  handleChange({ target: { name: 'jam_bertamu', value: '' } });
+                }
+              }}
+              options={[
+                { label: 'Pilih Jam Bertamu', value: '' },
+                { label: 'Bebas', value: 'Bebas' },
+                { label: 'Pukul', value: 'Pukul' },
+              ]}
             />
+
+            {jamBertamuMode === 'Pukul' && (
+              <div className="mt-2 flex gap-2">
+                <Input
+                  type="time"
+                  value={formData.jam_bertamu.split(' - ')[0] || ''}
+                  onChange={(e) => {
+                    const sampai = formData.jam_bertamu.split(' - ')[1]?.replace(' WIB', '') || '';
+                    const dari = e.target.value;
+                    const finalValue = `${dari} - ${sampai} WIB`;
+                    handleChange({ target: { name: 'jam_bertamu', value: finalValue } });
+                  }}
+                  className="form-element w-full"
+                />
+                <span className="self-center">-</span>
+                <Input
+                  type="time"
+                  value={formData.jam_bertamu.split(' - ')[1]?.replace(' WIB', '') || ''}
+                  onChange={(e) => {
+                    const dari = formData.jam_bertamu.split(' - ')[0] || '';
+                    const sampai = e.target.value;
+                    const finalValue = `${dari} - ${sampai} WIB`;
+                    handleChange({ target: { name: 'jam_bertamu', value: finalValue } });
+                  }}
+                  className="form-element w-full"
+                />
+              </div>
+            )}
           </div>
+
           <div className="mt-[20px]">
             <Input
               label="Pelihara Binatang"
@@ -506,8 +560,8 @@ const Formedit = () => {
           <div className="mt-4">
             <h1 className="block text-[18px] font-medium  text-gray-700">Pilih Lokasi di Peta</h1>
             <div className="w-full h-[400px] mb-4">
-              <MapComponent 
-                latitude={formData.latitude || null} 
+              <MapComponent
+                latitude={formData.latitude || null}
                 longitude={formData.longitude || null}
                 onLocationSelect={handleMapClick}
                 isEditable={true}
@@ -540,9 +594,9 @@ const Formedit = () => {
               <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
                 {selectedImage ? (
                   <div className="relative w-full h-full">
-                    <img 
-                      src={selectedImage} 
-                      alt="Preview" 
+                    <img
+                      src={selectedImage}
+                      alt="Preview"
                       className="w-full h-full object-cover rounded-lg"
                     />
                     <div className="absolute top-2 right-2 bg-white bg-opacity-75 rounded-full p-1">
@@ -560,11 +614,11 @@ const Formedit = () => {
                     <p className="text-xs text-gray-500">PNG, JPG, atau JPEG (MAX. 5MB)</p>
                   </div>
                 )}
-                <input 
-                  type="file" 
-                  onChange={handleImageChange} 
-                  name='img' 
-                  className="hidden" 
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  name='img'
+                  className="hidden"
                   accept="image/*"
                 />
               </label>
@@ -582,11 +636,11 @@ const Formedit = () => {
             <h1 className="text-md">Pastikan semua data sudah benar!</h1>
           </div>
           <button
-                className="text-md justify-center items-center flex mx-auto bg-blue-500 hover:bg-blue-400 px-2 py-2 mt-5 rounded-lg font-semibold text-white font-Poppins focus:bg-blue-400 focus:outline-none transition duration-200"
-                type="submit"
-              >
-                Simpan Perubahan
-              </button>
+            className="text-md justify-center items-center flex mx-auto bg-blue-500 hover:bg-blue-400 px-2 py-2 mt-5 rounded-lg font-semibold text-white font-Poppins focus:bg-blue-400 focus:outline-none transition duration-200"
+            type="submit"
+          >
+            Simpan Perubahan
+          </button>
         </form>
       </div>
       <div className="mt-[50px]">
