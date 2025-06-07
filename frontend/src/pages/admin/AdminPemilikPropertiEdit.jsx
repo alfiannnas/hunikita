@@ -78,30 +78,36 @@ const AdminPemilikPropertiEdit = () => {
                                 name="nama"
                                 value={properties.nama || ''}
                                 onChange={handleChange}
+                                disabled
                             />
+
                             <Input
                                 label="Nama Email"
                                 name="email"
                                 value={properties.email || ''}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Nomor Handphone"
                                 name="no_kontak"
                                 value={properties.no_kontak || ''}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Nama Properti"
                                 name="name"
                                 value={properties.name || ''}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Tipe Properti"
                                 name="property_type_name"
                                 value={properties.property_type_name || ''}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Harga"
@@ -117,12 +123,14 @@ const AdminPemilikPropertiEdit = () => {
                                 name="alamat"
                                 value={properties.address || ''}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Jumlah Kamar"
                                 name="room_count"
                                 value={properties.room_count || ''}
                                 onChange={handleChange}
+                                disabled
                             />
                             <p className="block text-sm font-medium text-gray-700 mb-1">Foto Properti</p>
                             <img

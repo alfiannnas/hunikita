@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Input({ 
+export function Input({
   label,
   type = "text",
   placeholder,
@@ -9,6 +9,7 @@ export function Input({
   error,
   required = false,
   className = "",
+  disabled = false,
   name,
 }) {
   return (
@@ -26,6 +27,7 @@ export function Input({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
+        disabled={disabled}
         className={`
           w-full px-4 py-2 
           border border-gray-300 rounded-lg

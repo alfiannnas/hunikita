@@ -100,12 +100,14 @@ const AdminPenyewaEdit = () => {
                                 name="nama_properti"
                                 value={penyewa.property_name}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Jenis Properti"
                                 name="jenis_properti"
                                 value={penyewa.property_type_name}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Harga"
@@ -121,18 +123,21 @@ const AdminPenyewaEdit = () => {
                                 name="nama_pemilik"
                                 value={penyewa.nama}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Nama Penyewa"
                                 name="nama_penyewa"
                                 value={penyewa.user_name}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Jenis Kelamin"
                                 name="jenis_kelamin"
                                 value={penyewa.gender}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Tanggal Lahir"
@@ -140,42 +145,49 @@ const AdminPenyewaEdit = () => {
                                 type="date"
                                 value={formatDate(penyewa.born_date)}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Kota Asal"
                                 name="kota_asal"
                                 value={penyewa.city_from}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Pekerjaan"
                                 name="pekerjaan"
                                 value={penyewa.job_user}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Nama Instansi/Kampus"
                                 name="nama_instansi"
                                 value={penyewa.nama_instansi}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Status"
                                 name="status"
                                 value={penyewa.stats}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Pendidikan Terakhir"
                                 name="pendidikan_terakhir"
                                 value={penyewa.last_education}
                                 onChange={handleChange}
+                                disabled
                             />
                             <Input
                                 label="Nomor Kontak Darurat"
                                 name="nomor_darurat"
                                 value={penyewa.emergency_number}
                                 onChange={handleChange}
+                                disabled
                             />
                         </div>
                     </div>
