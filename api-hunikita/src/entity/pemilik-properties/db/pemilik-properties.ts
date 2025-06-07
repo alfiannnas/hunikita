@@ -43,6 +43,7 @@ export interface CreatePemilikPropertiesRequest {
     province?: string;
     city?: string;
     subdistrict?: string;
+    village?: string;
     jenis_properti?: string;
     umur_bangunan?: number;
     jam_bertamu?: string;

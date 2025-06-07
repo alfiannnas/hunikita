@@ -56,6 +56,67 @@ const Formedit = () => {
     latitude: ""
   });
 
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [villages, setVillages] = useState([]);
+
+
+
+  useEffect(() => {
+    fetch('https://api-regional-indonesia.vercel.app/api/provinces')
+      .then((res) => res.json())
+      .then((data) => {
+        setProvinces(data.data || []);
+      });
+  }, []);
+
+  useEffect(() => {
+    const selectedProvince = provinces.find((prov) => prov.name === formData.province);
+    if (selectedProvince?.id) {
+      fetch(`https://api-regional-indonesia.vercel.app/api/cities/${selectedProvince.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCities(data.data || []);
+        });
+    } else {
+      setCities([]);
+    }
+  }, [formData.province, provinces]);
+
+  useEffect(() => {
+    const selectedCity = cities.find((city) => city.name === formData.city);
+    if (selectedCity?.id) {
+      fetch(`https://api-regional-indonesia.vercel.app/api/districts/${selectedCity.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setDistricts(data.data || []);
+        })
+        .catch((err) => {
+          console.error('Gagal memuat kecamatan:', err);
+        });
+    } else {
+      setDistricts([]);
+    }
+  }, [formData.city, cities]);
+
+  useEffect(() => {
+    const selectedDistrict = districts.find((d) => d.name === formData.subdistrict);
+    if (selectedDistrict?.id) {
+      fetch(`https://api-regional-indonesia.vercel.app/api/villages/${selectedDistrict.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setVillages(data.data || []);
+        })
+        .catch((err) => {
+          console.error('Gagal memuat kelurahan:', err);
+        });
+    } else {
+      setVillages([]);
+    }
+  }, [formData.subdistrict, districts]);
+
+
   // Tambahkan state untuk checkbox
   const [isChecked, setIsChecked] = useState(false);
   const [jamBertamuMode, setJamBertamuMode] = useState('');
@@ -121,6 +182,7 @@ const Formedit = () => {
           province: propertyData.province || "",
           city: propertyData.city || "",
           subdistrict: propertyData.subdistrict || "",
+          village: propertyData.village || "",
           property_type_id: propertyData.property_type_id?.toString() || "",
           umur_bangunan: propertyData.umur_bangunan || "",
           jam_bertamu: propertyData.jam_bertamu || "",
@@ -173,6 +235,7 @@ const Formedit = () => {
       'province',
       'city',
       'subdistrict',
+      'village',
       'jenis_properti',
       'umur_bangunan',
       'jam_bertamu',
@@ -353,33 +416,63 @@ const Formedit = () => {
             />
           </div>
           <div className="mt-[20px]">
-            <Input
+            <Select
               label="Provinsi"
-              type="text"
-              name='province'
+              name="province"
               value={formData.province}
-              placeholder="Masukkan Provinsi"
+              placeholder="Pilih Provinsi"
               onChange={handleChange}
+              options={provinces.map((prov) => ({
+                label: prov.name,
+                value: prov.name,
+              }))}
             />
           </div>
           <div className="mt-[20px]">
-            <Input
+            <Select
               label="Kota"
-              type="text"
-              name='city'
+              name="city"
               value={formData.city}
-              placeholder="Masukkan Kota"
               onChange={handleChange}
+              options={[
+                { label: 'Pilih Kab/Kota', value: '' },
+                ...cities.map((city) => ({
+                  label: city.name,
+                  value: city.name,
+                })),
+              ]}
             />
           </div>
+
           <div className="mt-[20px]">
-            <Input
+            <Select
               label="Kecamatan"
-              type="text"
-              name='subdistrict'
+              name="subdistrict"
               value={formData.subdistrict}
-              placeholder="Masukkan Kecamatan"
               onChange={handleChange}
+              options={[
+                { label: 'Pilih Kecamatan', value: '' },
+                ...districts.map((subdistrict) => ({
+                  label: subdistrict.name,
+                  value: subdistrict.name,
+                })),
+              ]}
+            />
+
+          </div>
+          <div className="mt-[20px]">
+            <Select
+              label="Kelurahan"
+              name="village"
+              value={formData.village}
+              onChange={handleChange}
+              options={[
+                { label: 'Pilih Kelurahan', value: '' },
+                ...villages.map((village) => ({
+                  label: village.name,
+                  value: village.name,
+                })),
+              ]}
             />
           </div>
           <div className="mt-[20px]">

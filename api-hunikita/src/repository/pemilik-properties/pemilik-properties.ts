@@ -25,7 +25,7 @@ export class Repository implements IRepository {
                 `SELECT p.id, p.user_id, p.property_type_id,
                 p.name, p.harga, p.harga_1, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, 
                 pt.name AS property_type_name, p.foto_properti, p.status,
-                p.province, p.city, p.subdistrict, p.jenis_properti, p.umur_bangunan,
+                p.province, p.city, p.subdistrict, p.village, p.jenis_properti, p.umur_bangunan,
                 p.jam_bertamu, p.pelihara_binatang, p.fasilitas, p.fasilitas_bersama,
                 p.fasilitas_1, p.fasilitas_bersama_1, p.petunjuk_arah,
                 p.longitude, p.latitude
@@ -48,11 +48,11 @@ export class Repository implements IRepository {
                 `INSERT INTO properties (
                     user_id, property_type_id,
                     name, address, room_count, foto_properti, province, city,
-                    subdistrict, umur_bangunan, jam_bertamu,
+                    subdistrict, village, umur_bangunan, jam_bertamu,
                     pelihara_binatang, petunjuk_arah, status,
                     harga, harga_1, fasilitas, fasilitas_bersama, fasilitas_1,
                     fasilitas_bersama_1, longitude, latitude, jenis_properti
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     data.user_id,
                     data.property_type_id,
@@ -63,6 +63,7 @@ export class Repository implements IRepository {
                     data.province,
                     data.city,
                     data.subdistrict,
+                    data.village,
                     data.umur_bangunan,
                     data.jam_bertamu,
                     data.pelihara_binatang,
@@ -112,6 +113,10 @@ export class Repository implements IRepository {
             if (data.city !== undefined) {
                 updateFields.push('city = ?')
                 values.push(data.city)
+            }
+            if (data.village !== undefined) {
+                updateFields.push('village = ?')
+                values.push(data.village)
             }
             if (data.name !== undefined) {
                 updateFields.push('name = ?')

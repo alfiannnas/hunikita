@@ -22,7 +22,7 @@ export class Repository implements IRepository {
                 `SELECT p.id, p.user_id, p.property_type_id,
                 p.name, p.harga, p.address, p.room_count, p.img_path, p.created_at, p.updated_at, 
                 pt.name AS property_type_name, p.foto_properti, p.status,
-                p.province, p.city, p.subdistrict, p.jenis_properti, p.umur_bangunan,
+                p.province, p.city, p.subdistrict, p.village, p.jenis_properti, p.umur_bangunan,
                 p.jam_bertamu, p.pelihara_binatang, p.fasilitas, p.fasilitas_bersama,
                 p.fasilitas_1, p.fasilitas_bersama_1, p.petunjuk_arah,
                 p.longitude, p.latitude, p.harga_1, us.name as nama, us.email, us.no_kontak
@@ -124,7 +124,7 @@ export class Repository implements IRepository {
                 SELECT p.id, p.user_id, p.property_type_id, pt.name AS property_type_name, 
                         p.name, p.address, 
                         p.room_count, p.img_path, p.status, p.harga, p.foto_properti, p.status_sewa,
-                        p.subdistrict, p.city, p.province, us.name as nama, us.email, us.no_kontak,
+                        p.subdistrict, p.village, p.city, p.province, us.name as nama, us.email, us.no_kontak,
                         p.created_at, p.updated_at
                 FROM properties p
                 LEFT JOIN property_types pt ON p.property_type_id = pt.id

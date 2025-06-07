@@ -88,8 +88,8 @@ const AdminPropertiEdit = () => {
 
     const handleUpdateStatus = async (newStatus) => {
         try {
-            const response = await axios.put(`${API.UPDATE_ADMIN_PROPERTY_STATUS}/${id}`, 
-                { 
+            const response = await axios.put(`${API.UPDATE_ADMIN_PROPERTY_STATUS}/${id}`,
+                {
                     status: newStatus  // Pastikan nama field sesuai dengan yang diharapkan backend
                 },
                 {
@@ -163,7 +163,7 @@ const AdminPropertiEdit = () => {
                                     <span className="text-sm text-white ml-1">/bulan</span>
                                 </div>
                                 <div className="flex justify-center mt-4">
-                                    <a 
+                                    <a
                                         href={`https://wa.me/${properties?.no_kontak?.replace(/^0/, '62')}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -193,12 +193,15 @@ const AdminPropertiEdit = () => {
                                 <div className="grid grid-cols-[100px_1fr] gap-1 text-sm">
                                     <p className="font-medium text-gray-700">Provinsi</p>
                                     <p className="text-gray-700">: {properties?.province || '-'}</p>
-                                    
-                                    <p className="font-medium text-gray-700">Kota</p>
+
+                                    <p className="font-medium text-gray-700">Kab/Kota</p>
                                     <p className="text-gray-700">: {properties?.city || '-'}</p>
-                                    
+
                                     <p className="font-medium text-gray-700">Kecamatan</p>
                                     <p className="text-gray-700">: {properties?.subdistrict || '-'}</p>
+
+                                    <p className="font-medium text-gray-700">Kelurahan</p>
+                                    <p className="text-gray-700">: {properties?.village || '-'}</p>
 
                                     <p className="font-medium text-gray-700">Alamat</p>
                                     <p className="text-gray-700">: {properties?.address || '-'}</p>
@@ -210,10 +213,10 @@ const AdminPropertiEdit = () => {
                                 <div className="grid grid-cols-[100px_1fr] gap-1 text-sm">
                                     <p className="font-medium text-gray-700">Jenis</p>
                                     <p className="text-gray-700">: {properties?.jenis_properti || '-'}</p>
-                                    
+
                                     <p className="font-medium text-gray-700">Umur</p>
                                     <p className="text-gray-700">: {properties?.umur_bangunan || '-'} tahun</p>
-                                    
+
                                     <p className="font-medium text-gray-700">Jam Bertamu</p>
                                     <p className="text-gray-700">: {properties?.jam_bertamu || '-'}</p>
 
@@ -225,7 +228,7 @@ const AdminPropertiEdit = () => {
                         <hr className="my-4 border-gray-300" />
                         {/* Deskripsi Properti */}
                         <h1 className="text-xl font-medium text-gray-800 mb-1">Deskripsi {properties.property_type_name}</h1>
-                        
+
                         <h1 className="text-lg font-medium text-gray-800 mb-1">
                             {properties?.fasilitas ? `Kamar Mandi Dalam: ${formatRupiah(properties?.harga)} / Bulan` : ''}
                         </h1>
@@ -237,7 +240,7 @@ const AdminPropertiEdit = () => {
                                 <h1 className="text-lg font-medium text-gray-800 mb-1">
                                     {properties?.fasilitas ? `Fasilitas:` : ''}
                                 </h1>
-                                <div 
+                                <div
                                     className="text-gray-700 facilities-content"
                                     dangerouslySetInnerHTML={{ __html: properties?.fasilitas || '-' }}
                                 />
@@ -248,7 +251,7 @@ const AdminPropertiEdit = () => {
                                 <h1 className="text-lg font-medium text-gray-800 mb-1">
                                     {properties?.fasilitas_bersama ? `Fasilitas Bersama:` : ''}
                                 </h1>
-                                <div 
+                                <div
                                     className="text-gray-700 facilities-content"
                                     dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama || '-' }}
                                 />
@@ -278,7 +281,7 @@ const AdminPropertiEdit = () => {
                                 <h1 className="text-lg font-medium text-gray-800 mb-1">
                                     {properties?.fasilitas_1 ? `Fasilitas:` : ''}
                                 </h1>
-                                <div 
+                                <div
                                     className="text-gray-700 facilities-content"
                                     dangerouslySetInnerHTML={{ __html: properties?.fasilitas_1 || '' }}
                                 />
@@ -289,7 +292,7 @@ const AdminPropertiEdit = () => {
                                 <h1 className="text-lg font-medium text-gray-800 mb-1">
                                     {properties?.fasilitas_bersama_1 ? `Fasilitas Bersama:` : ''}
                                 </h1>
-                                <div 
+                                <div
                                     className="text-gray-700 facilities-content"
                                     dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama_1 || '' }}
                                 />
@@ -314,13 +317,13 @@ const AdminPropertiEdit = () => {
                         </div>
                         <div>
                             <h1 className="text-xl font-medium text-gray-800 mt-4">Peta</h1>
-                            <MapComponent 
-                                latitude={properties?.latitude} 
-                                longitude={properties?.longitude} 
+                            <MapComponent
+                                latitude={properties?.latitude}
+                                longitude={properties?.longitude}
                             />
                             {properties?.latitude && properties?.longitude && (
                                 <div className="mt-2 flex justify-end">
-                                    <a 
+                                    <a
                                         href={`https://www.google.com/maps?q=${properties.latitude},${properties.longitude}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -333,24 +336,24 @@ const AdminPropertiEdit = () => {
                             )}
                         </div>
                     </div>
-                    
+
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold">Data Properti</h3>
                         </div>
-                        <div className="grid grid-cols-1 gap-4">                        
+                        <div className="grid grid-cols-1 gap-4">
                             <Input
                                 label="Jenis Properti"
                                 name="property_type_name"
                                 value={properties?.property_type_name || ''}
-                                onChange={() => {}}
+                                onChange={() => { }}
                                 disabled
                             />
                             <Input
                                 label="Komentar"
                                 name="komentar"
                                 value={properties?.komentar || ''}
-                                onChange={() => {}}
+                                onChange={() => { }}
                                 disabled
                             />
                             <div className="flex items-center gap-2">
@@ -368,13 +371,13 @@ const AdminPropertiEdit = () => {
                         <div className="block text-sm font-medium text-gray-700 mb-1 mt-4">
                             {properties?.status === 'Diproses' && (
                                 <div className="flex gap-2 mt-4">
-                                    <button 
+                                    <button
                                         onClick={() => handleUpdateStatus('Disetujui')}
                                         className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
                                     >
                                         Setuju
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => handleUpdateStatus('Ditolak')}
                                         className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
                                     >
@@ -384,7 +387,7 @@ const AdminPropertiEdit = () => {
                             )}
                         </div>
                     </div>
-                    
+
                     <Alert
                         isOpen={isAlertOpen}
                         title="Hapus"
@@ -392,10 +395,10 @@ const AdminPropertiEdit = () => {
                         onCancel={() => setIsAlertOpen(false)}
                         onConfirm={handleDelete}
                     />
-                    
-                    <SuccessMessage 
-                        isOpen={successMessage.isOpen} 
-                        onClose={() => setSuccessMessage(prev => ({...prev, isOpen: false}))}
+
+                    <SuccessMessage
+                        isOpen={successMessage.isOpen}
+                        onClose={() => setSuccessMessage(prev => ({ ...prev, isOpen: false }))}
                         title={successMessage.title}
                         message={successMessage.message}
                         type="success"
