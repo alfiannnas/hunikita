@@ -20,12 +20,14 @@ const Formtambah = () => {
   // Konfigurasi modules untuk Quill - hanya bullets
   const modules = {
     toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
       [{ 'list': 'bullet' }],
     ],
   };
 
   const formats = [
     'list',
+    'bold', 'italic', 'underline', 'strike',
   ];
 
   useEffect(() => {

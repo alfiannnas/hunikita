@@ -140,11 +140,13 @@ const Formedit = () => {
   const modules = {
     toolbar: [
       [{ 'list': 'bullet' }],
+      ['bold', 'italic', 'underline', 'strike'],
     ],
   };
 
   const formats = [
     'list',
+    'bold', 'italic', 'underline', 'strike',
   ];
 
   // Tambahkan handler untuk Quill
