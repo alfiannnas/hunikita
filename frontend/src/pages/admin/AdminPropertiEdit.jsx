@@ -218,7 +218,13 @@ const AdminPropertiEdit = () => {
                                     <p className="text-gray-700">: {properties?.umur_bangunan || '-'} tahun</p>
 
                                     <p className="font-medium text-gray-700">Jam Bertamu</p>
-                                    <p className="text-gray-700">: {properties?.jam_bertamu || '-'}</p>
+                                    <p className="text-gray-700">
+                                        : {properties?.jam_bertamu === 'Bebas'
+                                            ? 'Bebas'
+                                            : properties?.jam_bertamu
+                                                ? `Pukul ${properties.jam_bertamu}`
+                                                : '-'}
+                                    </p>
 
                                     <p className="font-medium text-gray-700">Peliharaan</p>
                                     <p className="text-gray-700">: {properties?.pelihara_binatang || '-'}</p>
