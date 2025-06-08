@@ -205,12 +205,17 @@ const Listiklan = () => {
                       </span>
                     </td>
                     <td className="py-3 flex space-x-2">
-                      <button className="p-2 text-yellow-600 border border-yellow-600 rounded-md hover:bg-yellow-600 hover:text-white transition"
-
+                      <button
+                        className="p-2 text-yellow-600 border border-yellow-600 rounded-md hover:bg-yellow-600 hover:text-white transition"
                         onClick={() => {
+                          if (item.status === 'Diproses') {
+                            alert('Status properti harus "Disetujui" untuk dapat mengubah status sewa.');
+                            return;
+                          }
                           setIdProperty(item.id);
                           setUpdateStatusOpen(true);
-                        }}>
+                        }}
+                      >
                         <Eye className="w-5 h-5" />
                       </button>
                       <Link
@@ -280,8 +285,8 @@ const Listiklan = () => {
       </div>
       <ModalDropdown
         isOpen={isUpdateStatusOpen}
-        title="Update Status Properti"
-        message="Pilih status baru untuk properti ini:"
+        title="Update Status Sewa Properti"
+        message="Pilih status sewa untuk properti ini:"
         options={statusOptions}
         onCancel={() => setUpdateStatusOpen(false)}
         onConfirm={handleUpdateStatus}
