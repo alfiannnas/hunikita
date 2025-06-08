@@ -14,6 +14,7 @@ export interface IController {
     update(req: Request, res: Response): Promise<void>
     delete(req: Request, res: Response): Promise<void>
     updateStatus(req: Request, res: Response): Promise<void>
+    updateStatusSewa(req: Request, res: Response): Promise<void>
 }
 
 export class Controller implements IController {
@@ -64,6 +65,21 @@ export class Controller implements IController {
             res.status(500).json({
                 status: false,
                 message: "Failed to update status",
+                error: error.message
+            })
+        }
+    }
+
+    async updateStatusSewa(req: Request, res: Response): Promise<void> {
+        try {
+            const id = parseInt(req.params.id)
+            const { status_sewa } = req.body
+            const result = await this.service.updateStatusSewa(id, status_sewa)
+            res.json(result)
+        } catch (error: any) {
+            res.status(500).json({
+                status: false,
+                message: "Failed to update status sewa",
                 error: error.message
             })
         }

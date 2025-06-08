@@ -9,6 +9,7 @@ export interface IRepository {
     delete(id: number): Promise<RowDataPacket>
     list(userId?: number): Promise<RowDataPacket>
     updateStatus(id: number, status: string): Promise<RowDataPacket>
+    updateStatusSewa(id: number, status_sewa: string): Promise<RowDataPacket>
     takeUser(id: number): Promise<RowDataPacket>
     updateUser(id: number, data: { [key: string]: any }): Promise<void>
 }
@@ -215,7 +216,7 @@ export class Repository implements IRepository {
     async list(userId?: number): Promise<RowDataPacket> {
         try {
             let query = `SELECT p.id, p.user_id, p.property_type_id, pt.name AS property_type_name, 
-                        p.name, p.address, 
+                        p.name, p.address, p.status_sewa,
                         p.room_count, p.img_path, p.status, p.harga, p.foto_properti, p.harga_1,
                         p.created_at, p.updated_at, us.name as nama, us.email, us.no_kontak
                  FROM properties p
@@ -241,6 +242,19 @@ export class Repository implements IRepository {
             const [result] = await this.master.execute(
                 `UPDATE properties SET status = ?, updated_at = NOW() WHERE id = ?`,
                 [status, id]
+            )
+            return result as RowDataPacket
+        } catch(error) {
+            console.error("Database Query Error:", error);
+            throw error
+        }
+    }
+
+    async updateStatusSewa(id: number, status_sewa: string): Promise<RowDataPacket> {
+        try {
+            const [result] = await this.master.execute(
+                `UPDATE properties SET status_sewa = ?, updated_at = NOW() WHERE id = ?`,
+                [status_sewa, id]
             )
             return result as RowDataPacket
         } catch(error) {

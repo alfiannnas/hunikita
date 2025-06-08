@@ -7,6 +7,7 @@ export interface PemilikProperties {
     room_count: number;
     img_path?: string;
     status: string;
+    status_sewa: string;
     harga: number;
     harga_1: number;
     created_at: Date;
@@ -27,6 +28,7 @@ export interface CreatePemilikPropertiesRequest {
     name?: string;
     address?: string;
     status?: string;
+    status_sewa?: string;
     harga?: number;
     harga_1?: number;
     room_count?: number;

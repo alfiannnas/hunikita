@@ -25,6 +25,7 @@ export const API = {
     UPDATE_ADMIN_PROPERTY: BASE_URL + "/admin-properties",
     DELETE_ADMIN_PROPERTY: BASE_URL + "/admin-properties",
     UPDATE_ADMIN_PROPERTY_STATUS: BASE_URL + "/update-status",
+    UPDATE_STATUS_SEWA: BASE_URL + "/update-status-sewa",
 
     // Admin Penyewa
     GET_PENYEWA: BASE_URL + "/admin-penyewa",

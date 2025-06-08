@@ -32,6 +32,11 @@ export function pemilikProperties(router: Router, handler: Controller) {
         handler.updateStatus.bind(handler)
     );
 
+    router.put('/update-status-sewa/:id', 
+        Middleware.Auth,
+        handler.updateStatusSewa.bind(handler)
+    );
+
     // Hapus property
     router.delete('/pemilik-properties/:id', 
         Middleware.Auth,

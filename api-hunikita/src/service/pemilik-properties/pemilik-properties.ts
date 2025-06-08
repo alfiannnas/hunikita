@@ -10,6 +10,7 @@ export interface IService {
     update(id: number, data: Partial<CreatePemilikPropertiesRequest>): Promise<PemilikPropertiesResponse>
     delete(id: number): Promise<PemilikPropertiesResponse>
     updateStatus(id: number, status: string): Promise<PemilikPropertiesResponse>
+    updateStatusSewa(id: number, status: string): Promise<PemilikPropertiesResponse>
     getUser(id: number): Promise<GetUserResponse>
     updateUser(id: number, updateData: Partial<GetUserResponse>): Promise<GetUserResponse>
 }
@@ -191,6 +192,43 @@ export class Service implements IService {
             return {
                 status: "success",
                 message: "Status property berhasil diupdate",
+                data: updatedProperty[0] as PemilikProperties
+            }
+        } catch (error) {
+            console.error("Error updating status:", error);
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            }
+        }
+    }
+
+    async updateStatusSewa(id: number, status_sewa: string): Promise<PemilikPropertiesResponse> {
+        try {
+            const existingProperty = await this.repo.take(id)
+            if (!existingProperty || Array.isArray(existingProperty) && existingProperty.length === 0) {
+                return {
+                    status: "error",
+                    message: "Property tidak ditemukan",
+                    data: null
+                }
+            }
+
+            const result = await this.repo.updateStatusSewa(id, status_sewa)
+            if (!result) {
+                return {
+                    status: "error",
+                    message: "Gagal mengupdate status sewa property",
+                    data: null
+                }
+            }
+
+            const updatedProperty = await this.repo.take(id)
+
+            return {
+                status: "success",
+                message: "Status sewa property berhasil diupdate",
                 data: updatedProperty[0] as PemilikProperties
             }
         } catch (error) {

@@ -1,13 +1,14 @@
 import Navbar from '../../components/Navbar'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import Footer from '../../components/Footer'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from "axios";
 import { API } from '../../constant'
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Eye } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
+import { ModalDropdown } from "../../components/ModalDropdown";
 
 const Listiklan = () => {
   const [data, setData] = useState([]);
@@ -15,26 +16,28 @@ const Listiklan = () => {
   const [idProperty, setIdProperty] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isUpdateStatusOpen, setUpdateStatusOpen] = useState(false);
+  const [isOpenUpdateStatusSuccess, setIsOpenUpdateStatusSuccess] = useState(false);
   const itemsPerPage = 8;
-  const auth = useSelector((state) => state.auth )
+  const auth = useSelector((state) => state.auth)
   const navigate = useNavigate();
 
   console.log(API.GET_PROPERTIES_BY_USER)
   const fetchData = useCallback(() => {
     const userId = auth?.id;
-    
+
     if (!userId) {
       console.error("User ID tidak tersedia");
       return;
     }
-    
+
     axios
       .get(API.GET_PROPERTIES_BY_USER, {
         params: {
           userId: userId,
           limit: 10,
           offset: 0
-        }, 
+        },
         headers: {
           Authorization: 'Bearer ' + auth.token
         }
@@ -53,7 +56,7 @@ const Listiklan = () => {
         }
       });
   }, [auth.token, auth?.id])
-  
+
   useEffect(() => {
     fetchData()
   }, [fetchData])
@@ -108,6 +111,34 @@ const Listiklan = () => {
     }
   };
 
+  const statusOptions = [
+    { value: "Tersedia", label: "Tersedia" },
+    { value: "Tidak Tersedia", label: "Tidak Tersedia" },
+  ];
+
+  const handleUpdateStatus = async (newStatus) => {
+    if (idProperty === null) return;
+
+    try {
+      const response = await axios.put(`${API.UPDATE_STATUS_SEWA}/${idProperty}`, {
+        status_sewa: newStatus
+      }, {
+        headers: {
+          Authorization: 'Bearer ' + auth.token
+        }
+      });
+
+      if (response.status === 200) {
+        setUpdateStatusOpen(false);
+        setIsOpenUpdateStatusSuccess(true);
+        setData(data.map(item => item.id === idProperty ? { ...item, status_sewa: newStatus } : item));
+      }
+    } catch (err) {
+      console.error("Error updating property status:", err);
+      alert("Gagal update status properti!");
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col">
       <Navbar />
@@ -149,8 +180,8 @@ const Listiklan = () => {
                     <td className="py-3">
                       <div className="flex items-center space-x-3">
                         {item.foto_properti ? (
-                          <img 
-                            src={item.foto_properti} 
+                          <img
+                            src={item.foto_properti}
                             alt={item.name}
                             className="w-12 h-12 object-cover rounded-md"
                           />
@@ -165,16 +196,23 @@ const Listiklan = () => {
                     <td className="py-3">{item.property_type_name}</td>
                     <td className="py-3">{item.address}</td>
                     <td className="py-3">
-                      <span className={`px-2 py-1 rounded-full text-sm ${
-                        item.status === 'Disetujui' ? 'bg-green-500 text-white' : 
+                      <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Disetujui' ? 'bg-green-500 text-white' :
                         item.status === 'Diproses' ? 'bg-yellow-500 text-white' :
-                        item.status === 'Ditolak' ? 'bg-red-500 text-white' : 
-                        'bg-gray-500 text-white'
-                      }`}>
+                          item.status === 'Ditolak' ? 'bg-red-500 text-white' :
+                            'bg-gray-500 text-white'
+                        }`}>
                         {item.status || 'Diproses'}
                       </span>
                     </td>
                     <td className="py-3 flex space-x-2">
+                      <button className="p-2 text-yellow-600 border border-yellow-600 rounded-md hover:bg-yellow-600 hover:text-white transition"
+
+                        onClick={() => {
+                          setIdProperty(item.id);
+                          setUpdateStatusOpen(true);
+                        }}>
+                        <Eye className="w-5 h-5" />
+                      </button>
                       <Link
                         to={`/properties/edit/${item.id}`}
                         className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
@@ -223,7 +261,7 @@ const Listiklan = () => {
       <Footer />
 
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
-           style={{ display: isAlertOpen || isOpen ? 'flex' : 'none' }}>
+        style={{ display: isAlertOpen || isOpen ? 'flex' : 'none' }}>
         <Alert
           isOpen={isAlertOpen}
           title="Hapus"
@@ -231,15 +269,30 @@ const Listiklan = () => {
           onCancel={() => setIsAlertOpen(false)}
           onConfirm={handleDelete}
         />
-        
-        <SuccessMessage 
-          isOpen={isOpen} 
+
+        <SuccessMessage
+          isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           title="Hapus Sukses"
           message="Data properti telah berhasil dihapus!"
           type="delete"
         />
       </div>
+      <ModalDropdown
+        isOpen={isUpdateStatusOpen}
+        title="Update Status Properti"
+        message="Pilih status baru untuk properti ini:"
+        options={statusOptions}
+        onCancel={() => setUpdateStatusOpen(false)}
+        onConfirm={handleUpdateStatus}
+      />
+      <SuccessMessage
+        isOpen={isOpenUpdateStatusSuccess}
+        onClose={() => setIsOpenUpdateStatusSuccess(false)}
+        title="Update Status Sukses"
+        message="Status properti telah berhasil diupdate!"
+        type="success"
+      />
     </div>
   )
 }
