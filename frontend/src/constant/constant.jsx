@@ -55,5 +55,5 @@ export const API = {
 
 
     GET_PROPERTIES: BASE_URL + "/properties",
-
+    GET_PROPERTIES_BY_ID: BASE_URL + "/properties",
 }

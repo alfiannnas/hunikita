@@ -44,116 +44,116 @@ import RiwayatPengajuan from './pages/pemilik/RiwayatPengajuan';
 
 function App() {
   return (
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Beranda />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/tentang-kami" element={<Tentangkami />} />
-        <Route path="/pusat-bantuan" element={<Pusatbantuan />} />
-        <Route path="/list-kosan" element={<Listkosan />} />
-        <Route path="/list-kontrakan" element={<Listkontrakan />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Beranda />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/tentang-kami" element={<Tentangkami />} />
+      <Route path="/pusat-bantuan" element={<Pusatbantuan />} />
+      <Route path="/list-kosan" element={<Listkosan />} />
+      <Route path="/list-kontrakan" element={<Listkontrakan />} />
 
-        {/* Pemilik Properti Route */}
-        <Route path="/list-iklan" element={<PemilikProperti />} />
-        <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
-        <Route path="/pemilik-profile" element={<PemilikProfil />} />
-        <Route path="/list-artikel" element={<Listartikel />} />
-        <Route path="/detail-kosan" element={<Detailkosan />} />
-        <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
-        <Route path="/detail-artikel" element={<Detailartikel />} />
-        <Route path="/properties/create" element={<PemilikPropertiCreate />} />
-        <Route path="/properties/edit/:id" element={<PemilikPropertiEdit />} />
-        
-        {/* Penyewa Properti */}
-        <Route path="/penyewa-properti" element={<PenyewaProperti />} />
+      {/* Pemilik Properti Route */}
+      <Route path="/list-iklan" element={<PemilikProperti />} />
+      <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
+      <Route path="/pemilik-profile" element={<PemilikProfil />} />
+      <Route path="/list-artikel" element={<Listartikel />} />
+      <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
+      <Route path="/detail-artikel" element={<Detailartikel />} />
+      <Route path="/properties/create" element={<PemilikPropertiCreate />} />
+      <Route path="/properties/edit/:id" element={<PemilikPropertiEdit />} />
 
-        {/* Protected Admin Routes */}
-        <Route path="/admin-home" element={
-          <AdminProtectedRoute>
-            <AdminHome />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-properti" element={
-          <AdminProtectedRoute>
-            <AdminProperti />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-properti/edit/:id" element={
-          <AdminProtectedRoute>
-            <AdminPropertiEdit />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-pemilik-properti" element={
-          <AdminProtectedRoute>
-            <AdminPemilikProperti />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-pemilik-properti/edit/:id" element={
-          <AdminProtectedRoute>
-            <AdminPemilikPropertiEdit />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-penyewa" element={
-          <AdminProtectedRoute>
-            <AdminPenyewa />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-penyewa/edit/:id" element={
-          <AdminProtectedRoute>
-            <AdminPenyewaEdit />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-artikel" element={
-          <AdminProtectedRoute>
-            <AdminArtikel />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-profil" element={
-          <AdminProtectedRoute>
-            <AdminProfil />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-pusat-bantuan" element={
-          <AdminProtectedRoute>
-            <AdminPusatBantuan />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-pusat-bantuan/edit/:id" element={
-          <AdminProtectedRoute>
-            <AdminPusatBantuanEdit />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-profil/edit" element={
-          <AdminProtectedRoute>
-            <AdminProfilEdit />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-artikel/create" element={
-          <AdminProtectedRoute>
-            <AdminArtikelCreate />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-artikel/edit/:id" element={
-          <AdminProtectedRoute>
-            <AdminArtikelEdit />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-artikel/detail/:id" element={
-          <AdminProtectedRoute>
-            <AdminArtikelDetail />
-          </AdminProtectedRoute>
-        } />
-        <Route path="/admin-logout" element={
-          <AdminProtectedRoute>
-            <AdminLogout />
-          </AdminProtectedRoute>
-        } />
+      {/* Penyewa Properti */}
+      <Route path="/penyewa-properti" element={<PenyewaProperti />} />
+      <Route path="/detail-kosan/:id" element={<Detailkosan />} />
 
-        {/* Catch all route */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      {/* Protected Admin Routes */}
+      <Route path="/admin-home" element={
+        <AdminProtectedRoute>
+          <AdminHome />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-properti" element={
+        <AdminProtectedRoute>
+          <AdminProperti />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-properti/edit/:id" element={
+        <AdminProtectedRoute>
+          <AdminPropertiEdit />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-pemilik-properti" element={
+        <AdminProtectedRoute>
+          <AdminPemilikProperti />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-pemilik-properti/edit/:id" element={
+        <AdminProtectedRoute>
+          <AdminPemilikPropertiEdit />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-penyewa" element={
+        <AdminProtectedRoute>
+          <AdminPenyewa />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-penyewa/edit/:id" element={
+        <AdminProtectedRoute>
+          <AdminPenyewaEdit />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-artikel" element={
+        <AdminProtectedRoute>
+          <AdminArtikel />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-profil" element={
+        <AdminProtectedRoute>
+          <AdminProfil />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-pusat-bantuan" element={
+        <AdminProtectedRoute>
+          <AdminPusatBantuan />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-pusat-bantuan/edit/:id" element={
+        <AdminProtectedRoute>
+          <AdminPusatBantuanEdit />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-profil/edit" element={
+        <AdminProtectedRoute>
+          <AdminProfilEdit />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-artikel/create" element={
+        <AdminProtectedRoute>
+          <AdminArtikelCreate />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-artikel/edit/:id" element={
+        <AdminProtectedRoute>
+          <AdminArtikelEdit />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-artikel/detail/:id" element={
+        <AdminProtectedRoute>
+          <AdminArtikelDetail />
+        </AdminProtectedRoute>
+      } />
+      <Route path="/admin-logout" element={
+        <AdminProtectedRoute>
+          <AdminLogout />
+        </AdminProtectedRoute>
+      } />
+
+      {/* Catch all route */}
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
 
