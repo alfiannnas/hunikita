@@ -13,6 +13,8 @@ const Detailkosan = () => {
   const navigate = useNavigate();
   const [properties, setProperties] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [tanggalMasuk, setTanggalMasuk] = useState('');
+  const [periodeSewa, setPeriodeSewa] = useState('bulan');
 
   const auth = useSelector((state) => state.auth);
 
@@ -81,46 +83,38 @@ const Detailkosan = () => {
                 <span>{properties?.address || 'Alamat tidak tersedia'}</span>
               </div>
             </div>
-            <div className="mt-2 bg-[#3182CE] shadow-sm rounded-lg p-4 border border-gray-100">
-              <p className="text-sm text-white mb-1">Mulai</p>
-              <div className="flex items-baseline">
-                <p className="text-2xl font-bold text-white">
-                  {new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                  }).format(properties?.harga || 0)}
-                </p>
-                <span className="text-sm text-white ml-1">/bulan</span>
-              </div>
-              <div className="flex justify-center mt-4">
-                <a
-                  href={`https://wa.me/${properties?.no_kontak?.replace(/^0/, '62')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-white text-blue-500 font-bold rounded-md 
-                                            hover:bg-blue-50 hover:shadow-md hover:scale-105 
-                                            transform transition-all duration-200 ease-in-out"
-                >
-                  Hubungi
-                </a>
+            <div>
+              <div className="mt-2 bg-[#3182CE] shadow-sm rounded-lg p-4 border border-gray-100">
+                <p className="text-sm text-white mb-1">Mulai</p>
+                <div className="flex items-baseline">
+                  <p className="text-2xl font-bold text-white">
+                    {new Intl.NumberFormat('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0
+                    }).format(properties?.harga || 0)}
+                  </p>
+                  <span className="text-sm text-white ml-1">/bulan</span>
+                </div>
               </div>
             </div>
+
           </div>
-          <div>
-            <p className="text-sm text-gray-500 mt-2">
-              Terakhir diupdate: {new Date(properties?.updated_at).toLocaleDateString('id-ID', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              })}
-            </p>
-            <hr className="my-4 border-gray-300" />
-          </div>
-          <div className="flex gap-12">
-            {/* Kolom Kanan - Lokasi */}
-            <div className="flex-1 max-w-[400px]">
+
+          {/* Flex row: Card Sewa di kanan, deskripsi di kiri */}
+          <div className="flex gap-8 mt-4">
+            <div className="flex-1">
+              <div>
+                <p className="text-sm text-gray-500 mt-2">
+                  Terakhir diupdate: {new Date(properties?.updated_at).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </p>
+                <hr className="my-4 border-gray-300" />
+              </div>
               <h1 className="text-xl font-medium text-gray-800 mb-1">Lokasi {properties.property_type_name}</h1>
               <div className="grid grid-cols-[100px_1fr] gap-1 text-sm">
                 <p className="font-medium text-gray-700">Provinsi</p>
@@ -138,117 +132,174 @@ const Detailkosan = () => {
                 <p className="font-medium text-gray-700">Alamat</p>
                 <p className="text-gray-700">: {properties?.address || '-'}</p>
               </div>
+              <hr className="my-4 border-gray-300" />
+              <div className="flex gap-12">
+                {/* Kolom Kiri - Tipe */}
+                <div className="flex-1 max-w-[400px]">
+                  <h1 className="text-xl font-medium text-gray-800 mb-1">Tipe {properties.property_type_name}</h1>
+                  <div className="grid grid-cols-[100px_1fr] gap-1 text-sm">
+                    <p className="font-medium text-gray-700">Jenis</p>
+                    <p className="text-gray-700">: {properties?.jenis_properti || '-'}</p>
+
+                    <p className="font-medium text-gray-700">Umur</p>
+                    <p className="text-gray-700">: {properties?.umur_bangunan || '-'} tahun</p>
+
+                    <p className="font-medium text-gray-700">Jam Bertamu</p>
+                    <p className="text-gray-700">
+                      : {properties?.jam_bertamu === 'Bebas'
+                        ? 'Bebas'
+                        : properties?.jam_bertamu
+                          ? `Pukul ${properties.jam_bertamu}`
+                          : '-'}
+                    </p>
+
+                    <p className="font-medium text-gray-700">Peliharaan</p>
+                    <p className="text-gray-700">: {properties?.pelihara_binatang || '-'}</p>
+                  </div>
+                </div>
+              </div>
+              <hr className="my-4 border-gray-300" />
+              {/* Deskripsi Properti */}
+              <h1 className="text-xl font-medium text-gray-800 mb-1">Deskripsi {properties.property_type_name}</h1>
+
+              <h1 className="text-lg font-medium text-gray-800 mb-1">
+                {properties?.fasilitas ? `Kamar Mandi Dalam: ${formatRupiah(properties?.harga)} / Bulan` : ''}
+              </h1>
+              {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
+              <div className="flex flex-wrap gap-8">
+                {/* Fasilitas */}
+                <div className="flex-1 min-w-[300px]">
+
+                  <h1 className="text-lg font-medium text-gray-800 mb-1">
+                    {properties?.fasilitas ? `Fasilitas:` : ''}
+                  </h1>
+                  <div
+                    className="text-gray-700 facilities-content"
+                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas || '-' }}
+                  />
+                </div>
+
+                {/* Fasilitas Bersama */}
+                <div className="flex-1 min-w-[300px]">
+                  <h1 className="text-lg font-medium text-gray-800 mb-1">
+                    {properties?.fasilitas_bersama ? `Fasilitas Bersama:` : ''}
+                  </h1>
+                  <div
+                    className="text-gray-700 facilities-content"
+                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama || '-' }}
+                  />
+                </div>
+              </div>
+
+              {/* Style untuk kedua facilities-content */}
+              <style jsx>{`
+                                .facilities-content ul {
+                                    list-style-type: disc;
+                                    padding-left: 1.5rem;
+                                    margin-bottom: 1rem;
+                                }
+                                .facilities-content li {
+                                    margin-bottom: 0.25rem;
+                                }
+                            `}</style>
+
+              <h1 className="text-lg font-medium text-gray-800 mb-1">
+                {properties?.fasilitas_1 ? `Kamar Mandi Luar: ${formatRupiah(properties?.harga_1)} / Bulan` : ''}
+              </h1>
+              {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
+              <div className="flex flex-wrap gap-8">
+                {/* Fasilitas */}
+                <div className="flex-1 min-w-[300px]">
+
+                  <h1 className="text-lg font-medium text-gray-800 mb-1">
+                    {properties?.fasilitas_1 ? `Fasilitas:` : ''}
+                  </h1>
+                  <div
+                    className="text-gray-700 facilities-content"
+                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas_1 || '' }}
+                  />
+                </div>
+
+                {/* Fasilitas Bersama */}
+                <div className="flex-1 min-w-[300px]">
+                  <h1 className="text-lg font-medium text-gray-800 mb-1">
+                    {properties?.fasilitas_bersama_1 ? `Fasilitas Bersama:` : ''}
+                  </h1>
+                  <div
+                    className="text-gray-700 facilities-content"
+                    dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama_1 || '' }}
+                  />
+                </div>
+              </div>
+
+              {/* Style untuk kedua facilities-content */}
+              <style jsx>{`
+                                .facilities-content ul {
+                                    list-style-type: disc;
+                                    padding-left: 1.5rem;
+                                    margin-bottom: 1rem;
+                                }
+                                .facilities-content li {
+                                    margin-bottom: 0.25rem;
+                                }
+                            `}</style>
+
+
             </div>
-            {/* Kolom Kiri - Tipe */}
-            <div className="flex-1 max-w-[400px]">
-              <h1 className="text-xl font-medium text-gray-800 mb-1">Tipe {properties.property_type_name}</h1>
-              <div className="grid grid-cols-[100px_1fr] gap-1 text-sm">
-                <p className="font-medium text-gray-700">Jenis</p>
-                <p className="text-gray-700">: {properties?.jenis_properti || '-'}</p>
-
-                <p className="font-medium text-gray-700">Umur</p>
-                <p className="text-gray-700">: {properties?.umur_bangunan || '-'} tahun</p>
-
-                <p className="font-medium text-gray-700">Jam Bertamu</p>
-                <p className="text-gray-700">
-                  : {properties?.jam_bertamu === 'Bebas'
-                    ? 'Bebas'
-                    : properties?.jam_bertamu
-                      ? `Pukul ${properties.jam_bertamu}`
-                      : '-'}
-                </p>
-
-                <p className="font-medium text-gray-700">Peliharaan</p>
-                <p className="text-gray-700">: {properties?.pelihara_binatang || '-'}</p>
+            <div className="w-full max-w-xs">
+              {/* Card Sewa */}
+              <div className="p-4 bg-gray-50 rounded-lg shadow flex flex-col gap-3">
+                <label className="font-medium text-gray-700 mb-1">Tanggal Masuk</label>
+                <input
+                  type="date"
+                  className="border rounded px-3 py-2"
+                  value={tanggalMasuk}
+                  onChange={e => setTanggalMasuk(e.target.value)}
+                />
+                <label className="font-medium text-gray-700 mt-2">Pilih Periode Sewa</label>
+                <select
+                  className="border rounded px-3 py-2"
+                  value={periodeSewa}
+                  onChange={e => setPeriodeSewa(e.target.value)}
+                >
+                  <option value="bulan">Per Bulan</option>
+                  <option value="3bulan">Per 3 Bulan</option>
+                  <option value="6bulan">Per 6 Bulan</option>
+                  <option value="tahun">Per Tahun</option>
+                </select>
+                <div className="mt-2">
+                  <span className="font-semibold">Total Sewa: </span>
+                  <span>
+                    {(() => {
+                      const harga = properties?.harga || 0;
+                      switch (periodeSewa) {
+                        case '3bulan': return formatRupiah(harga * 3);
+                        case '6bulan': return formatRupiah(harga * 6);
+                        case 'tahun': return formatRupiah(harga * 12);
+                        default: return formatRupiah(harga);
+                      }
+                    })()}
+                  </span>
+                </div>
+                <button
+                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md font-bold hover:bg-blue-700 transition"
+                  onClick={() => alert('Pengajuan sewa berhasil diajukan!')}
+                  disabled={!tanggalMasuk}
+                >
+                  Ajukan Sewa
+                </button>
+                <a
+                  href={`https://wa.me/${properties?.no_kontak?.replace(/^0/, '62')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-green-600 text-white rounded-md font-bold rounded-md 
+                            hover:bg-green-700 transition text-center"
+                >
+                  Hubungi
+                </a>
               </div>
             </div>
           </div>
-          <hr className="my-4 border-gray-300" />
-          {/* Deskripsi Properti */}
-          <h1 className="text-xl font-medium text-gray-800 mb-1">Deskripsi {properties.property_type_name}</h1>
-
-          <h1 className="text-lg font-medium text-gray-800 mb-1">
-            {properties?.fasilitas ? `Kamar Mandi Dalam: ${formatRupiah(properties?.harga)} / Bulan` : ''}
-          </h1>
-          {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
-          <div className="flex flex-wrap gap-8">
-            {/* Fasilitas */}
-            <div className="flex-1 min-w-[300px]">
-
-              <h1 className="text-lg font-medium text-gray-800 mb-1">
-                {properties?.fasilitas ? `Fasilitas:` : ''}
-              </h1>
-              <div
-                className="text-gray-700 facilities-content"
-                dangerouslySetInnerHTML={{ __html: properties?.fasilitas || '-' }}
-              />
-            </div>
-
-            {/* Fasilitas Bersama */}
-            <div className="flex-1 min-w-[300px]">
-              <h1 className="text-lg font-medium text-gray-800 mb-1">
-                {properties?.fasilitas_bersama ? `Fasilitas Bersama:` : ''}
-              </h1>
-              <div
-                className="text-gray-700 facilities-content"
-                dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama || '-' }}
-              />
-            </div>
-          </div>
-
-          {/* Style untuk kedua facilities-content */}
-          <style jsx>{`
-                            .facilities-content ul {
-                                list-style-type: disc;
-                                padding-left: 1.5rem;
-                                margin-bottom: 1rem;
-                            }
-                            .facilities-content li {
-                                margin-bottom: 0.25rem;
-                            }
-                        `}</style>
-
-          <h1 className="text-lg font-medium text-gray-800 mb-1">
-            {properties?.fasilitas_1 ? `Kamar Mandi Luar: ${formatRupiah(properties?.harga_1)} / Bulan` : ''}
-          </h1>
-          {/* Fasilitas dan Fasilitas Bersama dalam layout flex */}
-          <div className="flex flex-wrap gap-8">
-            {/* Fasilitas */}
-            <div className="flex-1 min-w-[300px]">
-
-              <h1 className="text-lg font-medium text-gray-800 mb-1">
-                {properties?.fasilitas_1 ? `Fasilitas:` : ''}
-              </h1>
-              <div
-                className="text-gray-700 facilities-content"
-                dangerouslySetInnerHTML={{ __html: properties?.fasilitas_1 || '' }}
-              />
-            </div>
-
-            {/* Fasilitas Bersama */}
-            <div className="flex-1 min-w-[300px]">
-              <h1 className="text-lg font-medium text-gray-800 mb-1">
-                {properties?.fasilitas_bersama_1 ? `Fasilitas Bersama:` : ''}
-              </h1>
-              <div
-                className="text-gray-700 facilities-content"
-                dangerouslySetInnerHTML={{ __html: properties?.fasilitas_bersama_1 || '' }}
-              />
-            </div>
-          </div>
-
-          {/* Style untuk kedua facilities-content */}
-          <style jsx>{`
-                            .facilities-content ul {
-                                list-style-type: disc;
-                                padding-left: 1.5rem;
-                                margin-bottom: 1rem;
-                            }
-                            .facilities-content li {
-                                margin-bottom: 0.25rem;
-                            }
-                        `}</style>
-
           <div className="w-[1000px]">
             <h1 className="text-xl font-medium text-gray-800 mt-4">Petunjuk Arah</h1>
             <p className="text-gray-700">{properties?.petunjuk_arah || '-'}</p>
