@@ -1,17 +1,17 @@
 import { useCallback, useState, useEffect, useRef } from "react";
 import { doLogout } from "../store";
-import {useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import DropdownHover from "./Dropdownhover";
 import { User } from "lucide-react";
 
 const Navbar = () => {
-  const auth = useSelector((state)=> state.auth)
+  const auth = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-  
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -61,9 +61,9 @@ const Navbar = () => {
           </Link>
           {/* Permission by Role */}
           {auth && auth.role === "Penyewa" && (
-          <li>
-            <DropdownHover />
-          </li>
+            <li>
+              <DropdownHover />
+            </li>
           )}
           {/* Permission by Role */}
           {auth && auth.role === "Pemilik" && (
@@ -83,20 +83,20 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {auth ? (          
+      {auth ? (
         <div className="relative mr-5" ref={dropdownRef}>
-          <button 
+          <button
             className="text-white hover:text-gray-200 p-2 flex items-center gap-2"
             onClick={() => setShowDropdown(!showDropdown)}
           >
             <span className="text-white">{auth.name}</span>
             <User size={28} />
           </button>
-          
+
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 top-full">
-              <Link 
-                to="/pemilik-profile" 
+              <Link
+                to="/profile"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Akun Saya

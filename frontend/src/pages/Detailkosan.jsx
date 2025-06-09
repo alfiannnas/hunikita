@@ -15,6 +15,7 @@ const Detailkosan = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [tanggalMasuk, setTanggalMasuk] = useState('');
   const [periodeSewa, setPeriodeSewa] = useState('bulan');
+  const [showAlert, setShowAlert] = useState(false);
 
   const auth = useSelector((state) => state.auth);
 
@@ -55,6 +56,36 @@ const Detailkosan = () => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(angka);
+  };
+
+  const getTotalSewa = () => {
+    const harga = properties?.harga || 0;
+    switch (periodeSewa) {
+      case '3': return harga * 3;
+      case '6': return harga * 6;
+      case '12': return harga * 12;
+      default: return harga;
+    }
+  };
+
+  const handleAjukanSewa = () => {
+    if (!tanggalMasuk) {
+      setShowAlert(true);
+      return;
+    }
+    setShowAlert(false);
+    navigate(`/pengajuan-sewa/${id}`, {
+      state: {
+        totalSewa: getTotalSewa(),
+        tanggalMasuk,
+        periodeSewa,
+        harga: properties?.harga || 0,
+        namaProperti: properties?.name || '',
+        alamat: properties?.address || '',
+        foto: properties?.foto_properti || '',
+        jenisProperti: properties?.jenis_properti || '',
+      }
+    });
   };
 
   return (
@@ -243,19 +274,25 @@ const Detailkosan = () => {
                                     margin-bottom: 0.25rem;
                                 }
                             `}</style>
-
-
             </div>
             <div className="w-full max-w-xs">
               {/* Card Sewa */}
               <div className="p-6 bg-gray-50 rounded-lg shadow flex flex-col gap-2">
                 <h1 className="mt-4 text-2xl font-bold text-gray-800 underline mb-1">Pengajuan Sewa</h1>
+                {showAlert && (
+                  <div className="mb-2 p-2 bg-red-100 text-red-700 rounded">
+                    Silakan masukkan tanggal masuk!
+                  </div>
+                )}
                 <label className="font-medium text-gray-700">Tanggal Masuk</label>
                 <input
                   type="date"
                   className="border rounded px-3 py-2"
                   value={tanggalMasuk}
-                  onChange={e => setTanggalMasuk(e.target.value)}
+                  onChange={e => {
+                    setTanggalMasuk(e.target.value);
+                    setShowAlert(false);
+                  }}
                 />
                 <label className="font-medium text-gray-700">Pilih Periode Sewa</label>
                 <select
@@ -263,29 +300,20 @@ const Detailkosan = () => {
                   value={periodeSewa}
                   onChange={e => setPeriodeSewa(e.target.value)}
                 >
-                  <option value="bulan">Per Bulan</option>
-                  <option value="3bulan">Per 3 Bulan</option>
-                  <option value="6bulan">Per 6 Bulan</option>
-                  <option value="tahun">Per Tahun</option>
+                  <option value="1">Per Bulan</option>
+                  <option value="3">Per 3 Bulan</option>
+                  <option value="6">Per 6 Bulan</option>
+                  <option value="12">Per Tahun</option>
                 </select>
                 <div className="mt-2">
                   <span className="font-semibold underline">Total Sewa: </span>
                   <span className="ml-2 font-semibold">
-                    {(() => {
-                      const harga = properties?.harga || 0;
-                      switch (periodeSewa) {
-                        case '3bulan': return formatRupiah(harga * 3);
-                        case '6bulan': return formatRupiah(harga * 6);
-                        case 'tahun': return formatRupiah(harga * 12);
-                        default: return formatRupiah(harga);
-                      }
-                    })()}
+                    {formatRupiah(getTotalSewa())}
                   </span>
                 </div>
                 <button
                   className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md font-bold hover:bg-blue-700 transition"
-                  onClick={() => alert('Pengajuan sewa berhasil diajukan!')}
-                  disabled={!tanggalMasuk}
+                  onClick={handleAjukanSewa}
                 >
                   Ajukan Sewa
                 </button>

@@ -41,6 +41,7 @@ import AdminPropertiEdit from './pages/admin/AdminPropertiEdit';
 import AdminArtikelEdit from './pages/admin/AdminArtikelEdit';
 import AdminArtikelDetail from './pages/admin/AdminArtikelDetail';
 import RiwayatPengajuan from './pages/pemilik/RiwayatPengajuan';
+import PengajuanSewa from './pages/penyewa/PengajuanSewa';
 
 function App() {
   return (
@@ -58,7 +59,7 @@ function App() {
       {/* Pemilik Properti Route */}
       <Route path="/list-iklan" element={<PemilikProperti />} />
       <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
-      <Route path="/pemilik-profile" element={<PemilikProfil />} />
+      <Route path="/profile" element={<PemilikProfil />} />
       <Route path="/list-artikel" element={<Listartikel />} />
       <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
       <Route path="/detail-artikel" element={<Detailartikel />} />
@@ -68,6 +69,7 @@ function App() {
       {/* Penyewa Properti */}
       <Route path="/penyewa-properti" element={<PenyewaProperti />} />
       <Route path="/detail-kosan/:id" element={<Detailkosan />} />
+      <Route path="/pengajuan-sewa/:id" element={<PengajuanSewa />} />
 
       {/* Protected Admin Routes */}
       <Route path="/admin-home" element={
