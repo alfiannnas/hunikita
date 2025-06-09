@@ -248,15 +248,16 @@ const Detailkosan = () => {
             </div>
             <div className="w-full max-w-xs">
               {/* Card Sewa */}
-              <div className="p-4 bg-gray-50 rounded-lg shadow flex flex-col gap-3">
-                <label className="font-medium text-gray-700 mb-1">Tanggal Masuk</label>
+              <div className="p-6 bg-gray-50 rounded-lg shadow flex flex-col gap-2">
+                <h1 className="mt-4 text-2xl font-bold text-gray-800 underline mb-1">Pengajuan Sewa</h1>
+                <label className="font-medium text-gray-700">Tanggal Masuk</label>
                 <input
                   type="date"
                   className="border rounded px-3 py-2"
                   value={tanggalMasuk}
                   onChange={e => setTanggalMasuk(e.target.value)}
                 />
-                <label className="font-medium text-gray-700 mt-2">Pilih Periode Sewa</label>
+                <label className="font-medium text-gray-700">Pilih Periode Sewa</label>
                 <select
                   className="border rounded px-3 py-2"
                   value={periodeSewa}
@@ -268,8 +269,8 @@ const Detailkosan = () => {
                   <option value="tahun">Per Tahun</option>
                 </select>
                 <div className="mt-2">
-                  <span className="font-semibold">Total Sewa: </span>
-                  <span>
+                  <span className="font-semibold underline">Total Sewa: </span>
+                  <span className="ml-2 font-semibold">
                     {(() => {
                       const harga = properties?.harga || 0;
                       switch (periodeSewa) {
