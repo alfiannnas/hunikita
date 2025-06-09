@@ -59,11 +59,7 @@ const Detailkosan = () => {
     <div>
       <Navbar />
       <main className="p-6">
-        <h2 className="text-2xl font-semibold mb-6">Detail Properti</h2>
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Data Properti</h3>
-          </div>
           <div className="grid grid-cols-1 gap-4">
             <div className="relative">
               <img
