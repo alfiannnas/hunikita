@@ -14,7 +14,7 @@ const Detailkosan = () => {
   const [properties, setProperties] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [tanggalMasuk, setTanggalMasuk] = useState('');
-  const [periodeSewa, setPeriodeSewa] = useState('bulan');
+  const [periodeSewa, setPeriodeSewa] = useState('1');
   const [showAlert, setShowAlert] = useState(false);
 
   const auth = useSelector((state) => state.auth);
