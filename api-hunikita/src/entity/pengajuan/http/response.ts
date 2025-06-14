@@ -9,6 +9,7 @@ export interface PengajuanResponse {
     total: number;
     ktp: string;
     bukti_pembayaran: string;
+    uuid: string;
     created_at: Date;
     updated_at: Date;
 }

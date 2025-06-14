@@ -10,6 +10,7 @@ export interface Pengajuan {
     total: number;
     ktp: string;
     bukti_pembayaran: string;
+    uuid: string;
     created_at: Date;
     updated_at: Date;
 }
@@ -21,6 +22,7 @@ export interface PengajuanResponse {
 }
 
 export interface CreatePengajuanRequest {
+    uuid: string;
     user_id: number;
     property_id: number;
     status: string;

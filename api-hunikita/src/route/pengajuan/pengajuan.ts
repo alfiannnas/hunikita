@@ -8,9 +8,9 @@ export function pengajuan(router: Router, handler: Controller) {
         handler.list.bind(handler)
     );
 
-    router.get('/pengajuan/:id', 
+    router.get('/pengajuan/:uuid', 
         Middleware.Auth, 
-        handler.get.bind(handler)
+        handler.getByUUID.bind(handler)
     );
 
     router.post('/pengajuan', 

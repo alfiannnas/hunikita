@@ -1,6 +1,7 @@
 import { ERROR } from "@constant"
 import { Pengajuan, PengajuanResponse, CreatePengajuanRequest } from "@entity/pengajuan/db"
 import { IRepository } from "../../repository/pengajuan"
+import { v4 as uuidv4 } from 'uuid';
 
 export interface IService {
     get(id: number): Promise<PengajuanResponse>
@@ -8,6 +9,7 @@ export interface IService {
     create(data: CreatePengajuanRequest): Promise<PengajuanResponse>
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<PengajuanResponse>
     delete(id: number): Promise<PengajuanResponse>
+    getByUUID(uuid: string): Promise<PengajuanResponse>
 }
 
 export class Service implements IService {
@@ -70,6 +72,7 @@ export class Service implements IService {
         try {
             const now = new Date();
             const pengajuanData = {
+                uuid: uuidv4(),
                 user_id: data.id_user,
                 property_id: data.id_properti,
                 status: 'Menunggu Persetujuan',
@@ -114,5 +117,30 @@ export class Service implements IService {
     async delete(id: number): Promise<PengajuanResponse> {
         // Implementation of delete method
         throw new Error("Method not implemented")
+    }
+
+    async getByUUID(uuid: string): Promise<PengajuanResponse> {
+        try {
+            const result = await this.repo.takeByUUID(uuid)
+            if (!result || (Array.isArray(result) && result.length === 0)) {
+                return {
+                    status: "error",
+                    message: "Pengajuan tidak ditemukan",
+                    data: null
+                }
+            }
+
+            return {
+                status: "success",
+                message: "Pengajuan berhasil ditemukan",
+                data: result[0] as Pengajuan
+            }
+        } catch (error) {
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            }
+        }
     }
 }

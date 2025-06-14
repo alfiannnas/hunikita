@@ -154,14 +154,14 @@ const RiwayatPengajuanSewa = () => {
                     </td>
                     <td className="py-3 flex space-x-2">
                       <Link
-                        to={`/properties/edit/${item.id}`}
+                        to={`/detail-sewa/${item.uuid}`}
                         className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
                       >
                         <Edit className="w-5 h-5" />
                       </Link>
                       <button
                         onClick={() => {
-                          setIdProperty(item.id);
+                          setIdProperty(item.uuid);
                           setIsAlertOpen(true);
                         }}
                         className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"

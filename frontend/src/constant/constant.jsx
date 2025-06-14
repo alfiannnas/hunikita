@@ -53,6 +53,7 @@ export const API = {
     // Penyewa
     GET_PENGAJUAN: BASE_URL + "/pengajuan",
     POST_PENGAJUAN: BASE_URL + "/pengajuan",
+    GET_PENGAJUAN_BY_UUID: BASE_URL + "/pengajuan",
 
 
     GET_PROPERTIES: BASE_URL + "/properties",

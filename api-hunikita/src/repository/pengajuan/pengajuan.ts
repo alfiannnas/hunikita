@@ -7,6 +7,7 @@ export interface IRepository {
     create(data: CreatePengajuanRequest): Promise<RowDataPacket>
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
+    takeByUUID(uuid: string): Promise<RowDataPacket>
 }
 
 export class Repository implements IRepository {
@@ -39,9 +40,10 @@ export class Repository implements IRepository {
         try {
             const [result] = await this.master.execute(
                 `INSERT INTO penyewa (
-                    user_id, property_id, status, durasi_sewa, tgl_masuk, total, ktp, catatan, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    uuid, user_id, property_id, status, durasi_sewa, tgl_masuk, total, ktp, catatan, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
+                    data.uuid,
                     data.user_id,
                     data.property_id,
                     data.status,
@@ -104,7 +106,7 @@ export class Repository implements IRepository {
                 SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
                        pr.name AS property_name, pt.name AS property_type_name, pr.harga as harga_property, pr.foto_properti,
                        p.invoice_number, p.status, p.durasi_sewa, p.tgl_masuk, p.tgl_keluar, p.total,
-                       p.created_at, p.updated_at
+                       p.created_at, p.updated_at, uuid
                 FROM penyewa p
                 LEFT JOIN users u ON p.user_id = u.id
                 LEFT JOIN properties pr ON p.property_id = pr.id
@@ -132,6 +134,26 @@ export class Repository implements IRepository {
             return result as RowDataPacket;
         } catch (error) {
             throw error;
+        }
+    }
+
+    async takeByUUID(uuid: string): Promise<RowDataPacket> {
+        try {
+            const [result] = await this.master.execute(
+                `SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
+                        pr.name AS property_name, pt.name AS property_type_name, pr.harga as harga_property,
+                        p.created_at, p.updated_at, u.name as nama, u.email, u.no_kontak, u.jenis_kelamin AS gender, u.tgl_lahir AS born_date, kota_asal AS city_from, u.pekerjaan AS job_user, u.nama_kampus AS nama_instansi, u.status AS stats, u.pendidikan_terakhir AS last_education, no_kontak_darurat AS emergency_number, u.profile_image AS profil_img
+                 FROM penyewa p
+                 LEFT JOIN users u ON p.user_id = u.id
+                 LEFT JOIN properties pr ON p.property_id = pr.id
+                 LEFT JOIN property_types pt ON pr.property_type_id = pt.id
+                 WHERE p.uuid = ? 
+                 LIMIT 1`,
+                [uuid]
+            )
+            return result as RowDataPacket
+        } catch(error) {
+            throw error
         }
     }
 } 

@@ -6,7 +6,7 @@ export interface IController {
     get(req: Request, res: Response): Promise<void>
     list(req: Request, res: Response): Promise<void>
     create(req: Request, res: Response): Promise<void>
-
+    getByUUID(req: Request, res: Response): Promise<void>
 }
 
 export class Controller implements IController {
@@ -57,5 +57,11 @@ export class Controller implements IController {
                 data: null
             })
         }
+    }
+
+    async getByUUID(req: Request, res: Response): Promise<void> {
+        const uuid = req.params.uuid;
+        const result = await this.service.getByUUID(uuid);
+        res.json(result);
     }
 }
