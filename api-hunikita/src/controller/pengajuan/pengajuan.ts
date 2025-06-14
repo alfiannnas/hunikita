@@ -31,6 +31,11 @@ export class Controller implements IController {
     async list(req: Request, res: Response): Promise<void> {
         try {
             const userId = parseInt(req.query.userId as string)
+            const propertyIdParam = req.query.propertyId as string | undefined;
+            let propertyIds: number[] | undefined = undefined;
+            if (propertyIdParam) {
+                propertyIds = propertyIdParam.split(',').map(id => parseInt(id)).filter(Boolean);
+            }
 
             if (!userId) {
                 res.status(400).json({
@@ -41,7 +46,7 @@ export class Controller implements IController {
                 return
             }
 
-            const result = await this.service.list(userId)
+            const result = await this.service.list(userId, propertyIds)
             res.json(result)
         } catch (error) {
             res.status(500).json({

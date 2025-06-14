@@ -3,7 +3,7 @@ import { CreatePengajuanRequest} from "../../entity/pengajuan/db/pengajuan"
 
 export interface IRepository {
     take(id: number): Promise<RowDataPacket>
-    list(userId: number): Promise<RowDataPacket>
+    list(userId: number, propertyIds?: number[]): Promise<RowDataPacket>
     create(data: CreatePengajuanRequest): Promise<RowDataPacket>
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
@@ -98,23 +98,33 @@ export class Repository implements IRepository {
         }
     }
 
-    async list(userId: number): Promise<RowDataPacket> {
+    async list(userId: number, propertyIds?: number[]): Promise<RowDataPacket> {
         try {
-            const [result] = await this.master.execute(
-                `SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
-                        pr.name AS property_name, pt.name AS property_type_name, pr.harga as harga_property, pr.foto_properti,
-                        p.invoice_number, p.status, p.durasi_sewa, p.tgl_masuk, p.tgl_keluar, p.total,
-                        p.created_at, p.updated_at
-                 FROM penyewa p
-                 LEFT JOIN users u ON p.user_id = u.id
-                 LEFT JOIN properties pr ON p.property_id = pr.id
-                 LEFT JOIN property_types pt ON pr.property_type_id = pt.id
-                 WHERE p.user_id = ?`,
-                [userId]
-            )
-            return result as RowDataPacket
+            let query = `
+                SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
+                       pr.name AS property_name, pt.name AS property_type_name, pr.harga as harga_property, pr.foto_properti,
+                       p.invoice_number, p.status, p.durasi_sewa, p.tgl_masuk, p.tgl_keluar, p.total,
+                       p.created_at, p.updated_at
+                FROM penyewa p
+                LEFT JOIN users u ON p.user_id = u.id
+                LEFT JOIN properties pr ON p.property_id = pr.id
+                LEFT JOIN property_types pt ON pr.property_type_id = pt.id
+            `;
+            let params: any[] = [];
+
+            if (propertyIds && propertyIds.length > 0) {
+                const placeholders = propertyIds.map(() => '?').join(',');
+                query += ` WHERE p.property_id IN (${placeholders})`;
+                params = propertyIds;
+            } else {
+                query += ' WHERE p.user_id = ?';
+                params = [userId];
+            }
+
+            const [result] = await this.master.execute(query, params);
+            return result as RowDataPacket;
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 } 

@@ -18,10 +18,13 @@ const RiwayatPengajuan = () => {
   const itemsPerPage = 8;
   const auth = useSelector((state) => state.auth)
   const navigate = useNavigate();
+  const [properties, setProperties] = useState([]);
 
   console.log(API.GET_PROPERTIES_BY_USER)
   const fetchData = useCallback(() => {
     const userId = auth?.id;
+    const propertyIds = properties.map(p => p.id);
+    console.log(propertyIds);
 
     if (!userId) {
       console.error("User ID tidak tersedia");
@@ -31,7 +34,8 @@ const RiwayatPengajuan = () => {
     axios
       .get(API.GET_PENGAJUAN, {
         params: {
-          userId: userId
+          userId: userId,
+          propertyId: propertyIds.join(',')
         },
         headers: {
           Authorization: 'Bearer ' + auth.token
@@ -53,17 +57,36 @@ const RiwayatPengajuan = () => {
           alert("Server Error! Coba lagi beberapa saat")
         }
       });
-  }, [auth.token, auth?.id])
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
+  }, [auth.token, auth?.id, properties])
 
   useEffect(() => {
     if (!auth) {
       navigate('/login');
     }
   }, [auth, navigate]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const res = await axios.get(API.GET_PROPERTIES_BY_USER, {
+          params: { userId: auth?.id },
+          headers: { Authorization: 'Bearer ' + auth.token }
+        });
+        setProperties(res.data.data || []);
+      } catch (err) {
+        setProperties([]);
+      }
+    };
+    if (auth?.id) fetchProperties();
+  }, [auth]);
+
+  // Tambahkan useEffect baru untuk fetch pengajuan setelah properties didapat
+  useEffect(() => {
+    if (properties.length > 0) {
+      fetchData();
+    }
+    // eslint-disable-next-line
+  }, [properties]);
 
   // Hitung total halaman
   const totalPages = Math.ceil((data?.length || 0) / itemsPerPage);
