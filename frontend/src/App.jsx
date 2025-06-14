@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import UserProtectedRoute from "./components/UserProtectedRoute";
-import AdminProtectedRoute from "./components/AdminProtectedRoute";
+
+//Middleware
+import AdminProtectedRoute from './middleware/AdminProtectedRoute';
+import PemilikProtectedRoute from './middleware/PemilikProtectedRoute';
+import PenyewaProtectedRoute from './middleware/PenyewaProtectedRoute';
+
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -42,7 +46,6 @@ import AdminArtikelEdit from './pages/admin/AdminArtikelEdit';
 import AdminArtikelDetail from './pages/admin/AdminArtikelDetail';
 import PengajuanSewa from './pages/penyewa/PengajuanSewa';
 import PersetujuanSewa from './pages/penyewa/PersetujuanSewa';
-import PemilikProtectedRoute from './components/PemilikProtectedRoute';
 
 
 import RiwayatPengajuan from './pages/pemilik/RiwayatPengajuan';
@@ -66,6 +69,7 @@ function App() {
       <Route path="/list-artikel" element={<Listartikel />} />
       <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
       <Route path="/detail-artikel" element={<Detailartikel />} />
+      <Route path="/detail-properti/:id" element={<Detailkosan />} />
 
       {/* Pemilik Properti Route */}
       <Route path="/list-iklan" element={
@@ -96,13 +100,27 @@ function App() {
 
       {/* Penyewa Properti */}
       <Route path="/penyewa-properti" element={<PenyewaProperti />} />
-      <Route path="/detail-kosan/:id" element={<Detailkosan />} />
-      <Route path="/pengajuan-sewa/:id" element={<PengajuanSewa />} />
-      <Route path="/persetujuan-sewa/:id" element={<PersetujuanSewa />} />
 
-      {/* Shared */}
-      <Route path="/riwayat-pengajuan-sewa" element={<RiwayatPengajuanSewa />} />
-      <Route path="/riwayat-transaksi-sewa" element={<RiwayatTransaksiSewa />} />
+      <Route path="/riwayat-pengajuan-sewa" element={
+        <PenyewaProtectedRoute>
+          <RiwayatPengajuanSewa />
+        </PenyewaProtectedRoute>
+      } />
+      <Route path="/riwayat-transaksi-sewa" element={
+        <PenyewaProtectedRoute>
+          <RiwayatTransaksiSewa />
+        </PenyewaProtectedRoute>
+      } />
+      <Route path="/pengajuan-sewa/:id" element={
+        <PenyewaProtectedRoute>
+          <PengajuanSewa />
+        </PenyewaProtectedRoute>
+      } />
+      <Route path="/persetujuan-sewa/:id" element={
+        <PenyewaProtectedRoute>
+          <PengajuanSewa />
+        </PenyewaProtectedRoute>
+      } />
 
       {/* Protected Admin Routes */}
       <Route path="/admin-home" element={

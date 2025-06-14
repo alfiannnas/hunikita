@@ -112,7 +112,7 @@ const Listkosan = () => {
                       </div>
                     </div>
                     <div
-                      onClick={() => navigate(`/detail-kosan/${property.id}`)}
+                      onClick={() => navigate(`/detail-properti/${property.id}`)}
                       className="inline-flex flex-col h-[27px] items-center justify-center gap-[10px] p-[10px] absolute top-[86px] left-0 bg-[#4e97d1] rounded-[5px] hover:bg-[#4e86d1] hover:cursor-pointer"
                     >
                       <div className="relative w-fit mt-[-5.00px] mb-[-3.00px] [font-family:'Poppins',Helvetica] font-semibold text-white text-[10px] text-justify tracking-[0] leading-[normal] hover:underline">
