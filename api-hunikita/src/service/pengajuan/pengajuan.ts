@@ -4,7 +4,7 @@ import { IRepository } from "../../repository/pengajuan"
 
 export interface IService {
     get(id: number): Promise<PengajuanResponse>
-    list(userId: number, propertyIds?: number[]): Promise<PengajuanResponse>
+    list(userId: number, propertyIds?: number[], transactionParam?: string): Promise<PengajuanResponse>
     create(data: CreatePengajuanRequest): Promise<PengajuanResponse>
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<PengajuanResponse>
     delete(id: number): Promise<PengajuanResponse>
@@ -41,7 +41,7 @@ export class Service implements IService {
         }
     }
 
-    async list(userId: number, propertyIds?: number[]): Promise<PengajuanResponse> {
+    async list(userId: number, propertyIds?: number[], transactionParam?: string): Promise<PengajuanResponse> {
         try {
             if (!userId) {
                 return {
@@ -51,7 +51,7 @@ export class Service implements IService {
                 }
             }
 
-            const result = await this.repo.list(userId, propertyIds)
+            const result = await this.repo.list(userId, propertyIds, transactionParam)
             return {
                 status: "success",
                 message: "Daftar pengajuan berhasil diambil",

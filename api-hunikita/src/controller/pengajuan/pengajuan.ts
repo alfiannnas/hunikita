@@ -32,6 +32,8 @@ export class Controller implements IController {
         try {
             const userId = parseInt(req.query.userId as string)
             const propertyIdParam = req.query.propertyId as string | undefined;
+            const transactionParam = req.query.transaction as string | undefined;
+
             let propertyIds: number[] | undefined = undefined;
             if (propertyIdParam) {
                 propertyIds = propertyIdParam.split(',').map(id => parseInt(id)).filter(Boolean);
@@ -46,7 +48,7 @@ export class Controller implements IController {
                 return
             }
 
-            const result = await this.service.list(userId, propertyIds)
+            const result = await this.service.list(userId, propertyIds, transactionParam)
             res.json(result)
         } catch (error) {
             res.status(500).json({

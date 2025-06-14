@@ -157,7 +157,7 @@ const PengajuanSewa = () => {
 
             if (response.status === 201 || response.status === 200) {
                 alert('Pengajuan sewa berhasil!');
-                navigate('/list-iklan');
+                navigate('/list-kosan');
             }
         } catch (error) {
             console.error('Error:', error);

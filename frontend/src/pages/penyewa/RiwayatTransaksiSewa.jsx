@@ -31,7 +31,8 @@ const RiwayatTransaksiSewa = () => {
         axios
             .get(API.GET_PENGAJUAN, {
                 params: {
-                    userId: userId
+                    userId: userId,
+                    transaction: 'Y'
                 },
                 headers: {
                     Authorization: 'Bearer ' + auth.token
@@ -151,10 +152,11 @@ const RiwayatTransaksiSewa = () => {
                                         <td className="py-3">{item.user_name}</td>
                                         <td className="py-3">{item.property_name}</td>
                                         <td className="py-3">
-                                            <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Disetujui' ? 'bg-green-500 text-white' :
-                                                item.status === 'Diproses' ? 'bg-yellow-500 text-white' :
-                                                    item.status === 'Ditolak' ? 'bg-red-500 text-white' :
-                                                        'bg-gray-500 text-white'
+                                            <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Lunas' ? 'bg-green-500 text-white' :
+                                                item.status === 'Disetujui' ? 'bg-blue-500 text-white' :
+                                                    item.status === 'Menunggu Persetujuan' ? 'bg-yellow-500 text-white' :
+                                                        item.status === 'Ditolak' ? 'bg-red-500 text-white' :
+                                                            'bg-gray-500 text-white'
                                                 }`}>
                                                 {item.status || 'Diproses'}
                                             </span>

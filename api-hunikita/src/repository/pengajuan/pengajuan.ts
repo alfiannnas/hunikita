@@ -3,7 +3,7 @@ import { CreatePengajuanRequest} from "../../entity/pengajuan/db/pengajuan"
 
 export interface IRepository {
     take(id: number): Promise<RowDataPacket>
-    list(userId: number, propertyIds?: number[]): Promise<RowDataPacket>
+    list(userId: number, propertyIds?: number[], transactionParam?: string): Promise<RowDataPacket>
     create(data: CreatePengajuanRequest): Promise<RowDataPacket>
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
@@ -98,7 +98,7 @@ export class Repository implements IRepository {
         }
     }
 
-    async list(userId: number, propertyIds?: number[]): Promise<RowDataPacket> {
+    async list(userId: number, propertyIds?: number[], transactionParam?: string): Promise<RowDataPacket> {
         try {
             let query = `
                 SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
@@ -111,15 +111,22 @@ export class Repository implements IRepository {
                 LEFT JOIN property_types pt ON pr.property_type_id = pt.id
             `;
             let params: any[] = [];
+            let whereClause = "";
 
             if (propertyIds && propertyIds.length > 0) {
                 const placeholders = propertyIds.map(() => '?').join(',');
-                query += ` WHERE p.property_id IN (${placeholders})`;
+                whereClause = `WHERE p.property_id IN (${placeholders})`;
                 params = propertyIds;
             } else {
-                query += ' WHERE p.user_id = ?';
+                whereClause = 'WHERE p.user_id = ?';
                 params = [userId];
             }
+
+            if (transactionParam) {
+                whereClause += ' AND p.invoice_number IS NOT NULL';
+            }
+
+            query += ` ${whereClause}`;
 
             const [result] = await this.master.execute(query, params);
             return result as RowDataPacket;
