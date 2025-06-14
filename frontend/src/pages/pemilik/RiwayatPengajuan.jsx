@@ -20,11 +20,9 @@ const RiwayatPengajuan = () => {
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
 
-  console.log(API.GET_PROPERTIES_BY_USER)
   const fetchData = useCallback(() => {
     const userId = auth?.id;
     const propertyIds = properties.map(p => p.id);
-    console.log(propertyIds);
 
     if (!userId) {
       console.error("User ID tidak tersedia");
