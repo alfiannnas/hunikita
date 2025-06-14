@@ -112,7 +112,7 @@ const RiwayatPengajuanSewa = () => {
     <div className="relative min-h-screen flex flex-col">
       <Navbar />
       <div className="gap-4 ml-[36px] mt-[44px]">
-        <h1 className="text-[36px] font-bold">Riwayat Pengajuan</h1>
+        <h1 className="text-[36px] font-bold">Riwayat Pengajuan Sewa</h1>
       </div>
 
       {/* Tabel Properti */}

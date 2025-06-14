@@ -17,11 +17,13 @@ const RiwayatTransaksi = () => {
     const [isOpen, setIsOpen] = useState(false);
     const itemsPerPage = 8;
     const auth = useSelector((state) => state.auth)
+    const [properties, setProperties] = useState([]);
     const navigate = useNavigate();
 
     console.log(API.GET_PROPERTIES_BY_USER)
     const fetchData = useCallback(() => {
         const userId = auth?.id;
+        const propertyIds = properties.map(p => p.id);
 
         if (!userId) {
             console.error("User ID tidak tersedia");
@@ -31,7 +33,9 @@ const RiwayatTransaksi = () => {
         axios
             .get(API.GET_PENGAJUAN, {
                 params: {
-                    userId: userId
+                    userId: userId,
+                    propertyId: propertyIds.join(','),
+                    transaction: 'Y'
                 },
                 headers: {
                     Authorization: 'Bearer ' + auth.token
@@ -56,14 +60,33 @@ const RiwayatTransaksi = () => {
     }, [auth.token, auth?.id])
 
     useEffect(() => {
-        fetchData()
-    }, [fetchData])
-
-    useEffect(() => {
         if (!auth) {
             navigate('/login');
         }
     }, [auth, navigate]);
+
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const res = await axios.get(API.GET_PROPERTIES_BY_USER, {
+                    params: { userId: auth?.id },
+                    headers: { Authorization: 'Bearer ' + auth.token }
+                });
+                setProperties(res.data.data || []);
+            } catch (err) {
+                setProperties([]);
+            }
+        };
+        if (auth?.id) fetchProperties();
+    }, [auth]);
+
+    // Tambahkan useEffect baru untuk fetch pengajuan setelah properties didapat
+    useEffect(() => {
+        if (properties.length > 0) {
+            fetchData();
+        }
+        // eslint-disable-next-line
+    }, [properties]);
 
     // Hitung total halaman
     const totalPages = Math.ceil((data?.length || 0) / itemsPerPage);
@@ -120,11 +143,6 @@ const RiwayatTransaksi = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6 mx-[36px] flex-grow">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">Daftar Pengajuan</h2>
-                    <Link to="/properties/create">
-                        <div className="w-[200px] h-[45px] justify-center items-center text-white bg-[#4E97D1] flex rounded-[10px] text-[16px] cursor-pointer font-semibold">
-                            + Tambahkan Iklan
-                        </div>
-                    </Link>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full">
@@ -151,10 +169,11 @@ const RiwayatTransaksi = () => {
                                         <td className="py-3">{item.user_name}</td>
                                         <td className="py-3">{item.property_name}</td>
                                         <td className="py-3">
-                                            <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Disetujui' ? 'bg-green-500 text-white' :
-                                                item.status === 'Diproses' ? 'bg-yellow-500 text-white' :
-                                                    item.status === 'Ditolak' ? 'bg-red-500 text-white' :
-                                                        'bg-gray-500 text-white'
+                                            <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Lunas' ? 'bg-green-500 text-white' :
+                                                item.status === 'Disetujui' ? 'bg-blue-500 text-white' :
+                                                    item.status === 'Menunggu Persetujuan' ? 'bg-yellow-500 text-white' :
+                                                        item.status === 'Ditolak' ? 'bg-red-500 text-white' :
+                                                            'bg-gray-500 text-white'
                                                 }`}>
                                                 {item.status || 'Diproses'}
                                             </span>
