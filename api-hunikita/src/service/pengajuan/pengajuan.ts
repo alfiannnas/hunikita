@@ -66,9 +66,44 @@ export class Service implements IService {
         }
     }
 
-    async create(data: CreatePengajuanRequest): Promise<PengajuanResponse> {
-        // Implementation of create method
-        throw new Error("Method not implemented")
+    async create(data: any): Promise<PengajuanResponse> {
+        try {
+            const now = new Date();
+            const pengajuanData = {
+                user_id: data.id_user,
+                property_id: data.id_properti,
+                status: 'Menunggu Persetujuan',
+                durasi_sewa: data.periode_sewa,
+                tgl_masuk: data.tanggal_masuk,
+                total: data.total_sewa,
+                ktp: data.ktp,
+                catatan: data.catatan,
+                created_at: now,
+                updated_at: now
+            };
+
+            const result = await this.repo.create(pengajuanData);
+            if (!result) {
+                return {
+                    status: "error",
+                    message: "Gagal membuat pengajuan",
+                    data: null
+                }
+            }
+
+            return {
+                status: "success",
+                message: "Pengajuan berhasil dibuat",
+                data: result as Pengajuan
+            }
+        } catch (error) {
+            console.error("Error creating pengajuan:", error);
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            }
+        }
     }
 
     async update(id: number, data: Partial<CreatePengajuanRequest>): Promise<PengajuanResponse> {

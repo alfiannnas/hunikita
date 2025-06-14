@@ -17,6 +17,8 @@ const PengajuanSewa = () => {
     const [users, setUsers] = useState({});
     const [ktpPreview, setKtpPreview] = useState(null);
     const [catatan, setCatatan] = useState('');
+    const [ktpFile, setKtpFile] = useState(null);
+    const [ktpBase64, setKtpBase64] = useState(null);
 
     const auth = useSelector((state) => state.auth);
 
@@ -92,11 +94,80 @@ const PengajuanSewa = () => {
     const handleUploadImage = (event) => {
         const file = event.target.files[0];
         if (file) {
+            setKtpFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setKtpPreview(reader.result);
+                setKtpBase64(reader.result);
             };
             reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!ktpBase64) {
+            alert('Mohon upload gambar KTP');
+            return;
+        }
+
+        if (!id) {
+            alert('ID properti tidak ditemukan. Silakan ulangi proses.');
+            return;
+        }
+
+        if (!auth?.id) {
+            alert('ID user tidak ditemukan. Silakan login ulang.');
+            return;
+        }
+        if (!tanggalMasuk) {
+            alert('Tanggal masuk tidak ditemukan. Silakan ulangi proses.');
+            return;
+        }
+        if (!periodeSewa) {
+            alert('Periode sewa tidak ditemukan. Silakan ulangi proses.');
+            return;
+        }
+        if (!totalSewa) {
+            alert('Total sewa tidak ditemukan. Silakan ulangi proses.');
+            return;
+        }
+
+        try {
+            const token = auth?.token;
+
+            const payload = {
+                ktp: ktpBase64,
+                catatan: catatan || '',
+                id_properti: id,
+                id_user: auth.id,
+                tanggal_masuk: tanggalMasuk,
+                periode_sewa: periodeSewa,
+                total_sewa: totalSewa,
+                catatan: catatan || ''
+            };
+
+            const response = await axios.post(API.POST_PENGAJUAN, payload, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.status === 201 || response.status === 200) {
+                alert('Pengajuan sewa berhasil!');
+                navigate('/list-iklan');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (error.response?.status === 401) {
+                alert('Sesi anda telah berakhir. Silakan login kembali.');
+                navigate('/login');
+            } else {
+                alert('Terjadi kesalahan saat mengajukan sewa. Silakan coba lagi.');
+                console.error('Error details:', error.response?.data);
+            }
         }
     };
 
@@ -129,90 +200,93 @@ const PengajuanSewa = () => {
                             </div>
                         </div>
                         <div className="bg-white rounded-lg shadow p-6">
-                            <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-xl font-semibold">Informasi Penyewa</h2>
-                                <button
-                                    onClick={() => navigate('/profile')}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors w-fit"
-                                >
-                                    Ubah
-                                </button>
-                            </div>
-                            <div className="grid gap-2">
-                                <div className="mt-3">
-                                    <span className="font-medium">Nama:</span>
-                                    <p className="text-gray-700">{users.name}</p>
+                            <form onSubmit={handleSubmit}>
+                                <div className="flex items-center justify-between mb-2">
+                                    <h2 className="text-xl font-semibold">Informasi Penyewa</h2>
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/profile')}
+                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors w-fit"
+                                    >
+                                        Ubah
+                                    </button>
                                 </div>
-                                <div className="mt-3">
-                                    <span className="font-medium">Nomor HP:</span>
-                                    <p className="text-gray-700">{users.no_kontak}</p>
-                                </div>
-                                <div className="mt-3">
-                                    <span className="font-medium">Jenis Kelamin:</span>
-                                    <p className="text-gray-700">{users.jenis_kelamin}</p>
-                                </div>
-                                <div className="mt-3">
-                                    <span className="font-medium">Nama Perguruan Tinggi:</span>
-                                    <p className="text-gray-700">{users.nama_kampus}</p>
-                                </div>
-                                <div className="mt-3">
-                                    <span className="font-medium">Pekerjaan:</span>
-                                    <p className="text-gray-700">{users.pekerjaan}</p>
-                                </div>
-                                <hr className="my-4 border-gray-300" />
-                                <h2 className="text-xl font-semibold">Persyaratan Dokumen</h2>
-                                <p className="text-gray-700">Untuk memudahkan proses pengajuan sewa, silakan upload dokumen KTP Anda dengan jelas. Dokumen ini diperlukan untuk keperluan lapor kepada RT/RW setempat.</p>
-                                <div
-                                    className="flex flex-col items-center justify-center pt-5 pb-6 cursor-pointer border border-dashed rounded-md"
-                                    onClick={() => document.getElementById('ktp-upload').click()}
-                                >
-                                    {ktpPreview ? (
-                                        <img
-                                            src={ktpPreview}
-                                            alt="Preview KTP"
-                                            className="w-40 h-40 object-cover rounded-lg border mb-2"
+                                <div className="grid gap-2">
+                                    <div className="mt-3">
+                                        <span className="font-medium">Nama:</span>
+                                        <p className="text-gray-700">{users.name}</p>
+                                    </div>
+                                    <div className="mt-3">
+                                        <span className="font-medium">Nomor HP:</span>
+                                        <p className="text-gray-700">{users.no_kontak}</p>
+                                    </div>
+                                    <div className="mt-3">
+                                        <span className="font-medium">Jenis Kelamin:</span>
+                                        <p className="text-gray-700">{users.jenis_kelamin}</p>
+                                    </div>
+                                    <div className="mt-3">
+                                        <span className="font-medium">Nama Perguruan Tinggi:</span>
+                                        <p className="text-gray-700">{users.nama_kampus}</p>
+                                    </div>
+                                    <div className="mt-3">
+                                        <span className="font-medium">Pekerjaan:</span>
+                                        <p className="text-gray-700">{users.pekerjaan}</p>
+                                    </div>
+                                    <hr className="my-4 border-gray-300" />
+                                    <h2 className="text-xl font-semibold">Persyaratan Dokumen</h2>
+                                    <p className="text-gray-700">Untuk memudahkan proses pengajuan sewa, silakan upload dokumen KTP Anda dengan jelas. Dokumen ini diperlukan untuk keperluan lapor kepada RT/RW setempat.</p>
+                                    <div
+                                        className="flex flex-col items-center justify-center pt-5 pb-6 cursor-pointer border border-dashed rounded-md"
+                                        onClick={() => document.getElementById('ktp-upload').click()}
+                                    >
+                                        {ktpPreview ? (
+                                            <img
+                                                src={ktpPreview}
+                                                alt="Preview KTP"
+                                                className="w-40 h-40 object-cover rounded-lg border mb-2"
+                                            />
+                                        ) : (
+                                            <>
+                                                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                                <p className="mt-2 text-sm text-gray-500">Klik untuk memilih gambar</p>
+                                                <p className="text-xs text-gray-500">PNG, JPG, atau JPEG (MAX. 5MB)</p>
+                                            </>
+                                        )}
+                                        <input
+                                            id="ktp-upload"
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={handleUploadImage}
                                         />
-                                    ) : (
-                                        <>
-                                            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                            </svg>
-                                            <p className="mt-2 text-sm text-gray-500">Klik untuk memilih gambar</p>
-                                            <p className="text-xs text-gray-500">PNG, JPG, atau JPEG (MAX. 5MB)</p>
-                                        </>
-                                    )}
-                                    <input
-                                        id="ktp-upload"
-                                        type="file"
-                                        accept="image/*"
-                                        className="hidden"
-                                        onChange={handleUploadImage}
+                                    </div>
+                                    <hr className="my-4 border-gray-300" />
+                                    <h2 className="text-xl font-semibold">Catatan</h2>
+                                    <p className="text-gray-700">Anda bisa menambahkan catatan untuk Pemilik terkait pengajuan sewa yang akan dilakukan.</p>
+                                    <textarea
+                                        className="w-full mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                        rows={4}
+                                        placeholder="Tulis catatan tambahan untuk pemilik di sini (opsional)..."
+                                        value={catatan}
+                                        onChange={e => setCatatan(e.target.value)}
                                     />
+                                    <button
+                                        type="submit"
+                                        className="mt-3 w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors w-fit"
+                                    >
+                                        Ajukan Sewa
+                                    </button>
                                 </div>
-                                <hr className="my-4 border-gray-300" />
-                                <h2 className="text-xl font-semibold">Catatan</h2>
-                                <p className="text-gray-700">Anda bisa menambahkan catatan untuk Pemilik terkait pengajuan sewa yang akan dilakukan.</p>
-                                <textarea
-                                    className="w-full mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
-                                    rows={4}
-                                    placeholder="Tulis catatan tambahan untuk pemilik di sini (opsional)..."
-                                    value={catatan}
-                                    onChange={e => setCatatan(e.target.value)}
-                                />
-                                <button
-                                    className="mt-3 w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors w-fit"
-                                >
-                                    Ajukan Sewa
-                                </button>
-
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-6 self-start mx-auto">
                         <h2 className="text-xl font-semibold mb-2">Informasi Properti</h2>
                         <div className="flex items-start gap-4">
                             <img
-                                src={foto || DEFAULT_PROPERTY_IMAGE}
+                                src={foto}
                                 alt="Property"
                                 className="w-[180px] rounded-lg object-cover shadow-sm"
                             />

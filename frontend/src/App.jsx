@@ -42,6 +42,8 @@ import AdminArtikelEdit from './pages/admin/AdminArtikelEdit';
 import AdminArtikelDetail from './pages/admin/AdminArtikelDetail';
 import RiwayatPengajuan from './pages/pemilik/RiwayatPengajuan';
 import PengajuanSewa from './pages/penyewa/PengajuanSewa';
+import PersetujuanSewa from './pages/penyewa/PersetujuanSewa';
+import PemilikProtectedRoute from './components/PemilikProtectedRoute';
 
 function App() {
   return (
@@ -55,21 +57,38 @@ function App() {
       <Route path="/pusat-bantuan" element={<Pusatbantuan />} />
       <Route path="/list-kosan" element={<Listkosan />} />
       <Route path="/list-kontrakan" element={<Listkontrakan />} />
-
-      {/* Pemilik Properti Route */}
-      <Route path="/list-iklan" element={<PemilikProperti />} />
-      <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
       <Route path="/profile" element={<PemilikProfil />} />
       <Route path="/list-artikel" element={<Listartikel />} />
       <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
       <Route path="/detail-artikel" element={<Detailartikel />} />
-      <Route path="/properties/create" element={<PemilikPropertiCreate />} />
-      <Route path="/properties/edit/:id" element={<PemilikPropertiEdit />} />
+
+      {/* Pemilik Properti Route */}
+      <Route path="/list-iklan" element={
+        <PemilikProtectedRoute>
+          <PemilikProperti />
+        </PemilikProtectedRoute>
+      } />
+      <Route path="/riwayat-pengajuan" element={
+        <PemilikProtectedRoute>
+          <RiwayatPengajuan />
+        </PemilikProtectedRoute>
+      } />
+      <Route path="/properties/create" element={
+        <PemilikProtectedRoute>
+          <PemilikPropertiCreate />
+        </PemilikProtectedRoute>
+      } />
+      <Route path="/properties/edit/:id" element={
+        <PemilikProtectedRoute>
+          <PemilikPropertiEdit />
+        </PemilikProtectedRoute>
+      } />
 
       {/* Penyewa Properti */}
       <Route path="/penyewa-properti" element={<PenyewaProperti />} />
       <Route path="/detail-kosan/:id" element={<Detailkosan />} />
       <Route path="/pengajuan-sewa/:id" element={<PengajuanSewa />} />
+      <Route path="/persetujuan-sewa/:id" element={<PersetujuanSewa />} />
 
       {/* Protected Admin Routes */}
       <Route path="/admin-home" element={

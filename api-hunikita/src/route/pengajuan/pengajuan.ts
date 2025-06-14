@@ -12,4 +12,9 @@ export function pengajuan(router: Router, handler: Controller) {
         Middleware.Auth, 
         handler.get.bind(handler)
     );
+
+    router.post('/pengajuan', 
+        Middleware.Auth, 
+        handler.create.bind(handler)
+    );
 }

@@ -1,9 +1,12 @@
 import { Request, Response } from "express"
 import { IService } from "@service/pengajuan"
+import { CreatePengajuanRequest } from "@entity/pengajuan/db"
 
 export interface IController {
     get(req: Request, res: Response): Promise<void>
     list(req: Request, res: Response): Promise<void>
+    create(req: Request, res: Response): Promise<void>
+
 }
 
 export class Controller implements IController {
@@ -16,6 +19,12 @@ export class Controller implements IController {
     async get(req: Request, res: Response): Promise<void> {
         const id = parseInt(req.params.id)
         const result = await this.service.get(id)
+        res.json(result)
+    }
+
+    async create(req: Request, res: Response): Promise<void> {
+        const data = req.body as CreatePengajuanRequest
+        const result = await this.service.create(data)
         res.json(result)
     }
 

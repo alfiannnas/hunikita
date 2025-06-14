@@ -23,4 +23,12 @@ export interface PengajuanResponse {
 export interface CreatePengajuanRequest {
     user_id: number;
     property_id: number;
+    status: string;
+    durasi_sewa: number;
+    tgl_masuk: Date;
+    total: number;
+    ktp: string;
+    catatan: string;
+    created_at: Date;
+    updated_at: Date;
 } 

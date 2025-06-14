@@ -39,11 +39,19 @@ export class Repository implements IRepository {
         try {
             const [result] = await this.master.execute(
                 `INSERT INTO penyewa (
-                    user_id, property_id
-                ) VALUES (?, ?)`,
+                    user_id, property_id, status, durasi_sewa, tgl_masuk, total, ktp, catatan, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     data.user_id,
-                    data.property_id
+                    data.property_id,
+                    data.status,
+                    data.durasi_sewa,
+                    data.tgl_masuk,
+                    data.total,
+                    data.ktp,
+                    data.catatan,
+                    data.created_at,
+                    data.updated_at
                 ]
             )
             return result as RowDataPacket

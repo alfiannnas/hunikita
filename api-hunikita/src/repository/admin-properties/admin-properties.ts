@@ -33,7 +33,6 @@ export class Repository implements IRepository {
                 LIMIT 1`,
                 [id]
             )
-            console.log(result);
             return result as RowDataPacket
         } catch(error) {
             console.error("Database Query Error:", error);
