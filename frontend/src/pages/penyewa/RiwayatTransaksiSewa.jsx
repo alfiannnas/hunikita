@@ -121,11 +121,6 @@ const RiwayatTransaksiSewa = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6 mx-[36px] flex-grow">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">Daftar Pengajuan</h2>
-                    <Link to="/properties/create">
-                        <div className="w-[200px] h-[45px] justify-center items-center text-white bg-[#4E97D1] flex rounded-[10px] text-[16px] cursor-pointer font-semibold">
-                            + Tambahkan Iklan
-                        </div>
-                    </Link>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full">
