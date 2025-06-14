@@ -9,7 +9,7 @@ import { Edit, Trash2 } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
 
-const RiwayatPengajuan = () => {
+const RiwayatPengajuanSewa = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [idProperty, setIdProperty] = useState(null);
@@ -227,4 +227,4 @@ const RiwayatPengajuan = () => {
   )
 }
 
-export default RiwayatPengajuan
+export default RiwayatPengajuanSewa

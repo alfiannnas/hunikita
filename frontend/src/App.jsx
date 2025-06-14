@@ -40,10 +40,15 @@ import AdminPemilikPropertiEdit from './pages/admin/AdminPemilikPropertiEdit';
 import AdminPropertiEdit from './pages/admin/AdminPropertiEdit';
 import AdminArtikelEdit from './pages/admin/AdminArtikelEdit';
 import AdminArtikelDetail from './pages/admin/AdminArtikelDetail';
-import RiwayatPengajuan from './pages/pemilik/RiwayatPengajuan';
 import PengajuanSewa from './pages/penyewa/PengajuanSewa';
 import PersetujuanSewa from './pages/penyewa/PersetujuanSewa';
 import PemilikProtectedRoute from './components/PemilikProtectedRoute';
+
+
+import RiwayatPengajuan from './pages/pemilik/RiwayatPengajuan';
+import RiwayatTransaksi from './pages/pemilik/RiwayatTransaksi';
+import RiwayatPengajuanSewa from './pages/penyewa/RiwayatPengajuanSewa';
+import RiwayatTransaksiSewa from './pages/penyewa/RiwayatTransaksiSewa';
 
 function App() {
   return (
@@ -68,11 +73,6 @@ function App() {
           <PemilikProperti />
         </PemilikProtectedRoute>
       } />
-      <Route path="/riwayat-pengajuan" element={
-        <PemilikProtectedRoute>
-          <RiwayatPengajuan />
-        </PemilikProtectedRoute>
-      } />
       <Route path="/properties/create" element={
         <PemilikProtectedRoute>
           <PemilikPropertiCreate />
@@ -83,12 +83,26 @@ function App() {
           <PemilikPropertiEdit />
         </PemilikProtectedRoute>
       } />
+      <Route path="/riwayat-pengajuan" element={
+        <PemilikProtectedRoute>
+          <RiwayatPengajuan />
+        </PemilikProtectedRoute>
+      } />
+      <Route path="/riwayat-transaksi" element={
+        <PemilikProtectedRoute>
+          <RiwayatTransaksi />
+        </PemilikProtectedRoute>
+      } />
 
       {/* Penyewa Properti */}
       <Route path="/penyewa-properti" element={<PenyewaProperti />} />
       <Route path="/detail-kosan/:id" element={<Detailkosan />} />
       <Route path="/pengajuan-sewa/:id" element={<PengajuanSewa />} />
       <Route path="/persetujuan-sewa/:id" element={<PersetujuanSewa />} />
+
+      {/* Shared */}
+      <Route path="/riwayat-pengajuan-sewa" element={<RiwayatPengajuanSewa />} />
+      <Route path="/riwayat-transaksi-sewa" element={<RiwayatTransaksiSewa />} />
 
       {/* Protected Admin Routes */}
       <Route path="/admin-home" element={

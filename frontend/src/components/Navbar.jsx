@@ -73,13 +73,6 @@ const Navbar = () => {
               </li>
             </Link>
           )}
-          {auth && auth.role === "Pemilik" && (
-            <Link to="/riwayat-pengajuan">
-              <li className="hover:text-gray-200 hover:cursor-pointer hover:underline">
-                Riwayat Pengajuan
-              </li>
-            </Link>
-          )}
         </ul>
       </div>
 
@@ -100,6 +93,19 @@ const Navbar = () => {
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Akun Saya
+              </Link>
+              <Link
+                to={auth.role === "Pemilik" ? "/riwayat-pengajuan" : "/riwayat-pengajuan-sewa"}
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Riwayat Pengajuan
+              </Link>
+
+              <Link
+                to={auth.role === "Pemilik" ? "/riwayat-transaksi" : "/riwayat-transaksi-sewa"}
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Riwayat Transaksi
               </Link>
               <button
                 onClick={logoutHandler}
