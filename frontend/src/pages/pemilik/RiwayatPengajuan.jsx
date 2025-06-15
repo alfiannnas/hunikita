@@ -5,20 +5,25 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from "axios";
 import { API } from '../../constant'
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Eye, Trash2 } from "lucide-react";
 import { Alert } from "../../components/Alert";
 import { SuccessMessage } from "../../components/SuccessMessage";
+import { ModalDropdown } from '../../components/ModalDropdown'
 
 const RiwayatPengajuan = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [idProperty, setIdProperty] = useState(null);
+  const [selectedPengajuanUUID, setSelectedPengajuanUUID] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const itemsPerPage = 8;
   const auth = useSelector((state) => state.auth)
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
+  const [isUpdateStatusOpen, setUpdateStatusOpen] = useState(false);
+  const [isOpenUpdateStatusSuccess, setIsOpenUpdateStatusSuccess] = useState(false);
+  const [selectedPengajuanStatus, setSelectedPengajuanStatus] = useState('');
+  const [statusOptions, setStatusOptions] = useState([]);
 
   const fetchData = useCallback(() => {
     const userId = auth?.id;
@@ -105,10 +110,10 @@ const RiwayatPengajuan = () => {
   };
 
   const handleDelete = async () => {
-    if (idProperty === null) return;
+    if (selectedPengajuanUUID === null) return;
 
     try {
-      const response = await axios.delete(`${API.DELETE_PROPERTIES_BY_USER}/${idProperty}`, {
+      const response = await axios.delete(`${API.DELETE_PROPERTIES_BY_USER}/${selectedPengajuanUUID}`, {
         headers: {
           Authorization: 'Bearer ' + auth.token
         }
@@ -118,10 +123,36 @@ const RiwayatPengajuan = () => {
         setIsAlertOpen(false);
         setIsOpen(true);
         // Refresh data setelah menghapus
-        setData(data.filter(item => item.id !== idProperty));
+        setData(data.filter(item => item.uuid !== selectedPengajuanUUID));
       }
     } catch (err) {
       console.error("Error deleting property:", err);
+      if (err.response?.status === 400) {
+        alert(err.response.data.detail)
+      } else {
+        alert("Server Error! Coba lagi beberapa saat")
+      }
+    }
+  };
+
+  // Handler update status
+  const handleUpdateStatus = async (selectedStatus) => {
+    if (!selectedPengajuanUUID) return;
+    try {
+      const response = await axios.put(
+        `${API.UPDATE_STATUS_PENGAJUAN}/${selectedPengajuanUUID}`,
+        { status: selectedStatus.value || selectedStatus },
+        {
+          headers: { Authorization: 'Bearer ' + auth.token }
+        }
+      );
+      if (response.status === 200) {
+        setIsOpenUpdateStatusSuccess(true);
+        fetchData();
+        setUpdateStatusOpen(false);
+      }
+    } catch (err) {
+      console.error("Error updating status:", err);
       if (err.response?.status === 400) {
         alert(err.response.data.detail)
       } else {
@@ -175,21 +206,30 @@ const RiwayatPengajuan = () => {
                       </span>
                     </td>
                     <td className="py-3 flex space-x-2">
-                      <Link
-                        to={`/properties/edit/${item.id}`}
-                        className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
-                      >
-                        <Edit className="w-5 h-5" />
-                      </Link>
-                      {/* <button
+                      <button
+                        className="p-2 text-yellow-600 border border-yellow-600 rounded-md hover:bg-yellow-600 hover:text-white transition"
                         onClick={() => {
-                          setIdProperty(item.id);
-                          setIsAlertOpen(true);
+                          if (
+                            item.status === 'Menunggu Persetujuan' ||
+                            item.status === 'Lunas (Menunggu Persetujuan)'
+                          ) {
+                            setSelectedPengajuanUUID(item.uuid);
+                            setSelectedPengajuanStatus(item.status);
+
+                            if (item.status === 'Menunggu Persetujuan') {
+                              setStatusOptions([{ label: "Disetujui", value: "Disetujui" }]);
+                            } else if (item.status === 'Lunas (Menunggu Persetujuan)') {
+                              setStatusOptions([{ label: "Pembayaran Disetujui", value: "Pembayaran Disetujui" }]);
+                            }
+
+                            setUpdateStatusOpen(true);
+                          } else {
+                            alert('Status hanya bisa diubah pada tahap Menunggu Persetujuan atau Lunas (Menunggu Persetujuan).');
+                          }
                         }}
-                        className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
                       >
-                        <Trash2 className="w-5 h-5" />
-                      </button> */}
+                        <Eye className="w-5 h-5" />
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -221,25 +261,21 @@ const RiwayatPengajuan = () => {
       </div>
 
       <Footer />
-
-      {/* <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
-        style={{ display: isAlertOpen || isOpen ? 'flex' : 'none' }}>
-        <Alert
-          isOpen={isAlertOpen}
-          title="Hapus"
-          message="Apakah anda yakin ingin menghapus pengajuan ini?"
-          onCancel={() => setIsAlertOpen(false)}
-          onConfirm={handleDelete}
-        />
-
-        <SuccessMessage
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          title="Hapus Sukses"
-          message="Data pengajuan telah berhasil dihapus!"
-          type="delete"
-        />
-      </div> */}
+      <ModalDropdown
+        isOpen={isUpdateStatusOpen}
+        title="Update Status Persetujuan Penyewa"
+        message="Pilih status persetujuan untuk penyewa ini:"
+        options={statusOptions}
+        onCancel={() => setUpdateStatusOpen(false)}
+        onConfirm={handleUpdateStatus}
+      />
+      <SuccessMessage
+        isOpen={isOpenUpdateStatusSuccess}
+        onClose={() => setIsOpenUpdateStatusSuccess(false)}
+        title="Update Status Sukses"
+        message="Status penyewa telah berhasil diupdate!"
+        type="success"
+      />
     </div>
   )
 }

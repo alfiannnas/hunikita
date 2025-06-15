@@ -22,4 +22,8 @@ export function pengajuan(router: Router, handler: Controller) {
         Middleware.Auth, 
         handler.create.bind(handler)
     );
+    router.put('/pengajuan/:uuid', 
+        Middleware.Auth,
+        handler.updateStatusPengajuan.bind(handler)
+    );
 }

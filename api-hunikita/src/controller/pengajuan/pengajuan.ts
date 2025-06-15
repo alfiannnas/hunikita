@@ -8,6 +8,7 @@ export interface IController {
     create(req: Request, res: Response): Promise<void>
     getByUUID(req: Request, res: Response): Promise<void>
     postBuktiPembayaran(req: Request, res: Response): Promise<void>
+    updateStatusPengajuan(req: Request, res: Response): Promise<void>
 }
 
 export class Controller implements IController {
@@ -95,4 +96,20 @@ export class Controller implements IController {
             });
         }
     }
+
+    async updateStatusPengajuan(req: Request, res: Response): Promise<void> {
+        try {
+            const uuid = req.params.uuid;
+            const { status } = req.body;
+            const result = await this.service.updateStatusPengajuan(uuid, status);
+            res.json(result);
+        } catch (error: any) {
+            res.status(500).json({
+                status: false,
+                message: "Failed to update status pengajuan",
+                error: error.message
+            })
+        }
+    }
+
 }
