@@ -8,6 +8,7 @@ export interface IRepository {
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
     takeByUUID(uuid: string): Promise<RowDataPacket>
+    updateBuktiPembayaranByUUID(uuid: string, bukti_pembayaran: string, status: string): Promise<RowDataPacket>
 }
 
 export class Repository implements IRepository {
@@ -155,6 +156,18 @@ export class Repository implements IRepository {
             return result as RowDataPacket
         } catch(error) {
             throw error
+        }
+    }
+
+    async updateBuktiPembayaranByUUID(uuid: string, bukti_pembayaran: string, status: string): Promise<RowDataPacket> {
+        try {
+            const [result] = await this.master.execute(
+                `UPDATE penyewa SET bukti_pembayaran = ?, status = ?, updated_at = NOW() WHERE uuid = ?`,
+                [bukti_pembayaran, status, uuid]
+            );
+            return result as RowDataPacket;
+        } catch (error) {
+            throw error;
         }
     }
 } 

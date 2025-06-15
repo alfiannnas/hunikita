@@ -7,6 +7,7 @@ export interface IController {
     list(req: Request, res: Response): Promise<void>
     create(req: Request, res: Response): Promise<void>
     getByUUID(req: Request, res: Response): Promise<void>
+    postBuktiPembayaran(req: Request, res: Response): Promise<void>
 }
 
 export class Controller implements IController {
@@ -63,5 +64,35 @@ export class Controller implements IController {
         const uuid = req.params.uuid;
         const result = await this.service.getByUUID(uuid);
         res.json(result);
+    }
+
+    async postBuktiPembayaran(req: Request, res: Response): Promise<void> {
+        const uuid = req.params.uuid;
+        const { bukti_pembayaran } = req.body;
+        const status = 'Lunas';
+
+        if (!bukti_pembayaran) {
+            res.status(400).json({
+                status: "error",
+                message: "Bukti pembayaran harus diisi",
+                data: null
+            });
+            return;
+        }
+
+        try {
+            const result = await this.service.uploadBuktiPembayaran(uuid, bukti_pembayaran, status);
+            res.json({
+                status: "success",
+                message: "Bukti pembayaran berhasil diupload",
+                data: result
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            });
+        }
     }
 }

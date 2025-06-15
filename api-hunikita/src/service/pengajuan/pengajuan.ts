@@ -10,6 +10,7 @@ export interface IService {
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<PengajuanResponse>
     delete(id: number): Promise<PengajuanResponse>
     getByUUID(uuid: string): Promise<PengajuanResponse>
+    uploadBuktiPembayaran(uuid: string, bukti_pembayaran: string, status: string): Promise<PengajuanResponse>
 }
 
 export class Service implements IService {
@@ -134,6 +135,35 @@ export class Service implements IService {
                 status: "success",
                 message: "Pengajuan berhasil ditemukan",
                 data: result[0] as Pengajuan
+            }
+        } catch (error) {
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            }
+        }
+    }
+
+    async uploadBuktiPembayaran(uuid: string, bukti_pembayaran: string, status: string): Promise<PengajuanResponse> {
+        try {
+            // Ambil pengajuan berdasarkan uuid
+            const result = await this.repo.takeByUUID(uuid);
+            if (!result || (Array.isArray(result) && result.length === 0)) {
+                return {
+                    status: "error",
+                    message: "Pengajuan tidak ditemukan",
+                    data: null
+                }
+            }
+            const pengajuan = result[0];
+            // Update bukti pembayaran
+            await this.repo.updateBuktiPembayaranByUUID(uuid, bukti_pembayaran, status);
+            const updated = await this.repo.takeByUUID(uuid);
+            return {
+                status: "success",
+                message: "Bukti pembayaran berhasil diupload",
+                data: updated[0]
             }
         } catch (error) {
             return {

@@ -13,6 +13,11 @@ export function pengajuan(router: Router, handler: Controller) {
         handler.getByUUID.bind(handler)
     );
 
+    router.post('/pengajuan/:uuid', 
+        Middleware.Auth, 
+        handler.postBuktiPembayaran.bind(handler)
+    );
+
     router.post('/pengajuan', 
         Middleware.Auth, 
         handler.create.bind(handler)

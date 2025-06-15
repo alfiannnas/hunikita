@@ -13,6 +13,9 @@ const DetailSewa = () => {
     const [pengajuan, setPengajuan] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const auth = useSelector((state) => state.auth);
+    const [buktiPembayaran, setBuktiPembayaran] = useState(null);
+    const [buktiBase64, setBuktiBase64] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         const fetchPengajuan = async () => {
@@ -45,6 +48,48 @@ const DetailSewa = () => {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(angka);
+    };
+
+    // Fungsi untuk handle file upload dan konversi ke base64
+    const handleBuktiChange = (e) => {
+        const file = e.target.files[0];
+        setBuktiPembayaran(file);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setBuktiBase64(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleClickUpload = () => {
+        document.getElementById('bukti-upload').click();
+    };
+
+    const handleSubmitBukti = async () => {
+        if (!buktiBase64) {
+            alert("Silakan upload bukti pembayaran terlebih dahulu.");
+            return;
+        }
+        setIsSubmitting(true);
+        try {
+            // Ganti URL dan payload sesuai kebutuhan backend kamu
+            await axios.post(`${API.POST_BUKTI_PEMBAYARAN}/${uuid}`, {
+                bukti_pembayaran: buktiBase64,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${auth.token}`
+                }
+            });
+            alert("Bukti pembayaran berhasil dikirim!");
+            // (Opsional) Refresh data pengajuan
+            window.location.reload();
+        } catch (error) {
+            alert("Gagal mengirim bukti pembayaran.");
+        }
+        setIsSubmitting(false);
     };
 
     if (isLoading) {
@@ -118,8 +163,47 @@ const DetailSewa = () => {
                                     />
                                 )}
                             </div>
-
-
+                            <hr className="my-4 border-gray-300" />
+                            {/* Upload bukti pembayaran jika status Disetujui */}
+                            {pengajuan.status === "Disetujui" && (
+                                <div className="mb-4">
+                                    <label className="block font-semibold mb-2">Upload Bukti Pembayaran:</label>
+                                    <div
+                                        className="flex flex-col items-center justify-center pt-5 pb-6 cursor-pointer border border-dashed rounded-md"
+                                        onClick={handleClickUpload}
+                                    >
+                                        {buktiBase64 ? (
+                                            <img
+                                                src={buktiBase64}
+                                                alt="Preview Bukti Pembayaran"
+                                                className="w-40 h-40 object-cover rounded-lg border mb-2"
+                                            />
+                                        ) : (
+                                            <>
+                                                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                                <p className="mt-2 text-sm text-gray-500">Klik untuk memilih gambar</p>
+                                                <p className="text-xs text-gray-500">PNG, JPG, atau JPEG (MAX. 5MB)</p>
+                                            </>
+                                        )}
+                                        <input
+                                            id="bukti-upload"
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={handleBuktiChange}
+                                        />
+                                    </div>
+                                    <button
+                                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md font-sm hover:bg-blue-700 transition"
+                                        onClick={handleSubmitBukti}
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? "Mengirim..." : "Submit Pembayaran"}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-6 self-start mx-auto">
