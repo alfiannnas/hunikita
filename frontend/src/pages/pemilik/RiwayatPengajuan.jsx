@@ -234,6 +234,12 @@ const RiwayatPengajuan = () => {
                       >
                         <Eye className="w-5 h-5" />
                       </button>
+                      <button
+                        onClick={() => navigate(`/pemilik-detail-sewa/${item.uuid}`)}
+                        className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+                      >
+                        <Edit className="w-5 h-5" />
+                      </button>
                     </td>
                   </tr>
                 ))

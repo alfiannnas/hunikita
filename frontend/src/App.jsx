@@ -53,6 +53,7 @@ import RiwayatTransaksi from './pages/pemilik/RiwayatTransaksi';
 import RiwayatPengajuanSewa from './pages/penyewa/RiwayatPengajuanSewa';
 import RiwayatTransaksiSewa from './pages/penyewa/RiwayatTransaksiSewa';
 import DetailSewa from './pages/penyewa/DetailSewa';
+import PemilikDetailSewa from './pages/pemilik/PemilikDetailSewa';
 
 function App() {
   return (
@@ -96,6 +97,12 @@ function App() {
       <Route path="/riwayat-transaksi" element={
         <PemilikProtectedRoute>
           <RiwayatTransaksi />
+        </PemilikProtectedRoute>
+      } />
+
+      <Route path="/pemilik-detail-sewa/:uuid" element={
+        <PemilikProtectedRoute>
+          <PemilikDetailSewa />
         </PemilikProtectedRoute>
       } />
 
