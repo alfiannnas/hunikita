@@ -8,7 +8,8 @@ export interface IRepository {
     update(id: number, data: Partial<CreatePengajuanRequest>): Promise<RowDataPacket>
     delete(id: number): Promise<RowDataPacket>
     takeByUUID(uuid: string): Promise<RowDataPacket>
-    updateBuktiPembayaranByUUID(uuid: string, bukti_pembayaran: string, status: string): Promise<RowDataPacket>
+    updateBuktiPembayaranByUUID(uuid: string, bukti_pembayaran: string, status: string, invoice_number: string): Promise<RowDataPacket>
+    getLastInvoiceNumber(): Promise<any>
 }
 
 export class Repository implements IRepository {
@@ -159,13 +160,24 @@ export class Repository implements IRepository {
         }
     }
 
-    async updateBuktiPembayaranByUUID(uuid: string, bukti_pembayaran: string, status: string): Promise<RowDataPacket> {
+    async updateBuktiPembayaranByUUID(uuid: string, bukti_pembayaran: string, status: string, invoice_number: string): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `UPDATE penyewa SET bukti_pembayaran = ?, status = ?, updated_at = NOW() WHERE uuid = ?`,
-                [bukti_pembayaran, status, uuid]
+                `UPDATE penyewa SET bukti_pembayaran = ?, status = ?, invoice_number = ?, updated_at = NOW() WHERE uuid = ?`,
+                [bukti_pembayaran, status, invoice_number, uuid]
             );
             return result as RowDataPacket;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getLastInvoiceNumber(): Promise<any> {
+        try {
+            const [result] = await this.master.execute(
+                `SELECT invoice_number FROM penyewa WHERE invoice_number IS NOT NULL ORDER BY invoice_number DESC LIMIT 1`
+            );
+            return Array.isArray(result) && result.length > 0 ? result[0] : null;
         } catch (error) {
             throw error;
         }

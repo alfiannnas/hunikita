@@ -156,9 +156,20 @@ export class Service implements IService {
                     data: null
                 }
             }
-            const pengajuan = result[0];
-            // Update bukti pembayaran
-            await this.repo.updateBuktiPembayaranByUUID(uuid, bukti_pembayaran, status);
+
+            // Generate invoice number
+            const lastInvoice = await this.repo.getLastInvoiceNumber();
+            let nextNumber = 1;
+            if (lastInvoice && lastInvoice.invoice_number) {
+                const lastNum = parseInt(lastInvoice.invoice_number.replace('INV-', ''));
+                nextNumber = lastNum + 1;
+            }
+            const invoice_number = `INV-${String(nextNumber).padStart(3, '0')}`;
+
+            // Update bukti pembayaran, status, dan invoice_number
+            await this.repo.updateBuktiPembayaranByUUID(uuid, bukti_pembayaran, status, invoice_number);
+
+            // Ambil lagi data pengajuan terbaru
             const updated = await this.repo.takeByUUID(uuid);
             return {
                 status: "success",
