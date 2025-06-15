@@ -69,7 +69,7 @@ export class Controller implements IController {
     async postBuktiPembayaran(req: Request, res: Response): Promise<void> {
         const uuid = req.params.uuid;
         const { bukti_pembayaran } = req.body;
-        const status = 'Lunas';
+        const status = 'Lunas (Menunggu Persetujuan)';
 
         if (!bukti_pembayaran) {
             res.status(400).json({

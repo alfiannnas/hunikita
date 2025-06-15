@@ -143,11 +143,15 @@ const RiwayatPengajuanSewa = () => {
                     <td className="py-3">{item.user_name}</td>
                     <td className="py-3">{item.property_name}</td>
                     <td className="py-3">
-                      <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Lunas' ? 'bg-green-500 text-white' :
-                        item.status === 'Disetujui' ? 'bg-blue-500 text-white' :
-                          item.status === 'Menunggu Persetujuan' ? 'bg-yellow-500 text-white' :
-                            item.status === 'Ditolak' ? 'bg-red-500 text-white' :
-                              'bg-gray-500 text-white'
+                      <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Lunas' || item.status === 'Pembayaran Disetujui'
+                        ? 'bg-green-500 text-white'
+                        : item.status === 'Disetujui'
+                          ? 'bg-blue-500 text-white'
+                          : item.status === 'Menunggu Persetujuan' || item.status === 'Lunas (Menunggu Persetujuan)'
+                            ? 'bg-yellow-500 text-white'
+                            : item.status === 'Ditolak'
+                              ? 'bg-red-500 text-white'
+                              : 'bg-gray-500 text-white'
                         }`}>
                         {item.status || 'Diproses'}
                       </span>

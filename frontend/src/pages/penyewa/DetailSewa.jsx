@@ -111,13 +111,66 @@ const DetailSewa = () => {
                             <div className="flex items-center justify-between">
                                 <div className="flex-1">
                                     <div className="flex items-center">
+                                        {/* Step 1: Pengajuan */}
                                         <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold">1</div>
-                                        <div className={`flex-1 h-1 ${pengajuan.status === 'Menunggu Persetujuan' || pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-200 mx-2' : 'bg-gray-200 mx-2'}`}></div>
-                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${pengajuan.status === 'Menunggu Persetujuan' || pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'} font-bold`}>2</div>
-                                        <div className={`flex-1 h-1 ${pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-200 mx-2' : 'bg-gray-200 mx-2'}`}></div>
-                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'} font-bold`}>3</div>
-                                        <div className={`flex-1 h-1 ${pengajuan.status === 'Lunas' ? 'bg-blue-200 mx-2' : 'bg-gray-200 mx-2'}`}></div>
-                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${pengajuan.status === 'Lunas' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'} font-bold`}>4</div>
+                                        <div className={`flex-1 h-1 ${[
+                                            'Menunggu Persetujuan',
+                                            'Disetujui',
+                                            'Lunas (Menunggu Persetujuan)',
+                                            'Pembayaran Disetujui',
+                                            'Lunas'
+                                        ].includes(pengajuan.status)
+                                            ? 'bg-blue-200 mx-2'
+                                            : 'bg-gray-200 mx-2'
+                                            }`}></div>
+
+                                        {/* Step 2: Persetujuan */}
+                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${[
+                                            'Menunggu Persetujuan',
+                                            'Disetujui',
+                                            'Lunas (Menunggu Persetujuan)',
+                                            'Pembayaran Disetujui',
+                                            'Lunas'
+                                        ].includes(pengajuan.status)
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-gray-300 text-gray-600'
+                                            } font-bold`}>2</div>
+                                        <div className={`flex-1 h-1 ${[
+                                            'Disetujui',
+                                            'Lunas (Menunggu Persetujuan)',
+                                            'Pembayaran Disetujui',
+                                            'Lunas'
+                                        ].includes(pengajuan.status)
+                                            ? 'bg-blue-200 mx-2'
+                                            : 'bg-gray-200 mx-2'
+                                            }`}></div>
+
+                                        {/* Step 3: Pembayaran */}
+                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${[
+                                            'Disetujui',
+                                            'Lunas (Menunggu Persetujuan)',
+                                            'Pembayaran Disetujui',
+                                            'Lunas'
+                                        ].includes(pengajuan.status)
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-gray-300 text-gray-600'
+                                            } font-bold`}>3</div>
+                                        <div className={`flex-1 h-1 ${[
+                                            'Pembayaran Disetujui',
+                                            'Lunas'
+                                        ].includes(pengajuan.status)
+                                            ? 'bg-blue-200 mx-2'
+                                            : 'bg-gray-200 mx-2'
+                                            }`}></div>
+
+                                        {/* Step 4: Check-in */}
+                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${[
+                                            'Pembayaran Disetujui',
+                                            'Lunas'
+                                        ].includes(pengajuan.status)
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-gray-300 text-gray-600'
+                                            } font-bold`}>4</div>
                                     </div>
                                     <div className="flex justify-between mt-2 text-xs text-gray-500">
                                         <span>Pengajuan</span>
