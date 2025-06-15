@@ -63,9 +63,30 @@ const DetailSewa = () => {
                 <div className="flex flex-col md:flex-row gap-4 md:gap-8 mb-6 items-start">
                     <div className="flex flex-col gap-4 w-full md:w-2/3">
                         <div className="bg-white rounded-lg shadow p-6">
-                            <div className="mb-4">
-                                <b>Invoice No:</b> {pengajuan.invoice_number || '-'}
+                            <div className="flex items-center justify-between">
+                                <div className="flex-1">
+                                    <div className="flex items-center">
+                                        <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold">1</div>
+                                        <div className={`flex-1 h-1 ${pengajuan.status === 'Menunggu Persetujuan' || pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-200 mx-2' : 'bg-gray-200 mx-2'}`}></div>
+                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${pengajuan.status === 'Menunggu Persetujuan' || pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'} font-bold`}>2</div>
+                                        <div className={`flex-1 h-1 ${pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-200 mx-2' : 'bg-gray-200 mx-2'}`}></div>
+                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${pengajuan.status === 'Disetujui' || pengajuan.status === 'Lunas' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'} font-bold`}>3</div>
+                                        <div className={`flex-1 h-1 ${pengajuan.status === 'Lunas' ? 'bg-blue-200 mx-2' : 'bg-gray-200 mx-2'}`}></div>
+                                        <div className={`w-8 h-8 flex items-center justify-center rounded-full ${pengajuan.status === 'Lunas' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'} font-bold`}>4</div>
+                                    </div>
+                                    <div className="flex justify-between mt-2 text-xs text-gray-500">
+                                        <span>Pengajuan</span>
+                                        <span>Persetujuan</span>
+                                        <span>Pembayaran</span>
+                                        <span>Check-in</span>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div className="bg-white rounded-lg shadow p-6">
+                            {/* <div className="mb-4">
+                                <b>Invoice No:</b> {pengajuan.invoice_number || '-'}
+                            </div> */}
                             <div className="mb-4">
                                 <b>Nama Penyewa:</b> {pengajuan.user_name || '-'}
                             </div>
@@ -102,7 +123,7 @@ const DetailSewa = () => {
                             <div className="flex-1">
                                 <div className="mb-2">
                                     <span className="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-semibold">
-                                        {pengajuan.property_type_name}
+                                        {pengajuan.jenis_properti}
                                     </span>
                                 </div>
                                 <div className="mb-2">
@@ -110,7 +131,7 @@ const DetailSewa = () => {
                                 </div>
                                 <div className="mb-2 flex items-center gap-1">
                                     <MapPinned size={16} className="text-gray-400" />
-                                    <span className="text-gray-600 text-sm">{pengajuan.alamat || '-'}</span>
+                                    <span className="text-gray-600 text-sm">{pengajuan.address || '-'}</span>
                                 </div>
                             </div>
                         </div>
