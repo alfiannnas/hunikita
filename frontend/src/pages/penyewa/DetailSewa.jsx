@@ -108,6 +108,18 @@ const DetailSewa = () => {
                             <div className="mb-4">
                                 <b>Catatan:</b> {pengajuan.catatan || '-'}
                             </div>
+                            <hr className="my-4 border-gray-300" />
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6 cursor-pointer border border-dashed rounded-md">
+                                {pengajuan.ktp && (
+                                    <img
+                                        src={pengajuan.ktp}
+                                        alt="Dokumen"
+                                        className="flex w-60 rounded-lg object-cover shadow-sm justify-center"
+                                    />
+                                )}
+                            </div>
+
+
                         </div>
                     </div>
                     <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-6 self-start mx-auto">
