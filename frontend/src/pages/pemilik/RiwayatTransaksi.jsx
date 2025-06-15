@@ -57,7 +57,7 @@ const RiwayatTransaksi = () => {
                     alert("Server Error! Coba lagi beberapa saat")
                 }
             });
-    }, [auth.token, auth?.id])
+    }, [auth.token, auth?.id, properties]);
 
     useEffect(() => {
         if (!auth) {
@@ -136,7 +136,7 @@ const RiwayatTransaksi = () => {
         <div className="relative min-h-screen flex flex-col">
             <Navbar />
             <div className="gap-4 ml-[36px] mt-[44px]">
-                <h1 className="text-[36px] font-bold">Riwayat Pengajuan</h1>
+                <h1 className="text-[36px] font-bold">Riwayat Transaksi</h1>
             </div>
 
             {/* Tabel Properti */}
@@ -169,31 +169,26 @@ const RiwayatTransaksi = () => {
                                         <td className="py-3">{item.user_name}</td>
                                         <td className="py-3">{item.property_name}</td>
                                         <td className="py-3">
-                                            <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Lunas' ? 'bg-green-500 text-white' :
-                                                item.status === 'Disetujui' ? 'bg-blue-500 text-white' :
-                                                    item.status === 'Menunggu Persetujuan' ? 'bg-yellow-500 text-white' :
-                                                        item.status === 'Ditolak' ? 'bg-red-500 text-white' :
-                                                            'bg-gray-500 text-white'
+                                            <span className={`px-2 py-1 rounded-full text-sm ${item.status === 'Lunas' || item.status === 'Pembayaran Disetujui'
+                                                ? 'bg-green-500 text-white'
+                                                : item.status === 'Disetujui'
+                                                    ? 'bg-blue-500 text-white'
+                                                    : item.status === 'Menunggu Persetujuan' || item.status === 'Lunas (Menunggu Persetujuan)'
+                                                        ? 'bg-yellow-500 text-white'
+                                                        : item.status === 'Ditolak'
+                                                            ? 'bg-red-500 text-white'
+                                                            : 'bg-gray-500 text-white'
                                                 }`}>
                                                 {item.status || 'Diproses'}
                                             </span>
                                         </td>
                                         <td className="py-3 flex space-x-2">
                                             <Link
-                                                to={`/properties/edit/${item.id}`}
+                                                to={`/pemilik-detail-sewa/${item.uuid}`}
                                                 className="p-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
                                             >
                                                 <Edit className="w-5 h-5" />
                                             </Link>
-                                            <button
-                                                onClick={() => {
-                                                    setIdProperty(item.id);
-                                                    setIsAlertOpen(true);
-                                                }}
-                                                className="p-2 text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
-                                            >
-                                                <Trash2 className="w-5 h-5" />
-                                            </button>
                                         </td>
                                     </tr>
                                 ))
