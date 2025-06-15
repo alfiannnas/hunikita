@@ -257,6 +257,20 @@ const DetailSewa = () => {
                                     </button>
                                 </div>
                             )}
+                            <h2 className="text-xl font-semibold">Informasi Check-in</h2>
+
+                            {pengajuan.status === "Pembayaran Disetujui" && (
+                                <div className="mt-4 mb-4 p-4 bg-green-50 border border-green-300 rounded text-green-800 font-semibold">
+                                    <span>
+                                        Pembayaran Anda telah <b>disetujui</b>. Silakan lakukan <b>check-in</b> ke properti pada tanggal: <b>
+                                            {pengajuan.tgl_masuk ? new Date(pengajuan.tgl_masuk).toLocaleDateString('id-ID') : '-'}</b>.
+                                    </span>
+                                    <br />
+                                    <span>
+                                        Mohon tunjukkan bukti pembayaran dan identitas diri saat check-in ke pemilik properti.
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-6 self-start mx-auto">
