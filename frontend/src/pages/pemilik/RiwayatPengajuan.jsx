@@ -221,9 +221,9 @@ const RiwayatPengajuan = () => {
                             setSelectedPengajuanStatus(item.status);
 
                             if (item.status === 'Menunggu Persetujuan') {
-                              setStatusOptions([{ label: "Disetujui", value: "Disetujui" }]);
+                              setStatusOptions([{ label: "Disetujui", value: "Disetujui" }, { label: "Ditolak", value: "Ditolak" }]);
                             } else if (item.status === 'Lunas (Menunggu Persetujuan)') {
-                              setStatusOptions([{ label: "Pembayaran Disetujui", value: "Pembayaran Disetujui" }]);
+                              setStatusOptions([{ label: "Pembayaran Disetujui", value: "Pembayaran Disetujui" }, { label: "Ditolak", value: "Ditolak" }]);
                             }
 
                             setUpdateStatusOpen(true);

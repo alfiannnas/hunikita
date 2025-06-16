@@ -207,7 +207,7 @@ const PemilikDetailSewa = () => {
                             </div>
                             <hr className="my-4 border-gray-300" />
                             {/* Upload bukti pembayaran jika status Disetujui */}
-                            {pengajuan.status === "Lunas (Menunggu Persetujuan)" || pengajuan.status === "Pembayaran Disetujui" && (
+                            {(pengajuan.status === "Lunas (Menunggu Persetujuan)" || pengajuan.status === "Pembayaran Disetujui") && (
                                 <div className="mb-4">
                                     <label className="block font-semibold mb-2">Bukti Pembayaran:</label>
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
