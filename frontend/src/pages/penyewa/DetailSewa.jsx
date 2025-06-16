@@ -271,6 +271,18 @@ const DetailSewa = () => {
                                     </button>
                                 </div>
                             )}
+                            {["Lunas (Menunggu Persetujuan)", "Pembayaran Disetujui"].includes(pengajuan.status) && pengajuan.bukti_pembayaran && (
+                                <div className="mb-4">
+                                    <label className="block font-semibold mb-2">Bukti Pembayaran:</label>
+                                    <div className="flex flex-col items-center justify-center pt-5 pb-6 border border-dashed rounded-md">
+                                        <img
+                                            src={pengajuan.bukti_pembayaran}
+                                            alt="Bukti Pembayaran"
+                                            className="w-56 object-cover rounded-lg border mb-2"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-6 self-start mx-auto">
