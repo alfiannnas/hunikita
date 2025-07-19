@@ -146,7 +146,7 @@ export class Repository implements IRepository {
                 `SELECT p.id, p.user_id, p.property_id, u.name AS user_name, 
                         pr.name AS property_name, pt.name AS property_type_name, pr.harga as harga_property, pr.address, pr.jenis_properti, pr.foto_properti,
                         p.created_at, p.updated_at, u.name as nama, u.email, u.no_kontak, u.jenis_kelamin AS gender, u.tgl_lahir AS born_date, kota_asal AS city_from, u.pekerjaan AS job_user, u.nama_kampus AS nama_instansi, u.status AS stats, u.pendidikan_terakhir AS last_education, no_kontak_darurat AS emergency_number, u.profile_image AS profil_img,
-                        p.status, p.durasi_sewa, p.tgl_masuk, p.ktp, p.catatan, p.total, p.bukti_pembayaran
+                        p.status, p.durasi_sewa, p.tgl_masuk, p.ktp, p.catatan, p.total, p.bukti_pembayaran, p.invoice_number
                  FROM penyewa p
                  LEFT JOIN users u ON p.user_id = u.id
                  LEFT JOIN properties pr ON p.property_id = pr.id
