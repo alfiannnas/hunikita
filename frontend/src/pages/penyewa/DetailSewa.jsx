@@ -281,6 +281,19 @@ const DetailSewa = () => {
                                             className="w-56 object-cover rounded-lg border mb-2"
                                         />
                                     </div>
+                                    {/* Tombol Download Invoice jika status Pembayaran Disetujui */}
+                                    {pengajuan.status === "Pembayaran Disetujui" && (
+                                        <a
+                                            href="#"
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                navigate('/invoice', { state: { pengajuan } });
+                                            }}
+                                            className="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded-md font-sm hover:bg-green-700 transition"
+                                        >
+                                            Download Invoice
+                                        </a>
+                                    )}
                                 </div>
                             )}
                         </div>
