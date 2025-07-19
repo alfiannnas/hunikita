@@ -6,15 +6,18 @@ export function adminPusatBantuan(router: Router, handler: Controller) {
     // List semua pesan bantuan
     router.get('/admin-pusat-bantuan', 
         Middleware.Auth, 
-        Middleware.AdminOnly,
         handler.list.bind(handler)
     );
 
     // Ambil pesan bantuan by ID
     router.get('/admin-pusat-bantuan/:id', 
         Middleware.Auth, 
-        Middleware.AdminOnly,
         handler.get.bind(handler)
+    );
+
+    router.get('/pusat-bantuan/:id', 
+        Middleware.Auth,
+        handler.getPusatBantuan.bind(handler)
     );
 
     // Buat pesan bantuan baru

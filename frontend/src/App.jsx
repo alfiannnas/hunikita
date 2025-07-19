@@ -55,6 +55,8 @@ import RiwayatTransaksiSewa from './pages/penyewa/RiwayatTransaksiSewa';
 import DetailSewa from './pages/penyewa/DetailSewa';
 import PemilikDetailSewa from './pages/pemilik/PemilikDetailSewa';
 import Invoice from './pages/penyewa/invoice/Invoice';
+import RiwayatPusatBantuan from './pages/RiwayatPusatBantuan';
+import DetailPusatBantuan from './pages/DetailPusatBantuan';
 
 function App() {
   return (
@@ -73,6 +75,9 @@ function App() {
       <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
       <Route path="/detail-artikel" element={<Detailartikel />} />
       <Route path="/detail-properti/:id" element={<Detailkosan />} />
+      <Route path="/riwayat-pusat-bantuan" element={<RiwayatPusatBantuan />} />
+      <Route path="/riwayat-pusat-bantuan/:id" element={<DetailPusatBantuan />} />
+
 
       {/* Pemilik Properti Route */}
       <Route path="/list-iklan" element={

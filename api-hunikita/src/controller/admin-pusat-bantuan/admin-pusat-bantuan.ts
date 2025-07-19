@@ -4,6 +4,7 @@ import { CreateAdminPusatBantuanRequest } from "@entity/admin-pusat-bantuan/db"
 
 export interface IController {
     get(req: Request, res: Response): Promise<void>
+    getPusatBantuan(req: Request, res: Response): Promise<void>
     list(req: Request, res: Response): Promise<void>
     create(req: Request, res: Response): Promise<void>
     update(req: Request, res: Response): Promise<void>
@@ -24,8 +25,20 @@ export class Controller implements IController {
         res.json(result)
     }
 
+    async getPusatBantuan(req: Request, res: Response): Promise<void> {
+        const id = parseInt(req.params.id)
+        const userId = parseInt(req.query.user_id as string);
+
+        const result = await this.service.getPusatBantuan(userId, id)
+        
+        res.json(result)
+    }
+
     async list(_req: Request, res: Response): Promise<void> {
-        const result = await this.service.list()
+        const userId = parseInt(_req.query.user_id as string);
+
+        const result = await this.service.list(userId)
+
         res.json(result)
     }
 

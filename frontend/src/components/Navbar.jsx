@@ -107,6 +107,12 @@ const Navbar = () => {
               >
                 Riwayat Transaksi
               </Link>
+              <Link
+                to="/riwayat-pusat-bantuan"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Riwayat Pusat Bantuan
+              </Link>
               <button
                 onClick={logoutHandler}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

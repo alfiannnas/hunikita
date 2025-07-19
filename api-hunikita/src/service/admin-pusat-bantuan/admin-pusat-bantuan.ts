@@ -4,7 +4,8 @@ import { IRepository } from "../../repository/admin-pusat-bantuan"
 
 export interface IService {
     get(id: number): Promise<AdminPusatBantuanResponse>
-    list(): Promise<AdminPusatBantuanResponse>
+    getPusatBantuan(id:number, userId: number): Promise<AdminPusatBantuanResponse>
+    list(userId: number): Promise<AdminPusatBantuanResponse>
     create(data: CreateAdminPusatBantuanRequest): Promise<AdminPusatBantuanResponse>
     update(id: number, data: Partial<CreateAdminPusatBantuanRequest>): Promise<AdminPusatBantuanResponse>
     delete(id: number): Promise<AdminPusatBantuanResponse>
@@ -42,9 +43,36 @@ export class Service implements IService {
         }
     }
 
-    async list(): Promise<AdminPusatBantuanResponse> {
+    async getPusatBantuan(userId: number, id: number): Promise<AdminPusatBantuanResponse> {
         try {
-            const result = await this.repo.list()
+            // Pastikan repo.takePusatBantuanByUserId mengembalikan data sesuai userId dan id
+            const result = await this.repo.takePusatBantuan(userId, id);
+            if (!result || (Array.isArray(result) && result.length === 0)) {
+                return {
+                    status: "error",
+                    message: "Pusat bantuan tidak ditemukan",
+                    data: null
+                }
+            }
+
+            return {
+                status: "success",
+                message: "Pusat bantuan berhasil ditemukan",
+                data: result[0] as AdminPusatBantuan
+            }
+        } catch (error) {
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            }
+        }
+    }
+
+
+    async list(userId?: number): Promise<AdminPusatBantuanResponse> {
+        try {
+            const result = await this.repo.list(userId)
             return {
                 status: "success",
                 message: "Daftar pusat bantuan berhasil diambil",

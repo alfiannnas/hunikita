@@ -1,5 +1,6 @@
 export interface AdminPusatBantuan { 
     id: number;
+    user_id: number;
     nama_lengkap: string;
     email: string;
     tentang: string;
@@ -17,6 +18,7 @@ export interface AdminPusatBantuanResponse {
 }
 
 export interface CreateAdminPusatBantuanRequest {
+    user_id: number;
     nama_lengkap: string;
     email: string;
     tentang: string;

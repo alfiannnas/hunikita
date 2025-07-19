@@ -50,6 +50,8 @@ export const API = {
     DELETE_ADMIN_PUSAT_BANTUAN: BASE_URL + "/admin-pusat-bantuan",
     UPDATE_ADMIN_PUSAT_BANTUAN_POSTING: BASE_URL + "/post-bantuan",
 
+    GET_PUSAT_BANTUAN_BY_ID: BASE_URL + "/pusat-bantuan",
+
     // Penyewa
     GET_PENGAJUAN: BASE_URL + "/pengajuan",
     POST_PENGAJUAN: BASE_URL + "/pengajuan",
