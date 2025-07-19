@@ -48,9 +48,10 @@ export class Repository implements IRepository {
         try {
             const [result] = await this.master.execute(
                 `INSERT INTO pusat_bantuan (
-                    nama_lengkap, email, tentang, pesan, jawaban
-                ) VALUES (?, ?, ?, ?, ?)`,
+                    user_id, nama_lengkap, email, tentang, pesan, jawaban
+                ) VALUES (?, ?, ?, ?, ?, ?)`,
                 [
+                    data.user_id,
                     data.nama_lengkap,
                     data.email,
                     data.tentang,

@@ -1,62 +1,137 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Input } from "../components/Input";
+import axios from "axios";
+import { API } from "../constant";
 
 const Pusatbantuan = () => {
+  const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth || !auth.token) {
+      navigate('/login');
+    }
+  }, [auth, navigate]);
+
+  const [form, setForm] = React.useState({
+    nama: "",
+    email: "",
+    tentang: "",
+    pesan: "",
+  });
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState("");
+  const [error, setError] = React.useState("");
+
+  // Handler perubahan input
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Handler submit form
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess("");
+    setError("");
+
+    try {
+      await axios.post(API.POST_ADMIN_PUSAT_BANTUAN, {
+        user_id: auth.id,
+        nama_lengkap: form.nama,
+        email: form.email,
+        tentang: form.tentang,
+        pesan: form.pesan,
+      }, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      setSuccess("Pertanyaan berhasil dikirim!");
+      setForm({
+        nama: "",
+        email: "",
+        tentang: "",
+        pesan: "",
+      });
+    } catch (err) {
+      console.log(err);
+      setError("Gagal mengirim pertanyaan. Silakan coba lagi.");
+    }
+    setLoading(false);
+  };
+
   return (
     <div>
       <Navbar />
       <p className="absolute w-[655px] top-[150px] left-[35px] [font-family:'Poppins-Regular',Helvetica] font-extrabold text-[#000000cc] text-[40px] text-justify tracking-[0] leading-[normal]">
         Ajukan Pertanyaan!
       </p>
-      <div className="w-[650px] mt-[120px]  ml-[35px]">
-        Nama Lengkap
-        <input
-          type="text"
-          minLength="10"
-          placeholder="  Masukkan Nama lengkap Anda"
-          className="w-full bg-gray-200  h-[40px] border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
-          autoComplete="true"
-        />
-      </div>
-
-      <div className="w-[650px] mt-[20px]  ml-[35px]">
-        Email
-        <input
-          type="text"
-          minLength="10"
-          placeholder="  Masukkan Email Anda"
-          className="w-full bg-gray-200  h-[40px] border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
-          autoComplete="true"
-        />
-      </div>
-
-      <div className="w-[650px] mt-[20px]  ml-[35px]">
-        Tentang
-        <input
-          type="text"
-          minLength="10"
-          placeholder="  Masukkan Subjek Anda"
-          className="w-full bg-gray-200  h-[40px] border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
-          autoComplete="true"
-        />
-      </div>
-
-      <div className="w-[650px] mt-[20px]  ml-[35px]">
-        Pesan
-        <input
-          type="text"
-          placeholder="  Masukkan Pesan Anda"
-          minLength="10"
-          className="w-full bg-gray-200  h-[40px] border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
-          autoComplete="true"
-        />
-      </div>
-      <div className="w-full mt-12">
-        <button className="mt-[-25px] w-[120px] ml-[285px] h-[30px] rounded-[10px]  justify-center items-center p-0 flex bg-[#4E97D1] text-[15px] text-white ">
-          Kirim
-        </button>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="w-[650px] mt-[120px]  ml-[35px]">
+          <Input
+            label="Nama Lengkap"
+            name="nama"
+            minLength={10}
+            placeholder="Masukkan Nama lengkap Anda"
+            value={form.nama}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="w-[650px] mt-[20px]  ml-[35px]">
+          <Input
+            label="Email"
+            name="email"
+            minLength={10}
+            placeholder="Masukkan Email Anda"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="w-[650px] mt-[20px]  ml-[35px]">
+          <Input
+            label="Tentang"
+            name="tentang"
+            minLength={10}
+            placeholder="Masukkan Subjek Anda"
+            value={form.tentang}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="w-[650px] mt-[20px]  ml-[35px]">
+          <Input
+            label="Pesan"
+            name="pesan"
+            minLength={10}
+            placeholder="Masukkan Pesan Anda"
+            value={form.pesan}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="w-full mt-12">
+          <button
+            type="submit"
+            className="mt-[-25px] w-[120px] ml-[285px] h-[30px] rounded-[10px]  justify-center items-center p-0 flex bg-[#4E97D1] text-[15px] text-white "
+            disabled={loading}
+          >
+            {loading ? "Mengirim..." : "Kirim"}
+          </button>
+        </div>
+        {success && (
+          <div className="text-green-600 text-center mt-4">{success}</div>
+        )}
+        {error && (
+          <div className="text-red-600 text-center mt-4">{error}</div>
+        )}
+      </form>
       <p className="absolute w-[655px] top-[155px] left-[750px] [font-family:'Poppins-Regular',Helvetica] font-extrabold text-[#000000cc] text-[30px] text-justify tracking-[0] leading-[normal]">
         Pertanyaan yang sering diajukan
       </p>
@@ -186,7 +261,6 @@ const Pusatbantuan = () => {
           </li>
         </ul>
       </div>
-
       <div className="mt-[-250px]">
         <Footer />
       </div>

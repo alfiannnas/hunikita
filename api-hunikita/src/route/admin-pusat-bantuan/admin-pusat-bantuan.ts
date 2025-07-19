@@ -23,7 +23,6 @@ export function adminPusatBantuan(router: Router, handler: Controller) {
     // Buat pesan bantuan baru
     router.post('/admin-pusat-bantuan', 
         Middleware.Auth, 
-        Middleware.AdminOnly,
         handler.create.bind(handler)
     );
 
