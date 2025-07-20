@@ -16,12 +16,24 @@ const Listartikel = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // Tampilkan 8 artikel per halaman
 
+  // Tambahkan state untuk kategori
+  const [selectedKategori, setSelectedKategori] = useState("Semua");
+  // Tambahkan state untuk search
+  const [search, setSearch] = useState("");
+
+  // Daftar kategori
+  const kategoriList = [
+    "Semua",
+    "Berita",
+    "Tips & Trik",
+    "Lifestyle",
+    "Properti",
+    "Travel",
+    "Lainnya"
+  ];
+
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
-  const [idArtikel, setIdArtikel] = useState(null); // State untuk menyimpan ID artikel yang akan dihapus
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); // State untuk mengontrol tampilan SuccessMessage
 
   useEffect(() => {
     if (!auth || !auth.token) {
@@ -47,11 +59,18 @@ const Listartikel = () => {
     }
   };
 
+  // Filter artikel berdasarkan kategori dan search
+  const filteredArtikel = artikel.filter((item) => {
+    const kategoriMatch = selectedKategori === "Semua" || item.kategori === selectedKategori;
+    const searchMatch = item.judul?.toLowerCase().includes(search.toLowerCase());
+    return kategoriMatch && searchMatch;
+  });
+
   // Hitung total halaman
-  const totalPages = Math.ceil(artikel.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredArtikel.length / itemsPerPage);
 
   // Data yang ditampilkan berdasarkan halaman
-  const displayedArtikel = artikel.slice(
+  const displayedArtikel = filteredArtikel.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -69,20 +88,29 @@ const Listartikel = () => {
     <div>
       <Navbar />
       <div className="mt-[43px] ml-[96px] flex">
-        <ul className='flex gap-9 text-[#4E97D1] text-["Poppins"] font-bold underline text-[25px]'>
-          <li className="cursor-pointer">Gaya Hidup</li>
-          <li className="cursor-pointer">Kecantikan</li>
-          <li className="cursor-pointer">Wisata</li>
-          <li className="cursor-pointer">Kuliner</li>
+        {/* Ganti ul kategori */}
+        <ul className='flex gap-9 text-[#4E97D1] font-bold underline text-[25px]'>
+          {kategoriList.map((kategori) => (
+            <li
+              key={kategori}
+              className={`cursor-pointer ${selectedKategori === kategori ? "text-blue-700 underline" : ""}`}
+              onClick={() => {
+                setSelectedKategori(kategori);
+                setCurrentPage(1); // Reset ke halaman 1 saat ganti kategori
+              }}
+            >
+              {kategori}
+            </li>
+          ))}
         </ul>
         <div className="ml-[300px]">
-          <Artikel />
+          {/* Kirim props search dan setSearch ke Artikel */}
+          <Artikel search={search} setSearch={setSearch} />
         </div>
       </div>
       <div className="flex flex-col gap-6 mt-[40px]">
         {/* Kirim data ke List */}
         <List artikel={displayedArtikel} />
-
       </div>
       <div className="mt-[50px]">
         <Footer />

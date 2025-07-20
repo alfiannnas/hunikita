@@ -1,17 +1,22 @@
 import React from 'react'
+import { Input } from './Input'
 
-const Artikel = () => {
+const Artikel = ({ search, setSearch }) => {
   return (
-    <div className="flex">
-      <label className="flex justify-between items-center gap-1">
-        <input
-          type="text"
-          name='search'
-          className="w-full bg-gray-200  h-[40px] border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
-          placeholder="  Ketik sesuatu..."
-        />
-        <img src="/search-artikel.png" alt="" className="h-[25px] w-[25px]" />
-      </label>
+    <div className="flex items-center">
+      <Input
+        type="text"
+        name="search"
+        placeholder="Ketik sesuatu..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        className="h-[40px] bg-gray-200"
+      />
+      <img
+        src="/search-artikel.png"
+        alt=""
+        className="h-[25px] w-[25px] ml-2"
+      />
     </div>
   )
 }
