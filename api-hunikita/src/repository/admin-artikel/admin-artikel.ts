@@ -130,7 +130,7 @@ export class Repository implements IRepository {
     async list(): Promise<RowDataPacket> {
         try {
             const [result] = await this.master.execute(
-                `SELECT id, judul, slug, isi, kategori, status, gambar, created_at, updated_at 
+                `SELECT id, judul, slug, isi, kategori, status, gambar, penulis, created_at, updated_at 
                  FROM artikel`
             )
             return result as RowDataPacket

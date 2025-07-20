@@ -1,26 +1,119 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const List = () => {
+const List = ({ artikel }) => {
+  console.log("DATA ARTIKEL:", artikel);
+
+  if (!artikel || artikel.length === 0) {
+    return <div className="text-center text-gray-500">Tidak ada artikel.</div>;
+  }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  // Tambahkan fungsi untuk menghilangkan tag HTML dan membatasi karakter
+  const getPreviewText = (htmlString, maxLength = 100) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString;
+    const text = tempDiv.textContent || tempDiv.innerText || "";
+    if (text.length > maxLength) {
+      let trimmed = text.substring(0, maxLength);
+      // Cari spasi terakhir, jika tidak ada, pakai substring biasa
+      const lastSpace = trimmed.lastIndexOf(" ");
+      if (lastSpace > 0) {
+        trimmed = trimmed.substring(0, lastSpace);
+      }
+      return trimmed + "...";
+    }
+    return text;
+  };
+
+  // State untuk pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // Hitung index data yang akan ditampilkan
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = artikel.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Hitung jumlah halaman
+  const totalPages = Math.ceil(artikel.length / itemsPerPage);
+
+  // Fungsi untuk ganti halaman
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
-    <div className="w-[954px] h-[219px] flex shadow-xl relative rounded-[20px] mx-auto hover:shadow-2xl">
-      <div className="w-[382px] mt-[19px] ml-[26px] mb-[19px]">
-        <img src="/image-artikel-list.png" alt="" />
-      </div>
-      <div className="mt-[19px] ml-[13px] mb-[19px]">
-        <p className='text-black text-[22px] text-["Poppins"] font-bold'>
-          3 Wisata buat anak kost!
-        </p>
-        <p className='text-[14px] text-["Poppins"]'>Admin: Hendra</p>
-        <p className='text-[9px] text-["Poppins"]'>11/11/2023</p>
-        <p className='text-[13px] text-["Montserrat"] leading-[18px] w-[473px] text-justify mt-[10px]'>
-          Sebuah pelarian sederhana di tepi pantai yang memikat, cocok untuk
-          mahasiswa kos-kosan yang ingin bersantai dan menyegarkan diri dari
-          rutinitas kuliah dan kerja.
-        </p>
-        <Link to='/detail-artikel'><button className="bg-[#4E97D1] text-white text-[10px] flex justify-center items-center w-[153px] h-[27px] rounded-[5px] underline mt-[15px] ml-[315px]">
-          Selengkapnya
-        </button></Link>
+    <div className="flex flex-col gap-6">
+      {currentItems.map((item) => (
+        <div
+          key={item.id}
+          className="max-w-3xl w-full flex shadow-xl relative rounded-2xl mx-auto hover:shadow-2xl bg-white"
+        >
+          <div className="w-1/3 flex items-center justify-center p-4">
+            <img
+              src={item.gambar}
+              alt={item.judul}
+              className="object-cover w-full h-44 rounded-xl"
+            />
+          </div>
+          <div className="w-2/3 flex flex-col justify-between p-4">
+            <div>
+              <p className="text-black text-xl font-bold font-poppins">
+                {item.judul}
+              </p>
+              <p className="text-sm text-gray-600 font-poppins">
+                Penulis: {item.penulis}
+              </p>
+              <p className="text-xs text-gray-400 font-poppins">
+                {formatDate(item.created_at)}
+              </p>
+              <p className="text-sm font-montserrat leading-5 text-justify mt-2 w-full max-w-full break-words">
+                {getPreviewText(item.isi, 190)}
+              </p>
+            </div>
+            <div className="flex justify-end mt-4">
+              <Link to={`/detail-artikel/${item.id}`}>
+                <button className="bg-[#4E97D1] text-white text-xs px-4 py-1.5 rounded hover:bg-blue-700 transition">
+                  Selengkapnya
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 gap-2">
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        >
+          Prev
+        </button>
+        {[...Array(totalPages)].map((_, idx) => (
+          <button
+            key={idx + 1}
+            onClick={() => paginate(idx + 1)}
+            className={`px-3 py-1 rounded ${currentPage === idx + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+          >
+            {idx + 1}
+          </button>
+        ))}
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </div>
   )
