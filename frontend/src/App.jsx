@@ -16,7 +16,7 @@ import Listkontrakan from "./pages/Listkontrakan";
 import Listartikel from "./pages/Listartikel";
 import Detailkosan from "./pages/Detailkosan";
 import Detailkontrakan from "./pages/Detailkontrakan";
-import Detailartikel from "./pages/Detailartikel";
+import DetailArtikel from "./pages/DetailArtikel";
 
 // Pemilik Properti
 import PemilikProperti from "./pages/pemilik/PemilikProperti";
@@ -73,7 +73,7 @@ function App() {
       <Route path="/profile" element={<PemilikProfil />} />
       <Route path="/list-artikel" element={<Listartikel />} />
       <Route path="/detail-kontrakan" element={<Detailkontrakan />} />
-      <Route path="/detail-artikel" element={<Detailartikel />} />
+      <Route path="/detail-artikel/:id" element={<DetailArtikel />} />
       <Route path="/detail-properti/:id" element={<Detailkosan />} />
       <Route path="/riwayat-pusat-bantuan" element={<RiwayatPusatBantuan />} />
       <Route path="/riwayat-pusat-bantuan/:id" element={<DetailPusatBantuan />} />
