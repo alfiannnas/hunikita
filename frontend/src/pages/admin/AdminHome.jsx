@@ -7,6 +7,9 @@ import { API } from '../../constant';
 import Header from "../../components/Header";
 
 import { useSelector } from 'react-redux';
+import { Bar } from 'react-chartjs-2';
+import { Chart, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+Chart.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function AdminHome() {
   const navigate = useNavigate();
@@ -73,28 +76,90 @@ function AdminHome() {
     }
   };
 
+  const totalPenyewa = penyewa.length;
+  const totalPropertiDisetujui = properties.filter(
+    (property) => property.status === 'Disetujui'
+  ).length;
+
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar/>
+      <Sidebar />
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <Header />
         {/* Dashboard Content */}
         <main className="p-6">
           <h2 className="text-2xl font-semibold mb-6">Dashboard</h2>
-          
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Chart Penyewa */}
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h3 className="text-lg font-semibold mb-4">Total Penyewa</h3>
+              <Bar
+                data={{
+                  labels: ['Total Penyewa'],
+                  datasets: [
+                    {
+                      label: 'Jumlah Penyewa',
+                      data: [totalPenyewa],
+                      backgroundColor: ['#4E97D1'],
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true },
+                  },
+                  scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                  },
+                }}
+                height={60}
+              />
+            </div>
+            {/* Chart Pemilik Disetujui */}
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h3 className="text-lg font-semibold mb-4">Total Properti Disetujui</h3>
+              <Bar
+                data={{
+                  labels: ['Total Properti Disetujui'],
+                  datasets: [
+                    {
+                      label: 'Jumlah Properti',
+                      data: [totalPropertiDisetujui],
+                      backgroundColor: ['#10B981'],
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true },
+                  },
+                  scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                  },
+                }}
+                height={60}
+              />
+            </div>
+          </div>
+
           {/* Properties Section */}
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Properti</h3>
-              <button 
+              <button
                 onClick={() => navigate('/admin-properti')}
                 className="text-blue-500 hover:text-blue-600"
               >
                 Lihat Semua
               </button>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -134,12 +199,11 @@ function AdminHome() {
                         <td className="py-3">{property.property_type_name}</td>
                         <td className="py-3">{property.nama}</td>
                         <td className="py-3">
-                          <span className={`px-3 py-1 rounded-full text-sm ${
-                            property.status === 'Disetujui' ? 'bg-green-500 text-white' : 
+                          <span className={`px-3 py-1 rounded-full text-sm ${property.status === 'Disetujui' ? 'bg-green-500 text-white' :
                             property.status === 'Diproses' ? 'bg-yellow-500 text-white' :
-                            property.status === 'Ditolak' ? 'bg-red-500 text-white' : 
-                            'bg-red-800 text-red-800'
-                          }`}>
+                              property.status === 'Ditolak' ? 'bg-red-500 text-white' :
+                                'bg-red-800 text-red-800'
+                            }`}>
                             {property.status}
                           </span>
                         </td>
@@ -155,14 +219,14 @@ function AdminHome() {
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Pemilik Properti</h3>
-              <button 
+              <button
                 onClick={() => navigate('/admin-pemilik-properti')}
                 className="text-blue-500 hover:text-blue-600"
               >
                 Lihat Semua
               </button>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -186,8 +250,8 @@ function AdminHome() {
                         <td className="py-3">
                           <div className="flex items-center space-x-3">
                             {property.foto_properti ? (
-                              <img 
-                                src={property.foto_properti} 
+                              <img
+                                src={property.foto_properti}
                                 alt={property.name}
                                 className="w-12 h-12 object-cover rounded-md"
                               />
@@ -202,9 +266,9 @@ function AdminHome() {
                         <td className="py-3">{property.property_type_name}</td>
                         <td className="py-3">{property.nama}</td>
                         <td className="py-3">
-                          {new Intl.NumberFormat('id-ID', { 
-                            style: 'currency', 
-                            currency: 'IDR' 
+                          {new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR'
                           }).format(property.harga)}
                         </td>
                       </tr>
@@ -219,14 +283,14 @@ function AdminHome() {
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Penyewa</h3>
-              <button 
+              <button
                 onClick={() => navigate('/admin-penyewa')}
                 className="text-blue-500 hover:text-blue-600"
               >
                 Lihat Semua
               </button>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -250,8 +314,8 @@ function AdminHome() {
                         <td className="py-3">
                           <div className="flex items-center space-x-3">
                             {item.foto_properti ? (
-                              <img 
-                                src={item.foto_properti} 
+                              <img
+                                src={item.foto_properti}
                                 alt={item.property_name}
                                 className="w-12 h-12 object-cover rounded-md"
                               />
@@ -266,9 +330,9 @@ function AdminHome() {
                         <td className="py-3">{item.property_type_name}</td>
                         <td className="py-3">{item.user_name}</td>
                         <td className="py-3">
-                          {new Intl.NumberFormat('id-ID', { 
-                            style: 'currency', 
-                            currency: 'IDR' 
+                          {new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR'
                           }).format(item.harga_property)}
                         </td>
                       </tr>
@@ -283,7 +347,7 @@ function AdminHome() {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Artikel</h3>
-              <button 
+              <button
                 onClick={() => navigate('/admin-artikel/create')}
                 className="flex items-center text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg"
               >
@@ -291,7 +355,7 @@ function AdminHome() {
                 Buat Artikel
               </button>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {artikel.length === 0 ? (
                 <div className="col-span-3 text-center py-6 text-gray-500">
