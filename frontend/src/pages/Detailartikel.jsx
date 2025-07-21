@@ -1,22 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import Populer from "../components/Populer";
-import Populer2 from "../components/Populercopy";
-import Populer3 from "../components/Populercopy2";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../constant/constant";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
+const MAX_LENGTH = 500;
 
 const DetailArtikel = () => {
   const { id } = useParams();
   const [artikel, setArtikel] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [showFull, setShowFull] = useState(false);
+  const [artikelTerbaru, setArtikelTerbaru] = useState([]);
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
@@ -49,142 +47,133 @@ const DetailArtikel = () => {
         setLoading(false);
       }
     };
+
+    // Ambil 3 artikel terbaru
+    const fetchArtikelTerbaru = async () => {
+      try {
+        const res = await axios.get(API.GET_ADMIN_ARTIKEL, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        });
+        setArtikelTerbaru(res.data.data.slice(0, 3));
+      } catch (err) {
+        setArtikelTerbaru([]);
+      }
+    };
+
     fetchArtikel();
+    fetchArtikelTerbaru();
   }, [id, auth, navigate]);
 
-  if (loading) {
-    return <div>Memuat data...</div>;
-  }
+  if (loading) return <div>Memuat data...</div>;
+  if (error) return <div className="text-red-500 text-center py-4">{error}</div>;
+  if (!artikel) return <div>Loading...</div>;
 
-  if (error) {
-    return <div className="text-red-500 text-center py-4">{error}</div>;
-  }
+  const tanggal = new Date(artikel.created_at).toLocaleDateString("id-ID", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-  if (!artikel) {
-    return <div>Loading...</div>;
-  }
-
-  const backgroundImageUrl = "/wisata-madura-3.png";
-  const style = {
-    backgroundImage: `url(${backgroundImageUrl})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
+  const getIsiPendek = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    const text = tempDiv.textContent || tempDiv.innerText || "";
+    if (text.length > MAX_LENGTH) {
+      return text.substring(0, MAX_LENGTH) + "...";
+    }
+    return text;
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#F5F6FA]">
       <Navbar />
-      <div className="relative">
-        <div className="w-full h-[483px]" style={{
-          backgroundImage: `url(${artikel.gambar || "/wisata-madura-3.png"})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}></div>
-        <div className="w-[1022px] h-[2000px] bg-[#EEEADF] flex flex-col absolute -mt-[150px]">
-          <h1 className='text-[50px] text-["Poppins"] font-bold ml-[81px] mt-[61px]'>
-            {artikel.judul}
-          </h1>
-          <p className='text-[20px] text-["Poppins"] font-bold mt-[10px] ml-[81px]'>
-            Admin: {artikel.penulis || "Admin"}
-          </p>
-          <p className="text-[12px] ml-[81px]">{artikel.lokasi}, {artikel.tanggal}</p>
-          <div className="flex">
-            <div className="flex flex-col mt-[50px] ml-[81px]">
-              <p className='text-[18px] text-["Poppins"] font-bold w-[90px]'>
-                Ikuti kami
-              </p>
-              <div className="flex gap-1">
-                <img src="/instagram.png" alt="" />
-                <img src="/facebook.png" alt="" />
-                <img src="/pinterest.png" alt="" />
-              </div>
+      <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row gap-8">
+        {/* KONTEN ARTIKEL */}
+        <div className="flex-1 min-w-0">
+          {/* Gambar Header */}
+          <div
+            className="w-full h-64 md:h-80 rounded-xl bg-gray-200 mb-4"
+            style={{
+              backgroundImage: `url(${artikel.gambar || "/wisata-madura-3.png"})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          ></div>
+          {/* Judul & Info */}
+          <div className="bg-white rounded-xl shadow p-6 mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">{artikel.judul}</h1>
+            <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-4">
+              <span>Penulis: <span className="font-semibold text-gray-700">{artikel.penulis || "Admin"}</span></span>
+              <span>Kategori: {artikel.kategori}</span>
+              <span>Lokasi: {artikel.location}</span>
+              <span>Tanggal: {tanggal}</span>
             </div>
-            <div className="absolute">
-              <div className="h-[1px] w-[938.002px] bg-[#7E6D6D4D] mt-[26px] ml-[84px]"></div>
-              <p className='w-[690px] text-[18px] text-["Montserrat"] text-justify leading-[28px] ml-[253px] mt-[24px]'>
-                Sebagai seorang anak kos, liburan dan rekreasi mungkin terasa
-                sulit dilakukan karena keterbatasan anggaran dan waktu. Namun,
-                jangan khawatir! Ada banyak cara untuk mengeksplorasi kota
-                tempat Anda tinggal tanpa harus merogoh kocek terlalu dalam.
-                Dalam artikel ini, kami akan memberikan beberapa ide wisata yang
-                ramah anggaran dan cocok untuk anak kos.
-              </p>
-              <div className="h-[1px] w-[769px] bg-[#7E6D6D4D] ml-[253px] mt-[24px]"></div>
-              <p className='text-["Poppins"] text-[18px] font-semibold ml-[253px] mt-[24px]'>
-                1. Taman Kota
-              </p>
-              <img
-                src="/image-artikel-1.png"
-                alt=""
-                className="ml-[253px] mt-[15px]"
-              />
-              <p className='w-[690px] text-[18px] text-["Montserrat"] text-justify leading-[28px] ml-[253px] mt-[15px]'>
-                Taman kota seringkali merupakan tempat yang tepat untuk
-                bersantai tanpa harus mengeluarkan banyak uang. Anda dapat
-                membawa bekal makan siang, membawa buku favorit, atau hanya
-                duduk di bawah pohon sambil menikmati cuaca yang baik. Beberapa
-                taman juga sering mengadakan acara-acara seru, seperti konser
-                gratis atau pameran seni.
-              </p>
-              <p className='text-["Poppins"] text-[18px] font-semibold ml-[253px] mt-[15px]'>
-                2. Museum
-              </p>
-              <img
-                src="/image-artikel-2.png"
-                alt=""
-                className="ml-[253px] mt-[15px]"
-              />
-              <p className='w-[690px] text-[18px] text-["Montserrat"] text-justify leading-[28px] ml-[253px] mt-[15px]'>
-                Banyak museum dan galeri seni menawarkan harga tiket khusus
-                untuk pelajar, termasuk anak kos. Ini adalah cara yang bagus
-                untuk memperluas pengetahuan Anda dan menghargai seni dan budaya
-                lokal. Jika Anda tinggal di kota besar, pastikan untuk mencari
-                museum yang menawarkan hari tertentu dengan harga tiket murah
-                atau bahkan gratis.
-              </p>
-              <p className='text-["Poppins"] text-[18px] font-semibold ml-[253px] mt-[15px]'>
-                3. Wisata Sejarah
-              </p>
-              <img
-                src="/image-artikel-3.png"
-                alt=""
-                className="ml-[253px] mt-[15px]"
-              />
-              <p className='w-[690px] text-[18px] text-["Montserrat"] text-justify leading-[28px] ml-[253px] mt-[15px]'>
-                Banyak museum dan galeri seni menawarkan harga tiket khusus
-                untuk pelajar, termasuk anak kos. Ini adalah cara yang bagus
-                untuk memperluas pengetahuan Anda dan menghargai seni dan budaya
-                lokal. Jika Anda tinggal di kota besar, pastikan untuk mencari
-                museum yang menawarkan hari tertentu dengan harga tiket murah
-                atau bahkan gratis.
-              </p>
-              <div className="h-[1px] w-[769px] bg-[#7E6D6D4D] ml-[253px] mt-[24px]"></div>
-              <p className='w-[690px] text-[18px] text-["Montserrat"] text-justify leading-[28px] ml-[253px] mt-[24px]'>
-                Ingatlah bahwa rekreasi tidak selalu harus mahal. Dengan sedikit
-                kreativitas dan eksplorasi, Anda dapat menemukan banyak kegiatan
-                seru di kota Anda tanpa perlu merogoh kocek dalam-dalam. Jadi,
-                manfaatkan waktu luang Anda untuk menjelajahi dan menikmati
-                segala hal yang kota Anda tawarkan.
-              </p>
+            <hr className="mb-4" />
+            {/* Isi Artikel */}
+            <div className="prose max-w-full text-justify text-base md:text-lg break-words overflow-x-auto">
+              {!showFull ? (
+                <>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: getIsiPendek(artikel.isi) }}
+                  />
+                  {artikel.isi && (artikel.isi.length > MAX_LENGTH) && (
+                    <button
+                      className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                      onClick={() => setShowFull(true)}
+                    >
+                      Lihat Selengkapnya
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: artikel.isi }}
+                  />
+                  <button
+                    className="mt-4 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition"
+                    onClick={() => setShowFull(false)}
+                  >
+                    Tampilkan Lebih Sedikit
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
-        <div className="w-[300px] ml-[1032px]">
-          <h1 className='text-[30px] text-["Poppins"] font-semibold'>
-            Artikel Populer
-          </h1>
-          <div className="flex flex-col gap-8 mt-[20px]">
-            <Populer />
-            <Populer2 />
-            <Populer3 />
+        {/* SIDEBAR ARTIKEL TERBARU */}
+        <div className="w-full md:w-80 flex-shrink-0">
+          <div className="bg-white rounded-xl shadow p-4">
+            <h2 className="text-xl font-semibold mb-4 text-blue-700">Artikel Terbaru</h2>
+            <div className="flex flex-col gap-4">
+              {artikelTerbaru.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex gap-3 items-center p-2 rounded-lg hover:bg-blue-50 cursor-pointer transition"
+                  onClick={() => navigate(`/detail-artikel/${item.id}`)}
+                >
+                  <img
+                    src={item.gambar || "/wisata-madura-3.png"}
+                    alt={item.judul}
+                    className="w-14 h-14 object-cover rounded-md border"
+                  />
+                  <div className="flex-1">
+                    <div className="font-semibold text-gray-800 text-sm line-clamp-2">{item.judul}</div>
+                    <div className="text-xs text-gray-500">{new Date(item.created_at).toLocaleDateString("id-ID")}</div>
+                  </div>
+                </div>
+              ))}
+              {artikelTerbaru.length === 0 && (
+                <div className="text-gray-400 text-sm text-center">Tidak ada artikel terbaru.</div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <div className="mt-[900px]">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
