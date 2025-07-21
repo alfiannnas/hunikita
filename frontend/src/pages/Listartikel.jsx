@@ -37,7 +37,7 @@ const Listartikel = () => {
 
   useEffect(() => {
     if (!auth || !auth.token) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
     fetchArtikel();
@@ -54,7 +54,7 @@ const Listartikel = () => {
     } catch (error) {
       console.error("Error fetching artikel:", error);
       if (error.response?.status === 401) {
-        navigate('/admin/login');
+        navigate('/login');
       }
     }
   };

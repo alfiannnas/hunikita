@@ -5,7 +5,7 @@ import { Middleware } from '@util/middleware';
 export function adminArtikel(router: Router, handler: Controller) {
     // List semua artikel
     router.get('/admin-artikel', 
-        Middleware.Auth, 
+        // Middleware.Auth, 
         handler.list.bind(handler)
     );
 
