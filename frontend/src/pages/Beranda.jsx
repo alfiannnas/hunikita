@@ -64,9 +64,6 @@ const Beranda = () => {
     <div>
       <Navbar />
       <Carousel />
-      <div className="mt-[-25px]">
-        <Search />
-      </div>
       {/* KOS */}
       <div className="flex flex-col mt-[50px]">
         <h1 className="ml-[80px] font-bold text-[32px]">REKOMENDASI KOS</h1>
