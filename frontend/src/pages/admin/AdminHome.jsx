@@ -17,6 +17,8 @@ function AdminHome() {
   const [properties, setProperties] = useState([]);
   const [artikel, setArtikel] = useState([]);
   const [penyewa, setPenyewa] = useState([]);
+  // Tambahkan state untuk chart kota_asal
+  const [kotaChartData, setKotaChartData] = useState({ labels: [], data: [] });
 
   useEffect(() => {
     if (!auth) {
@@ -27,6 +29,20 @@ function AdminHome() {
     fetchArtikel();
     fetchPenyewa();
   }, [auth, navigate]);
+
+  // Tambahkan useEffect untuk update chart kota_asal setiap penyewa berubah
+  useEffect(() => {
+    // Kelompokkan penyewa berdasarkan kota_asal
+    const kotaCount = {};
+    penyewa.forEach((item) => {
+      const kota = item.kota_asal || 'Tidak Diketahui';
+      kotaCount[kota] = (kotaCount[kota] || 0) + 1;
+    });
+    setKotaChartData({
+      labels: Object.keys(kotaCount),
+      data: Object.values(kotaCount),
+    });
+  }, [penyewa]);
 
   const fetchProperties = async () => {
     try {
@@ -119,7 +135,7 @@ function AdminHome() {
                 height={60}
               />
             </div>
-            {/* Chart Pemilik Disetujui */}
+            {/* Chart Properti Disetujui */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h3 className="text-lg font-semibold mb-4">Total Properti Disetujui</h3>
               <Bar
@@ -146,6 +162,34 @@ function AdminHome() {
                 height={60}
               />
             </div>
+          </div>
+
+          {/* Tambahkan Chart Kota Asal Penyewa */}
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 className="text-lg font-semibold mb-4">Penyewa Berdasarkan Kota Asal</h3>
+            <Bar
+              data={{
+                labels: kotaChartData.labels,
+                datasets: [
+                  {
+                    label: 'Jumlah Penyewa',
+                    data: kotaChartData.data,
+                    backgroundColor: '#6366F1',
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                  tooltip: { enabled: true },
+                },
+                scales: {
+                  y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                },
+              }}
+              height={80}
+            />
           </div>
 
           {/* Properties Section */}
