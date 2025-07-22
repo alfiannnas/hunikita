@@ -86,7 +86,7 @@ const RiwayatPengajuanSewa = () => {
     if (idProperty === null) return;
 
     try {
-      const response = await axios.delete(`${API.DELETE_PROPERTIES_BY_USER}/${idProperty}`, {
+      const response = await axios.delete(`${API.DELETE_PENGAJUAN}/${idProperty}`, {
         headers: {
           Authorization: 'Bearer ' + auth.token
         }
@@ -96,7 +96,7 @@ const RiwayatPengajuanSewa = () => {
         setIsAlertOpen(false);
         setIsOpen(true);
         // Refresh data setelah menghapus
-        setData(data.filter(item => item.id !== idProperty));
+        setData(data.filter(item => item.uuid !== idProperty));
       }
     } catch (err) {
       console.error("Error deleting property:", err);

@@ -12,6 +12,7 @@ export interface IService {
     getByUUID(uuid: string): Promise<PengajuanResponse>
     uploadBuktiPembayaran(uuid: string, bukti_pembayaran: string, status: string): Promise<PengajuanResponse>
     updateStatusPengajuan(uuid: string, status: string): Promise<PengajuanResponse>
+    deletePengajuan(uuid: string): Promise<PengajuanResponse>
 }
 
 export class Service implements IService {
@@ -195,6 +196,23 @@ export class Service implements IService {
                 status: "success",
                 message: "Status pengajuan berhasil diupdate",
                 data: updated[0]
+            }
+        } catch (error) {
+            return {
+                status: "error",
+                message: "Terjadi kesalahan pada server",
+                data: null
+            }
+        }
+    }
+
+    async deletePengajuan(uuid: string): Promise<PengajuanResponse> {
+        try {
+            await this.repo.deleteByUUID(uuid);
+            return {
+                status: "success",
+                message: "Pengajuan berhasil dihapus",
+                data: null
             }
         } catch (error) {
             return {

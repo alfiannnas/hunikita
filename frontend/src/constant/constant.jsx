@@ -58,6 +58,7 @@ export const API = {
     GET_PENGAJUAN_BY_UUID: BASE_URL + "/pengajuan",
     POST_BUKTI_PEMBAYARAN: BASE_URL + "/pengajuan",
     UPDATE_STATUS_PENGAJUAN: BASE_URL + "/pengajuan",
+    DELETE_PENGAJUAN: BASE_URL + "/pengajuan",
 
 
     GET_PROPERTIES: BASE_URL + "/properties",

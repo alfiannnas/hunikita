@@ -9,6 +9,7 @@ export interface IController {
     getByUUID(req: Request, res: Response): Promise<void>
     postBuktiPembayaran(req: Request, res: Response): Promise<void>
     updateStatusPengajuan(req: Request, res: Response): Promise<void>
+    deletePengajuan(req: Request, res: Response): Promise<void>
 }
 
 export class Controller implements IController {
@@ -110,6 +111,12 @@ export class Controller implements IController {
                 error: error.message
             })
         }
+    }
+
+    async deletePengajuan(req: Request, res: Response): Promise<void> {
+        const uuid = req.params.uuid;
+        const result = await this.service.deletePengajuan(uuid);
+        res.json(result);
     }
 
 }

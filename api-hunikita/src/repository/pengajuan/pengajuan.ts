@@ -11,6 +11,7 @@ export interface IRepository {
     updateBuktiPembayaranByUUID(uuid: string, bukti_pembayaran: string, status: string, invoice_number: string): Promise<RowDataPacket>
     getLastInvoiceNumber(): Promise<any>
     updateStatusSewa(uuid: string, status: string): Promise<RowDataPacket>
+    deleteByUUID(uuid: string): Promise<RowDataPacket>
 }
 
 export class Repository implements IRepository {
@@ -193,6 +194,18 @@ export class Repository implements IRepository {
             return result as RowDataPacket
         } catch(error) {
             console.error("Database Query Error:", error);
+            throw error
+        }
+    }
+
+    async deleteByUUID(uuid: string): Promise<RowDataPacket> {
+        try {
+            const [result] = await this.master.execute(
+                "DELETE FROM penyewa WHERE uuid = ?",
+                [uuid]
+            )
+            return result as RowDataPacket
+        } catch(error) {
             throw error
         }
     }

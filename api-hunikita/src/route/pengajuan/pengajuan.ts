@@ -26,4 +26,8 @@ export function pengajuan(router: Router, handler: Controller) {
         Middleware.Auth,
         handler.updateStatusPengajuan.bind(handler)
     );
+    router.delete('/pengajuan/:uuid', 
+        Middleware.Auth,
+        handler.deletePengajuan.bind(handler)
+    );
 }
