@@ -277,56 +277,58 @@ const Detailkosan = () => {
             </div>
             <div className="w-full max-w-xs">
               {/* Card Sewa */}
-              <div className="p-6 bg-gray-50 rounded-lg shadow flex flex-col gap-2">
-                <h1 className="mt-4 text-2xl font-bold text-gray-800 underline mb-1">Pengajuan Sewa</h1>
-                {showAlert && (
-                  <div className="mb-2 p-2 bg-red-100 text-red-700 rounded">
-                    Silakan masukkan tanggal masuk!
+              {auth.role !== "Pemilik" && (
+                <div className="p-6 bg-gray-50 rounded-lg shadow flex flex-col gap-2">
+                  <h1 className="mt-4 text-2xl font-bold text-gray-800 underline mb-1">Pengajuan Sewa</h1>
+                  {showAlert && (
+                    <div className="mb-2 p-2 bg-red-100 text-red-700 rounded">
+                      Silakan masukkan tanggal masuk!
+                    </div>
+                  )}
+                  <label className="font-medium text-gray-700">Tanggal Masuk</label>
+                  <input
+                    type="date"
+                    className="border rounded px-3 py-2"
+                    value={tanggalMasuk}
+                    onChange={e => {
+                      setTanggalMasuk(e.target.value);
+                      setShowAlert(false);
+                    }}
+                  />
+                  <label className="font-medium text-gray-700">Pilih Periode Sewa</label>
+                  <select
+                    className="border rounded px-3 py-2"
+                    value={periodeSewa}
+                    onChange={e => setPeriodeSewa(e.target.value)}
+                  >
+                    <option value="1">Per Bulan</option>
+                    <option value="3">Per 3 Bulan</option>
+                    <option value="6">Per 6 Bulan</option>
+                    <option value="12">Per Tahun</option>
+                  </select>
+                  <div className="mt-2">
+                    <span className="font-semibold underline">Total Sewa: </span>
+                    <span className="ml-2 font-semibold">
+                      {formatRupiah(getTotalSewa())}
+                    </span>
                   </div>
-                )}
-                <label className="font-medium text-gray-700">Tanggal Masuk</label>
-                <input
-                  type="date"
-                  className="border rounded px-3 py-2"
-                  value={tanggalMasuk}
-                  onChange={e => {
-                    setTanggalMasuk(e.target.value);
-                    setShowAlert(false);
-                  }}
-                />
-                <label className="font-medium text-gray-700">Pilih Periode Sewa</label>
-                <select
-                  className="border rounded px-3 py-2"
-                  value={periodeSewa}
-                  onChange={e => setPeriodeSewa(e.target.value)}
-                >
-                  <option value="1">Per Bulan</option>
-                  <option value="3">Per 3 Bulan</option>
-                  <option value="6">Per 6 Bulan</option>
-                  <option value="12">Per Tahun</option>
-                </select>
-                <div className="mt-2">
-                  <span className="font-semibold underline">Total Sewa: </span>
-                  <span className="ml-2 font-semibold">
-                    {formatRupiah(getTotalSewa())}
-                  </span>
+                  <button
+                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md font-bold hover:bg-blue-700 transition"
+                    onClick={handleAjukanSewa}
+                  >
+                    Ajukan Sewa
+                  </button>
+                  <a
+                    href={`https://wa.me/${properties?.no_kontak?.replace(/^0/, '62')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-green-600 text-white rounded-md font-bold rounded-md 
+                              hover:bg-green-700 transition text-center"
+                  >
+                    Hubungi
+                  </a>
                 </div>
-                <button
-                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md font-bold hover:bg-blue-700 transition"
-                  onClick={handleAjukanSewa}
-                >
-                  Ajukan Sewa
-                </button>
-                <a
-                  href={`https://wa.me/${properties?.no_kontak?.replace(/^0/, '62')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-green-600 text-white rounded-md font-bold rounded-md 
-                            hover:bg-green-700 transition text-center"
-                >
-                  Hubungi
-                </a>
-              </div>
+              )}
             </div>
           </div>
           <div className="w-[1000px]">
