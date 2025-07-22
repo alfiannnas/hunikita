@@ -15,6 +15,10 @@ const Listkontrakan = () => {
   const itemsPerPage = 8 // Jumlah item per halaman
   const navigate = useNavigate()
 
+  // Tambahkan state untuk search
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filteredProperties, setFilteredProperties] = useState([])
+
   const fetchProperties = async () => {
     try {
       const response = await axios.get(`${API.GET_PROPERTIES}?property_type_id=2`)
@@ -23,7 +27,8 @@ const Listkontrakan = () => {
       // Hitung total halaman
       const total = Math.ceil(data.length / itemsPerPage)
       setTotalPages(total)
-      console.log('Total pages:', total) // Debugging
+      // Set filteredProperties awal
+      setFilteredProperties(data)
     } catch (error) {
       console.error("Error fetching properties:", error)
     }
@@ -32,6 +37,25 @@ const Listkontrakan = () => {
   useEffect(() => {
     fetchProperties()
   }, [])
+
+  // Filter properties setiap searchQuery berubah
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredProperties(properties)
+    } else {
+      const lower = searchQuery.toLowerCase()
+      setFilteredProperties(
+        properties.filter(
+          (property) =>
+            property.name.toLowerCase().includes(lower) ||
+            property.address?.toLowerCase().includes(lower) ||
+            property.city?.toLowerCase().includes(lower) ||
+            property.province?.toLowerCase().includes(lower)
+        )
+      )
+    }
+    setCurrentPage(1) // Reset ke halaman 1 setiap search
+  }, [searchQuery, properties])
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
@@ -42,11 +66,11 @@ const Listkontrakan = () => {
     }).format(price)
   }
 
-  // Fungsi untuk mendapatkan data yang akan ditampilkan pada halaman saat ini
+  // Ganti getCurrentPageData agar pakai filteredProperties
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
-    return properties.slice(startIndex, endIndex)
+    return filteredProperties.slice(startIndex, endIndex)
   }
 
   const handlePageChange = (pageNumber) => {
@@ -54,15 +78,23 @@ const Listkontrakan = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Handler untuk search
+  const handleSearchChange = (e) => setSearchQuery(e.target.value)
+  const handleSearchSubmit = () => { } // Sudah realtime, tidak perlu submit khusus
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="mt-[25px] justify-center">
-        <Search />
+        <Search
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onSubmit={handleSearchSubmit}
+        />
       </div>
       <div className="flex flex-col w-full flex-grow">
         <div className="flex flex-wrap gap-7 justify-center items-center min-h-[60vh] mt-[50px]">
-          {properties.length === 0 ? (
+          {filteredProperties.length === 0 ? (
             <div className="flex flex-col items-center justify-center w-full">
               <p className="text-xl font-semibold text-gray-600 text-center">
                 Maaf, Saat ini tidak ada Kos/Kontrakan yang tersedia
@@ -123,13 +155,13 @@ const Listkontrakan = () => {
             ))
           )}
         </div>
-        
+
         {/* Pagination - pastikan props dikirim dengan benar */}
-        {properties.length > 0 && totalPages > 0 && (
+        {filteredProperties.length > 0 && (
           <div className="mt-[50px]">
-            <Pagination 
+            <Pagination
               currentPage={currentPage}
-              totalPages={totalPages}
+              totalPages={Math.ceil(filteredProperties.length / itemsPerPage)}
               onPageChange={handlePageChange}
             />
           </div>

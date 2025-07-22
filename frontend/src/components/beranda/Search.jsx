@@ -1,26 +1,25 @@
 import React from "react";
+import { Input } from "../Input";
 
-const Search = () => {
+const Search = ({ value, onChange, onSubmit }) => {
   return (
-    <div className="w-[686px] h-[51px] flex items-center relative rounded-[10px] shadow-xl mx-auto bg-white">
-      <img src="/logo-map.png" alt="" className="ml-[9px]" />
-      <form action="">
-        <input
+    <div className="w-96 h-14 flex items-center rounded-[10px] shadow-xl mx-auto bg-white px-3">
+      <img src="/logo-map.png" alt="" className="w-6 h-6 mr-2" />
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          onSubmit();
+        }}
+        className="flex items-center w-full"
+      >
+        <Input
           type="text"
-          placeholder="   Ketik nama kontrakan atau lokasi"
-          className="w-[480px] bg-white  h-[40px] border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
+          placeholder="Ketik nama kontrakan atau lokasi"
+          value={value}
+          onChange={onChange}
+          className="bg-white w-60 h-10 border focus:border-blue-500 focus:bg-white focus:outline-none rounded-lg"
         />
       </form>
-      <button className="w-[93px] h-[31px] bg-[#4E97D1] flex justify-center absolute right-[70px] items-center text-white text-[18px] rounded-[8px]">
-        Cari Kos
-      </button>
-      <div className="absolute w-[22px] h-[24px] left-[634px] hover:cursor-pointer">
-        <img
-          className="object-cover"
-          alt="Download removebg"
-          src="https://c.animaapp.com/U4UCsOMi/img/download-removebg-preview-1@2x.png"
-        />
-      </div>
     </div>
   );
 };

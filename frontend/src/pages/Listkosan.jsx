@@ -13,6 +13,8 @@ const Listkosan = () => {
   const [totalPages, setTotalPages] = useState(1)
   const itemsPerPage = 8 // Jumlah item per halaman
   const navigate = useNavigate()
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProperties, setFilteredProperties] = useState([]);
 
   const fetchProperties = async () => {
     try {
@@ -32,6 +34,25 @@ const Listkosan = () => {
     fetchProperties()
   }, [])
 
+  useEffect(() => {
+    // Filter properties setiap searchQuery berubah
+    if (!searchQuery) {
+      setFilteredProperties(properties);
+    } else {
+      const lower = searchQuery.toLowerCase();
+      setFilteredProperties(
+        properties.filter(
+          (property) =>
+            property.name.toLowerCase().includes(lower) ||
+            property.address?.toLowerCase().includes(lower) ||
+            property.city?.toLowerCase().includes(lower) ||
+            property.province?.toLowerCase().includes(lower)
+        )
+      );
+    }
+    setCurrentPage(1); // Reset ke halaman 1 setiap search
+  }, [searchQuery, properties]);
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -45,8 +66,12 @@ const Listkosan = () => {
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
-    return properties.slice(startIndex, endIndex)
+    return filteredProperties.slice(startIndex, endIndex)
   }
+
+  // Handler untuk search
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+  const handleSearchSubmit = () => { }; // Sudah realtime, tidak perlu submit khusus
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
@@ -57,11 +82,15 @@ const Listkosan = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="mt-[25px] justify-center">
-        <Search />
+        <Search
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onSubmit={handleSearchSubmit}
+        />
       </div>
       <div className="flex flex-col w-full flex-grow">
         <div className="flex flex-wrap gap-7 justify-center items-center min-h-[60vh] mt-[50px]">
-          {properties.length === 0 ? (
+          {filteredProperties.length === 0 ? (
             <div className="flex flex-col items-center justify-center w-full">
               <p className="text-xl font-semibold text-gray-600 text-center">
                 Maaf, Saat ini tidak ada Kos/Kontrakan yang tersedia
@@ -127,11 +156,11 @@ const Listkosan = () => {
         </div>
 
         {/* Pagination - pastikan props dikirim dengan benar */}
-        {properties.length > 0 && totalPages > 0 && (
+        {filteredProperties.length > 0 && totalPages > 0 && (
           <div className="mt-[50px]">
             <Pagination
               currentPage={currentPage}
-              totalPages={totalPages}
+              totalPages={Math.ceil(filteredProperties.length / itemsPerPage)}
               onPageChange={handlePageChange}
             />
           </div>
