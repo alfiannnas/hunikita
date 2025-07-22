@@ -24,7 +24,7 @@ export class Repository implements IRepository {
                 pt.name AS property_type_name, p.foto_properti, p.status,
                 p.province, p.city, p.subdistrict, p.village, p.jenis_properti, p.umur_bangunan,
                 p.jam_bertamu, p.pelihara_binatang, p.fasilitas, p.fasilitas_bersama,
-                p.fasilitas_1, p.fasilitas_bersama_1, p.petunjuk_arah, p.kota_asal,
+                p.fasilitas_1, p.fasilitas_bersama_1, p.petunjuk_arah,
                 p.longitude, p.latitude, p.harga_1, us.name as nama, us.email, us.no_kontak
                 FROM properties p
                 LEFT JOIN property_types pt ON p.property_type_id = pt.id
