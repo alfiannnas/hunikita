@@ -44,10 +44,10 @@ const Footer = () => {
             </h1>
             <ul className="mt-2 space-y-2">
               <li className="text-[16px] text-white hover:text-gray-200 hover:underline hover:cursor-pointer">
-                Jl. In aja dulu No. 101, Jawa Tengah 50174, Indonesia
+                Jalan Singosari Timur , Semarang, Jawa Tengah, 50252, Indonesia
               </li>
               <li className="text-[16px] text-white hover:text-gray-200 hover:underline hover:cursor-pointer">
-                (+62)89512439482 (Quick Response)
+                0895634900601 (Quick Response)
               </li>
               <li className="text-[16px] text-white hover:text-gray-200 hover:underline hover:cursor-pointer">
                 hunikita@gmail.com
@@ -59,13 +59,8 @@ const Footer = () => {
       <div className="w-full h-0 border-solid border-[2px] bg-white my-5"></div>
       <div className="flex justify-between relative px-5 mb-5">
         <p className="text-white text-[16px]">
-          Copyright ©2023 All rights reserved | Web11Pro by Group 11
+          Copyright 2025 all rights reserved | Ruth Fiona Ayu S | Universitas AKI Semarang | Sistem Informasi
         </p>
-        <div className="flex gap-3 cursor-pointer">
-          <img src="/logo-facebook.svg" alt="" />
-          <img src="/logo-instagram.svg" alt="" />
-          <img src="/logo-twitter.svg" alt="" />
-        </div>
       </div>
     </div>
   );
